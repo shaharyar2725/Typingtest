@@ -19,6 +19,10 @@ interface TypingHeaderProps {
   onOpenAuth: () => void;
   timeLeft?: number;
   isRunning?: boolean;
+  /** When true, hides mode switcher, settings gear, and duration chips. */
+  lockSettings?: boolean;
+  /** Optional label shown in place of mode pills when lockSettings is true. */
+  lockedLabel?: string;
 }
 
 const TIME_OPTIONS = [15, 30, 60, 120];
@@ -38,6 +42,8 @@ export function TypingHeader({
   onOpenAuth,
   timeLeft,
   isRunning,
+  lockSettings = false,
+  lockedLabel,
 }: TypingHeaderProps) {
   const { user, signOut } = useAuth();
 
@@ -60,28 +66,35 @@ export function TypingHeader({
       {/* Top bar: mode pills (left) + actions (right). Stacks on mobile. */}
       <div className="relative bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
-          {/* Mode pills */}
+          {/* Mode pills (or locked label) */}
           <div className="flex items-center justify-center sm:justify-start gap-1 flex-1 min-w-0 order-2 sm:order-1">
-            {MODES.map((m) => {
-              const Icon = m.icon;
-              const active = settings.mode === m.id;
-              return (
-                <button
-                  key={m.id}
-                  onClick={() => onSettingsChange({ mode: m.id })}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    active
-                      ? 'bg-primary/15 text-primary'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
-                  }`}
-                  data-testid={`mode-${m.id}`}
-                  aria-pressed={active}
-                >
-                  <Icon className="w-3.5 h-3.5 shrink-0" />
-                  <span>{m.label}</span>
-                </button>
-              );
-            })}
+            {lockSettings ? (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-primary/15 text-primary">
+                <Clock className="w-3.5 h-3.5 shrink-0" />
+                <span>{lockedLabel ?? `${settings.duration}s • Competition`}</span>
+              </div>
+            ) : (
+              MODES.map((m) => {
+                const Icon = m.icon;
+                const active = settings.mode === m.id;
+                return (
+                  <button
+                    key={m.id}
+                    onClick={() => onSettingsChange({ mode: m.id })}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                      active
+                        ? 'bg-primary/15 text-primary'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                    }`}
+                    data-testid={`mode-${m.id}`}
+                    aria-pressed={active}
+                  >
+                    <Icon className="w-3.5 h-3.5 shrink-0" />
+                    <span>{m.label}</span>
+                  </button>
+                );
+              })
+            )}
           </div>
 
           {/* Right cluster: timer + restart + settings + auth */}
@@ -101,16 +114,18 @@ export function TypingHeader({
             >
               <RotateCcw className="w-4 h-4" />
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9 rounded-xl"
-              onClick={onOpenSettings}
-              title="Settings"
-              aria-label="Open settings"
-            >
-              <Settings className="w-4 h-4" />
-            </Button>
+            {!lockSettings && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 rounded-xl"
+                onClick={onOpenSettings}
+                title="Settings"
+                aria-label="Open settings"
+              >
+                <Settings className="w-4 h-4" />
+              </Button>
+            )}
 
             {user ? (
               <DropdownMenu>
@@ -171,6 +186,7 @@ export function TypingHeader({
       </div>
 
       {/* Duration / word-count chips row */}
+      {!lockSettings && (
       <div className="flex items-center justify-center gap-1.5 mt-3 flex-wrap">
         {(isTimeMode ? TIME_OPTIONS : WORD_OPTIONS).map((opt) => {
           const current = isTimeMode ? settings.duration : settings.wordCount;
@@ -192,6 +208,7 @@ export function TypingHeader({
           );
         })}
       </div>
+      )}
     </div>
   );
 }

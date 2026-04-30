@@ -3,12 +3,13 @@ import { useEffect } from 'react';
 interface SEOProps {
   title: string;
   description: string;
+  keywords?: string;
   canonical?: string;
   ogType?: string;
   ogImage?: string;
 }
 
-export function useSEO({ title, description, canonical, ogType = 'website', ogImage = '/og-image.png' }: SEOProps) {
+export function useSEO({ title, description, keywords, canonical, ogType = 'website', ogImage = '/og-image.png' }: SEOProps) {
   useEffect(() => {
     // Title
     document.title = title;
@@ -21,6 +22,17 @@ export function useSEO({ title, description, canonical, ogType = 'website', ogIm
       document.head.appendChild(metaDescription);
     }
     metaDescription.setAttribute('content', description);
+
+    // Keywords
+    if (keywords) {
+      let metaKeywords = document.querySelector('meta[name="keywords"]');
+      if (!metaKeywords) {
+        metaKeywords = document.createElement('meta');
+        metaKeywords.setAttribute('name', 'keywords');
+        document.head.appendChild(metaKeywords);
+      }
+      metaKeywords.setAttribute('content', keywords);
+    }
 
     // Canonical
     if (canonical) {
@@ -66,5 +78,5 @@ export function useSEO({ title, description, canonical, ogType = 'website', ogIm
     setTwitterMeta('twitter:description', description);
     setTwitterMeta('twitter:image', `${window.location.origin}${ogImage}`);
 
-  }, [title, description, canonical, ogType, ogImage]);
+  }, [title, description, keywords, canonical, ogType, ogImage]);
 }

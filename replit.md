@@ -30,9 +30,15 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 
 English-only typing test app with two-line scrolling display, results dashboard, and a single global leaderboard. Email+password auth + a shared predefined avatar set.
 
+Pages:
+- `/` — **Home / Test page**: open-ended test where users freely change mode, duration, word source. Personal best (WPM, accuracy, total runs) is stored locally only — runs from this page do **NOT** submit to the leaderboard.
+- `/competition` — **Competition page**: locked 60-second time mode using the same `TypingHeader` (with `lockSettings`). Only signed-in users' scores are submitted to the global leaderboard. Includes the leaderboard and rules.
+- `/typing-speed-test`, `/1-minute-typing-test`, `/5-minute-typing-test`, `/typing-practice` — SEO landing pages with their own variants.
+- `/typing-test` is a legacy route kept as a redirect to `/` (the old duplicate page was removed).
+
 Key frontend components:
-- `components/typing/TypingTest.tsx` — two-line viewport, accepts `fontSize`
-- `components/typing/TypingHeader.tsx` — clean responsive bar: mode pills (Time/Words/Quote), live mm:ss timer, restart, settings gear, avatar/sign-in. Stacks vertically on mobile.
+- `components/typing/TypingTest.tsx` — two-line viewport, accepts `fontSize`. Has `saveToHistory` prop (default true; competition passes `false` to keep personal best clean).
+- `components/typing/TypingHeader.tsx` — clean responsive bar: mode pills (Time/Words/Quote), live mm:ss timer, restart, settings gear, avatar/sign-in. Stacks vertically on mobile. Supports `lockSettings` + `lockedLabel` for competition mode (hides mode pills, settings gear, and duration chips).
 - `components/typing/SettingsSheet.tsx` — slide-over panel: theme, font size (sm/md/lg/xl), sound, strict mode, live stats toggle, word source, sign-out
 - `components/typing/Leaderboard.tsx` — global top-20 by WPM, shows avatars
 - `components/auth/AuthDialog.tsx` — sign in / sign up tabs with avatar picker grid

@@ -38,7 +38,8 @@ export function Header() {
   };
 
   const navItems = [
-    { href: "/typing-test", label: "Test" },
+    { href: "/", label: "Test" },
+    { href: "/competition", label: "Competition" },
     { href: "/typing-practice", label: "Practice" },
     { href: "/learn-typing", label: "Course" },
     { href: "/about", label: "About" },

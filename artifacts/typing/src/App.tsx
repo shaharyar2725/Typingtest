@@ -6,7 +6,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { AppShell } from "@/components/layout/AppShell";
 
 import Home from "@/pages/Home";
-import TypingTestPage from "@/pages/TypingTestPage";
+import CompetitionPage from "@/pages/CompetitionPage";
 import TypingSpeedTestPage from "@/pages/TypingSpeedTestPage";
 import OneMinuteTestPage from "@/pages/OneMinuteTestPage";
 import FiveMinuteTestPage from "@/pages/FiveMinuteTestPage";
@@ -22,7 +22,9 @@ function Router() {
     <AppShell>
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/typing-test" component={TypingTestPage} />
+        <Route path="/competition" component={CompetitionPage} />
+        {/* Legacy redirect: /typing-test was the duplicate test page; the homepage is now the test. */}
+        <Route path="/typing-test" component={Home} />
         <Route path="/typing-speed-test" component={TypingSpeedTestPage} />
         <Route path="/1-minute-typing-test" component={OneMinuteTestPage} />
         <Route path="/5-minute-typing-test" component={FiveMinuteTestPage} />
