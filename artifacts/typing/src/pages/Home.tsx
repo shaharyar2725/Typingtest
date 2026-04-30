@@ -22,6 +22,7 @@ export default function Home() {
   const [progress, setProgress] = useState(initial.lessonProgress);
   const [result, setResult] = useState<TypingResult | null>(null);
   const [stats, setStats] = useState({ wpm: 0, accuracy: 100, errors: 0 });
+  const [restartKey, setRestartKey] = useState(0);
   const [, setLocation] = useLocation();
 
   const handleSettingsChange = (newSettings: Partial<AppState['settings']>) => {
@@ -37,6 +38,7 @@ export default function Home() {
   const handleRestart = () => {
     setResult(null);
     setStats({ wpm: 0, accuracy: 100, errors: 0 });
+    setRestartKey(k => k + 1);
   };
 
   const completedCount = Object.values(progress).filter((p: any) => p.completed).length;
@@ -64,6 +66,7 @@ export default function Home() {
 
             <div className="min-h-[180px] flex items-center justify-center mt-4">
               <TypingTest
+                key={restartKey}
                 mode={settings.mode}
                 durationSec={settings.duration}
                 wordCount={settings.wordCount}

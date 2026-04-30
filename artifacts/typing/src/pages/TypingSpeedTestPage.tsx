@@ -15,10 +15,17 @@ export default function TypingSpeedTestPage() {
   const [settings, setSettings] = useState<AppState['settings']>(() => loadState().settings);
   const [result, setResult] = useState<TypingResult | null>(null);
   const [stats, setStats] = useState({ wpm: 0, accuracy: 100, errors: 0 });
+  const [restartKey, setRestartKey] = useState(0);
 
   const handleSettingsChange = (newSettings: Partial<AppState['settings']>) => {
     const updated = updateSettings(newSettings);
     setSettings(updated);
+  };
+
+  const handleRestart = () => {
+    setResult(null);
+    setStats({ wpm: 0, accuracy: 100, errors: 0 });
+    setRestartKey(k => k + 1);
   };
 
   return (
@@ -36,7 +43,7 @@ export default function TypingSpeedTestPage() {
             <Controls 
               settings={settings} 
               onSettingsChange={handleSettingsChange}
-              onRestart={() => setResult(null)}
+              onRestart={handleRestart}
             />
             
             <div className="flex gap-8 justify-center mb-6 opacity-80 text-sm font-mono font-medium tracking-widest text-muted-foreground uppercase transition-opacity hover:opacity-100">
@@ -47,6 +54,7 @@ export default function TypingSpeedTestPage() {
 
             <div className="min-h-[160px] flex items-center justify-center">
               <TypingTest
+                key={restartKey}
                 mode={settings.mode}
                 durationSec={settings.duration}
                 wordCount={settings.wordCount}

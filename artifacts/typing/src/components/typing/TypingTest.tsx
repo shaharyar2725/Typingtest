@@ -125,30 +125,6 @@ export function TypingTest({
     };
   }, [reset]);
 
-  // Tab+Enter to restart
-  useEffect(() => {
-    let tabPressed = false;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Tab') {
-        tabPressed = true;
-        e.preventDefault();
-      } else if (e.key === 'Enter' && tabPressed) {
-        e.preventDefault();
-        reset();
-        tabPressed = false;
-      }
-    };
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.key === 'Tab') tabPressed = false;
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('keyup', handleKeyUp);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('keyup', handleKeyUp);
-    };
-  }, [reset]);
-
   const startTimer = useCallback(() => {
     if (timerRef.current) return;
     startTimeRef.current = Date.now();
@@ -315,7 +291,6 @@ export function TypingTest({
         >
           <RotateCcw className="w-4 h-4" />
           <span>Restart</span>
-          <span className="text-xs opacity-50 px-1.5 py-0.5 bg-muted rounded hidden sm:inline">Tab + Enter</span>
         </button>
       </div>
     </div>
