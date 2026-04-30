@@ -1,41 +1,60 @@
 import { useState } from 'react';
 import { useLocation, Link } from 'wouter';
 import { TypingTest } from '@/components/typing/TypingTest';
-import { Controls } from '@/components/typing/Controls';
+import { TypingHeader } from '@/components/typing/TypingHeader';
+import { SettingsSheet } from '@/components/typing/SettingsSheet';
 import { ResultCard } from '@/components/typing/ResultCard';
 import { Leaderboard } from '@/components/typing/Leaderboard';
+import { AuthDialog } from '@/components/auth/AuthDialog';
 import { SectionHeader } from '@/components/SectionHeader';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
 import { Play, CheckCircle2, Zap, Target, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LESSONS } from '@/lib/lessons';
-import { submitScore } from '@/lib/leaderboard-api';
+import { submitScore } from '@/lib/auth-api';
+import { LANGUAGE_BY_CODE } from '@/lib/languages';
 
 export default function Home() {
   useSEO({
     title: "TypeFlow | Free Typing Test & Course",
-    description: "Improve your typing speed and accuracy with TypeFlow's free typing test and interactive courses. No signup required.",
+    description: "Improve your typing speed and accuracy with TypeFlow's free typing test and interactive courses.",
   });
 
   const initial = loadState();
   const [settings, setSettings] = useState<AppState['settings']>(initial.settings);
   const [history, setHistory] = useState<TypingResult[]>(initial.history);
-  const [progress, setProgress] = useState(initial.lessonProgress);
+  const [progress] = useState(initial.lessonProgress);
   const [result, setResult] = useState<TypingResult | null>(null);
   const [stats, setStats] = useState<{ wpm: number; accuracy: number; errors: number; timeLeft?: number }>({ wpm: 0, accuracy: 100, errors: 0 });
   const [restartKey, setRestartKey] = useState(0);
   const [leaderboardKey, setLeaderboardKey] = useState(0);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
   const [, setLocation] = useLocation();
 
   const handleSettingsChange = (newSettings: Partial<AppState['settings']>) => {
     setSettings(updateSettings(newSettings));
+    // changing language/font/word source resets the test
+    if (
+      'language' in newSettings ||
+      'fontSize' in newSettings ||
+      'funMode' in newSettings ||
+      'mode' in newSettings ||
+      'duration' in newSettings ||
+      'wordCount' in newSettings
+    ) {
+      setResult(null);
+      setStats({ wpm: 0, accuracy: 100, errors: 0 });
+      setRestartKey(k => k + 1);
+    }
   };
 
   const handleComplete = async (res: TypingResult) => {
     setResult(res);
     setHistory(loadState().history);
     const ok = await submitScore({
+      language: settings.language,
       wpm: res.wpm,
       accuracy: res.accuracy,
       errors: res.errors,
@@ -51,6 +70,9 @@ export default function Home() {
     setRestartKey(k => k + 1);
   };
 
+  const isRunning = stats.timeLeft !== undefined && stats.timeLeft > 0 && !result;
+  const isRtl = (LANGUAGE_BY_CODE[settings.language]?.dir ?? 'ltr') === 'rtl';
+
   const completedCount = Object.values(progress).filter((p: any) => p.completed).length;
   const bestWpm = Math.max(...history.map(h => h.wpm), 0);
   const bestAcc = Math.max(...history.map(h => h.accuracy), 0);
@@ -58,33 +80,39 @@ export default function Home() {
   return (
     <div className="container max-w-screen-lg mx-auto px-5 md:px-8 py-10 md:py-14">
 
-      {/* Hero typing test — no decoration, just the test, focused immediately */}
+      {/* Hero typing test */}
       <section className="mb-20">
         {!result ? (
           <div>
-            <Controls
+            <TypingHeader
               settings={settings}
               onSettingsChange={handleSettingsChange}
               onRestart={handleRestart}
+              onOpenSettings={() => setSettingsOpen(true)}
+              onOpenAuth={() => setAuthOpen(true)}
               timeLeft={stats.timeLeft}
-              durationSec={settings.duration}
+              isRunning={isRunning}
             />
 
-            <div className="flex gap-10 justify-center mt-8 mb-6 text-xs font-mono font-semibold tracking-widest text-muted-foreground uppercase">
-              <div className="flex flex-col items-center gap-1"><span className="text-3xl text-foreground font-bold">{stats.wpm}</span>wpm</div>
-              <div className="flex flex-col items-center gap-1"><span className="text-3xl text-foreground font-bold">{stats.accuracy}%</span>acc</div>
-              <div className="flex flex-col items-center gap-1"><span className="text-3xl text-foreground font-bold">{stats.errors}</span>err</div>
-            </div>
+            {settings.showLiveStats && (
+              <div className="flex gap-10 justify-center mt-8 mb-6 text-xs font-mono font-semibold tracking-widest text-muted-foreground uppercase">
+                <div className="flex flex-col items-center gap-1"><span className="text-3xl text-foreground font-bold tabular-nums">{stats.wpm}</span>wpm</div>
+                <div className="flex flex-col items-center gap-1"><span className="text-3xl text-foreground font-bold tabular-nums">{stats.accuracy}%</span>acc</div>
+                <div className="flex flex-col items-center gap-1"><span className="text-3xl text-foreground font-bold tabular-nums">{stats.errors}</span>err</div>
+              </div>
+            )}
 
-            <div className="min-h-[180px] flex items-center justify-center mt-4">
+            <div className={`min-h-[180px] flex items-center justify-center ${settings.showLiveStats ? 'mt-4' : 'mt-10'}`} dir={isRtl ? 'rtl' : 'ltr'}>
               <TypingTest
-                key={restartKey}
+                key={`${restartKey}-${settings.language}-${settings.funMode}`}
                 mode={settings.mode}
                 durationSec={settings.duration}
                 wordCount={settings.wordCount}
                 funMode={settings.funMode}
                 stopOnError={settings.stopOnError}
                 soundEnabled={settings.soundEnabled}
+                language={settings.language}
+                fontSize={settings.fontSize}
                 onComplete={handleComplete}
                 onStatsUpdate={setStats}
               />
@@ -95,12 +123,12 @@ export default function Home() {
         )}
       </section>
 
-      {/* Leaderboard — sits directly below the test */}
+      {/* Per-language Leaderboard */}
       <section className="mb-20">
-        <Leaderboard refreshKey={leaderboardKey} />
+        <Leaderboard language={settings.language} refreshKey={leaderboardKey} />
       </section>
 
-      {/* Stats — typewizz-style 3 simple white cards */}
+      {/* Stats */}
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
           icon={<CheckCircle2 className="w-7 h-7" strokeWidth={2.5} />}
@@ -125,7 +153,7 @@ export default function Home() {
         />
       </section>
 
-      {/* Course preview — pill-row lessons like typewizz */}
+      {/* Course preview */}
       <SectionHeader>Course</SectionHeader>
 
       <div className="space-y-3">
@@ -162,10 +190,10 @@ export default function Home() {
       <SectionHeader>Why TypeFlow</SectionHeader>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <FeatureRow title="No signup, no fluff" body="Open the page and start typing. Your runs save in your browser automatically." />
+        <FeatureRow title="Type in 10 languages" body="Practice in English, Spanish, French, German, Italian, Portuguese, Russian, Turkish — plus Arabic and Urdu with full right-to-left support." />
         <FeatureRow title="Real practice modes" body="Common words, classic quotes, code snippets, or punctuation drills — pick your fight." />
         <FeatureRow title="Honest stats" body="WPM, accuracy, error count, plus a per-key heatmap so you know what to work on." />
-        <FeatureRow title="A short, focused course" body="Ten lessons from home row to speed drills. Beat the target and move on." />
+        <FeatureRow title="Per-language leaderboards" body="Sign up with email to climb the ladder for every language you practice." />
       </div>
 
       <div className="mt-16 px-6 py-8 sm:px-10 sm:py-10 bg-muted/40 border border-border rounded-3xl text-center">
@@ -180,6 +208,15 @@ export default function Home() {
           </Button>
         </div>
       </div>
+
+      <SettingsSheet
+        open={settingsOpen}
+        onOpenChange={setSettingsOpen}
+        settings={settings}
+        onSettingsChange={handleSettingsChange}
+      />
+
+      <AuthDialog open={authOpen} onOpenChange={setAuthOpen} />
     </div>
   );
 }

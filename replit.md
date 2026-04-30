@@ -28,18 +28,23 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 
 ## TypeFlow (artifacts/typing)
 
-Typing test app with two-line scrolling display, results dashboard with WPM/Errors chart (recharts), and a leaderboard backed by `tf_users` and `tf_scores` Postgres tables.
+Typing test app supporting 10 languages (en, es, fr, de, pt, it, ru, tr, ar, ur — Arabic & Urdu rendered RTL), with two-line scrolling display, results dashboard, and per-language leaderboards. Email+password auth + a shared predefined avatar set.
 
-Key components:
-- `components/typing/TypingTest.tsx` — two-line viewport that scrolls completed lines off-screen
-- `components/typing/Controls.tsx` — header with language dropdown, mm:ss timer, restart, and settings popover
-- `components/typing/ResultCard.tsx` — large WPM/Acc stats and WPM-over-time chart
-- `components/typing/Leaderboard.tsx` — top-20 leaderboard with username claim flow
-- `lib/leaderboard-api.ts` — fetch helpers + localStorage token persistence
+Key frontend components:
+- `components/typing/TypingTest.tsx` — two-line viewport, accepts `language` + `fontSize`, applies `dir="rtl"` and Arabic/Urdu font stack when needed
+- `components/typing/TypingHeader.tsx` — original capsule-bar header: language pill, mode segments (Time/Words/Quote), live mm:ss timer, restart, settings gear, avatar/sign-in
+- `components/typing/SettingsSheet.tsx` — slide-over panel: theme, font size (sm/md/lg/xl), sound, strict mode, live stats toggle, word source, sign-out
+- `components/typing/Leaderboard.tsx` — per-language top-20, refetches on language change, shows avatars
+- `components/auth/AuthDialog.tsx` — sign in / sign up tabs with avatar picker grid
+- `contexts/AuthContext.tsx` — token + user state via localStorage
+- `lib/auth-api.ts` — fetch helpers (auth + scores + leaderboard)
+- `lib/languages.ts` — LANGUAGES + WORD_LISTS + LANGUAGE_BY_CODE
 
-Leaderboard "sign up": user claims a username, gets a random server-issued token stored in localStorage. The token is required to submit scores. No password — lightweight by design.
+Auth model: email + password (bcryptjs), shared avatar set referenced by `avatarId`. Server issues an opaque session token stored in localStorage; required for score submission.
 
-API routes (in `artifacts/api-server/src/routes/leaderboard.ts`):
-- `POST /api/leaderboard/claim` — claim a username
-- `POST /api/leaderboard/scores` — submit a score (requires token)
-- `GET  /api/leaderboard` — top 20 by best WPM per user
+API routes:
+- `routes/auth.ts` — POST /signup, /login, /logout; GET /me; PUT /avatar
+- `routes/avatars.ts` — GET /api/avatars (predefined shared set)
+- `routes/leaderboard.ts` — POST /scores (Bearer auth, includes language); GET /api/leaderboard?lang=xx (per-language top 20)
+
+DB tables (`lib/db/src/schema/leaderboard.ts`): `tf_avatars`, `tf_users` (email/passwordHash/username/avatarId), `tf_sessions` (token PK), `tf_scores` (with `language` column).

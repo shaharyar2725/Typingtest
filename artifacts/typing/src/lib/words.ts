@@ -68,9 +68,11 @@ export const PUNCTUATION_NUMBERS = [
   "a-b-c", "x, y, z", "http://", "https://", "www.example.com", "user@email.com", "<br />", "<h1>", "&&", "||"
 ];
 
-export function generateWords(mode: string, count: number = 50): string {
+import { getWordList } from './languages';
+
+export function generateWords(mode: string, count: number = 50, language: string = 'en'): string {
   let sourceArray: string[] = [];
-  
+
   if (mode === 'quotes') {
     return QUOTES[Math.floor(Math.random() * QUOTES.length)];
   } else if (mode === 'code') {
@@ -78,12 +80,19 @@ export function generateWords(mode: string, count: number = 50): string {
   } else if (mode === 'punctuation') {
     sourceArray = PUNCTUATION_NUMBERS;
   } else {
-    sourceArray = WORDS;
+    sourceArray = getWordList(language);
   }
 
   const result = [];
+  let last = '';
   for (let i = 0; i < count; i++) {
-    result.push(sourceArray[Math.floor(Math.random() * sourceArray.length)]);
+    let pick = sourceArray[Math.floor(Math.random() * sourceArray.length)];
+    // light de-dup so the same word doesn't immediately repeat
+    if (pick === last && sourceArray.length > 1) {
+      pick = sourceArray[(sourceArray.indexOf(pick) + 1) % sourceArray.length];
+    }
+    result.push(pick);
+    last = pick;
   }
   return result.join(' ');
 }

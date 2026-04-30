@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo, useCallback, useLayoutEffect } fr
 import { generateWords } from '@/lib/words';
 import { sounds } from '@/lib/sounds';
 import { TypingResult, addResult } from '@/lib/storage';
+import { LANGUAGE_BY_CODE } from '@/lib/languages';
 
 interface TypingTestProps {
   mode: 'time' | 'words' | 'quote' | 'daily' | 'paragraph';
@@ -14,7 +15,16 @@ interface TypingTestProps {
   presetText?: string;
   onStatsUpdate?: (stats: { wpm: number; accuracy: number; errors: number; timeLeft?: number }) => void;
   saveToHistory?: boolean;
+  language?: string;
+  fontSize?: 'sm' | 'md' | 'lg' | 'xl';
 }
+
+const FONT_SIZE_CLASSES: Record<string, string> = {
+  sm: 'text-lg sm:text-xl md:text-2xl leading-[1.5em]',
+  md: 'text-2xl sm:text-3xl md:text-4xl leading-[1.5em]',
+  lg: 'text-3xl sm:text-4xl md:text-5xl leading-[1.5em]',
+  xl: 'text-4xl sm:text-5xl md:text-6xl leading-[1.5em]',
+};
 
 export function TypingTest({
   mode,
@@ -27,7 +37,11 @@ export function TypingTest({
   presetText,
   onStatsUpdate,
   saveToHistory = true,
+  language = 'en',
+  fontSize = 'md',
 }: TypingTestProps) {
+  const langMeta = LANGUAGE_BY_CODE[language] ?? LANGUAGE_BY_CODE.en;
+  const isRtl = langMeta.dir === 'rtl';
   const [text, setText] = useState('');
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(true);
@@ -98,11 +112,14 @@ export function TypingTest({
     let newText = presetText || '';
     if (!newText) {
       if (mode === 'quote') {
-        newText = generateWords('quotes');
+        newText = generateWords('quotes', 50, language);
       } else if (mode === 'daily') {
-        newText = generateWords('words', 50);
+        newText = generateWords('words', 50, language);
+      } else if (mode === 'time') {
+        // Generate plenty of words for time-based tests
+        newText = generateWords(funMode, 200, language);
       } else {
-        newText = generateWords(funMode, wordCount);
+        newText = generateWords(funMode, wordCount, language);
       }
     }
     textRef.current = newText;
@@ -123,7 +140,7 @@ export function TypingTest({
     }
     onStatsUpdate?.({ wpm: 0, accuracy: 100, errors: 0 });
     setTimeout(() => inputRef.current?.focus(), 0);
-  }, [presetText, mode, funMode, wordCount, onStatsUpdate]);
+  }, [presetText, mode, funMode, wordCount, language, onStatsUpdate]);
 
   useEffect(() => {
     reset();
@@ -203,19 +220,17 @@ export function TypingTest({
   const words = useMemo(() => text.split(' '), [text]);
 
   // Keep the active character in the top visible line by translating the flow up.
+  // getBoundingClientRect returns post-transform positions, so (activeTop - flowTop)
+  // is already the active char's untransformed offset inside the flow — do NOT add scrollY.
   useLayoutEffect(() => {
     if (!activeCharRef.current || !flowRef.current) return;
     const active = activeCharRef.current;
     const flow = flowRef.current;
-    const flowTop = flow.getBoundingClientRect().top;
-    const activeTop = active.getBoundingClientRect().top;
-    const offset = activeTop - flowTop + scrollY;
-    setScrollY(prev => {
-      // Snap to whole line increments to avoid mid-line jitter
-      const lineH = active.offsetHeight || 40;
-      const targetLine = Math.max(0, Math.round(offset / lineH));
-      return targetLine * lineH;
-    });
+    const offset = active.getBoundingClientRect().top - flow.getBoundingClientRect().top;
+    const lineH = active.offsetHeight || 40;
+    const targetLine = Math.max(0, Math.round(offset / lineH));
+    const target = targetLine * lineH;
+    setScrollY(prev => (prev === target ? prev : target));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input, text]);
 
@@ -262,8 +277,14 @@ export function TypingTest({
       {/* Two-line viewport with sliding flow inside */}
       <div
         ref={viewportRef}
-        className="overflow-hidden font-serif text-2xl sm:text-3xl md:text-4xl leading-[1.5em]"
-        style={{ height: '3em' }}
+        dir={isRtl ? 'rtl' : 'ltr'}
+        className={`overflow-hidden font-serif ${FONT_SIZE_CLASSES[fontSize]}`}
+        style={{
+          height: '3em',
+          fontFamily: isRtl
+            ? '"Noto Naskh Arabic", "Noto Sans Arabic", "Geeza Pro", "Tahoma", serif'
+            : undefined,
+        }}
       >
         <div
           ref={flowRef}

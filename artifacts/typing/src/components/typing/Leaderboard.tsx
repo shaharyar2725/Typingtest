@@ -1,79 +1,39 @@
 import { useEffect, useState } from "react";
-import { Trophy, User, LogOut, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Trophy, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
-import {
-  fetchLeaderboard,
-  claimUsername,
-  getStoredUsername,
-  clearStoredUser,
-  type LeaderboardEntry,
-} from "@/lib/leaderboard-api";
-import { toast } from "sonner";
+import { fetchLeaderboard, type LeaderboardEntry } from "@/lib/auth-api";
+import { useAuth } from "@/contexts/AuthContext";
+import { LANGUAGE_BY_CODE } from "@/lib/languages";
 
 interface LeaderboardProps {
+  language: string;
   refreshKey?: number;
 }
 
-export function Leaderboard({ refreshKey = 0 }: LeaderboardProps) {
+export function Leaderboard({ language, refreshKey = 0 }: LeaderboardProps) {
+  const { user } = useAuth();
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [me, setMe] = useState<string | null>(getStoredUsername());
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [username, setUsername] = useState("");
-  const [submitting, setSubmitting] = useState(false);
 
-  const load = async () => {
-    setLoading(true);
-    try {
-      const data = await fetchLeaderboard();
-      setEntries(data);
-    } catch {
-      // ignore — empty list is fine
-    } finally {
-      setLoading(false);
-    }
-  };
+  const langMeta = LANGUAGE_BY_CODE[language] ?? LANGUAGE_BY_CODE.en;
 
   useEffect(() => {
-    load();
-  }, [refreshKey]);
-
-  const handleClaim = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const trimmed = username.trim();
-    if (trimmed.length < 2) {
-      toast.error("Username must be at least 2 characters");
-      return;
-    }
-    setSubmitting(true);
-    try {
-      await claimUsername(trimmed);
-      setMe(trimmed);
-      setDialogOpen(false);
-      setUsername("");
-      toast.success(`Welcome, ${trimmed}!`);
-      load();
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to claim");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleSignOut = () => {
-    clearStoredUser();
-    setMe(null);
-    toast.success("Signed out");
-  };
+    let cancelled = false;
+    setLoading(true);
+    fetchLeaderboard(language)
+      .then((data) => {
+        if (!cancelled) setEntries(data);
+      })
+      .catch(() => {
+        if (!cancelled) setEntries([]);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [language, refreshKey]);
 
   const medal = (rank: number) => {
     if (rank === 0) return "text-yellow-500";
@@ -91,27 +51,15 @@ export function Leaderboard({ refreshKey = 0 }: LeaderboardProps) {
     >
       <div className="bg-card border border-border rounded-2xl overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border bg-gradient-to-r from-primary/5 via-transparent to-transparent">
-          <div className="flex items-center gap-2.5">
-            <Trophy className="w-5 h-5 text-primary" />
+          <div className="flex items-center gap-2.5 min-w-0">
+            <Trophy className="w-5 h-5 text-primary shrink-0" />
             <h2 className="font-bold text-lg">Leaderboard</h2>
-            <span className="text-xs text-muted-foreground hidden sm:inline">· Top 20 by WPM</span>
+            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-muted text-xs font-semibold">
+              <span>{langMeta.flag}</span>
+              <span>{langMeta.name}</span>
+            </span>
           </div>
-          {me ? (
-            <div className="flex items-center gap-2 text-sm">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-semibold">
-                <User className="w-3.5 h-3.5" />
-                {me}
-              </div>
-              <Button variant="ghost" size="icon" onClick={handleSignOut} title="Sign out">
-                <LogOut className="w-4 h-4" />
-              </Button>
-            </div>
-          ) : (
-            <Button size="sm" onClick={() => setDialogOpen(true)} className="font-semibold">
-              <User className="w-3.5 h-3.5 mr-1.5" />
-              Sign up
-            </Button>
-          )}
+          <span className="text-xs text-muted-foreground hidden sm:inline">Top 20 by WPM</span>
         </div>
 
         <div className="divide-y divide-border">
@@ -121,14 +69,17 @@ export function Leaderboard({ refreshKey = 0 }: LeaderboardProps) {
             </div>
           ) : entries.length === 0 ? (
             <div className="text-center py-12 text-sm text-muted-foreground px-4">
-              No scores yet. {me ? "Run a test to claim the #1 spot!" : "Sign up and run a test to be the first!"}
+              No scores yet for {langMeta.name}.{" "}
+              {user
+                ? "Run a test to claim the #1 spot!"
+                : "Sign up and run a test to be first!"}
             </div>
           ) : (
             entries.map((entry, i) => {
-              const isMe = entry.username === me;
+              const isMe = user?.username === entry.username;
               return (
                 <div
-                  key={entry.username}
+                  key={`${entry.username}-${i}`}
                   className={`flex items-center px-5 py-3 transition-colors ${
                     isMe ? "bg-primary/5" : "hover:bg-muted/40"
                   }`}
@@ -136,7 +87,16 @@ export function Leaderboard({ refreshKey = 0 }: LeaderboardProps) {
                   <div className={`w-8 font-bold text-sm tabular-nums ${medal(i)}`}>
                     {i < 3 ? "★" : ""} {i + 1}
                   </div>
-                  <div className="flex-1 min-w-0 flex items-center gap-2">
+                  <div className="flex-1 min-w-0 flex items-center gap-2.5">
+                    {entry.avatarUrl ? (
+                      <img
+                        src={entry.avatarUrl}
+                        alt=""
+                        className="w-7 h-7 rounded-full shrink-0"
+                      />
+                    ) : (
+                      <div className="w-7 h-7 rounded-full bg-muted shrink-0" />
+                    )}
                     <span className="font-semibold truncate">{entry.username}</span>
                     {isMe && (
                       <span className="text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded bg-primary/15 text-primary">
@@ -166,40 +126,6 @@ export function Leaderboard({ refreshKey = 0 }: LeaderboardProps) {
           )}
         </div>
       </div>
-
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Claim a username</DialogTitle>
-            <DialogDescription>
-              Pick a name to appear on the leaderboard. Saved to this browser — no password needed.
-            </DialogDescription>
-          </DialogHeader>
-          <form onSubmit={handleClaim} className="space-y-3">
-            <Input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="username"
-              maxLength={20}
-              autoFocus
-              disabled={submitting}
-              className="text-base"
-            />
-            <p className="text-xs text-muted-foreground">
-              2–20 characters. Letters, numbers, underscores and dashes.
-            </p>
-            <div className="flex gap-2 justify-end">
-              <Button type="button" variant="ghost" onClick={() => setDialogOpen(false)} disabled={submitting}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={submitting || username.trim().length < 2}>
-                {submitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                Claim
-              </Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
     </motion.div>
   );
 }

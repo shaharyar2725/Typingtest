@@ -7,6 +7,9 @@ export interface AppState {
     duration: number; // 15, 30, 60, 120
     wordCount: number; // 10, 25, 50, 100
     funMode: 'words' | 'quotes' | 'code' | 'punctuation';
+    language: string; // ISO code: en, es, fr, de, ...
+    fontSize: 'sm' | 'md' | 'lg' | 'xl';
+    showLiveStats: boolean;
   };
   history: TypingResult[];
   lessonProgress: Record<string, {
@@ -44,7 +47,10 @@ const DEFAULT_STATE: AppState = {
     mode: 'time',
     duration: 30,
     wordCount: 50,
-    funMode: 'words'
+    funMode: 'words',
+    language: 'en',
+    fontSize: 'md',
+    showLiveStats: true,
   },
   history: [],
   lessonProgress: {},
