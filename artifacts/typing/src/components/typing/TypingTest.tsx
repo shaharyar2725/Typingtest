@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useMemo, useCallback, useLayoutEffect } fr
 import { generateWords } from '@/lib/words';
 import { sounds } from '@/lib/sounds';
 import { TypingResult, addResult } from '@/lib/storage';
-import { LANGUAGE_BY_CODE } from '@/lib/languages';
 
 interface TypingTestProps {
   mode: 'time' | 'words' | 'quote' | 'daily' | 'paragraph';
@@ -15,7 +14,6 @@ interface TypingTestProps {
   presetText?: string;
   onStatsUpdate?: (stats: { wpm: number; accuracy: number; errors: number; timeLeft?: number }) => void;
   saveToHistory?: boolean;
-  language?: string;
   fontSize?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
@@ -37,11 +35,8 @@ export function TypingTest({
   presetText,
   onStatsUpdate,
   saveToHistory = true,
-  language = 'en',
   fontSize = 'md',
 }: TypingTestProps) {
-  const langMeta = LANGUAGE_BY_CODE[language] ?? LANGUAGE_BY_CODE.en;
-  const isRtl = langMeta.dir === 'rtl';
   const [text, setText] = useState('');
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(true);
@@ -112,14 +107,14 @@ export function TypingTest({
     let newText = presetText || '';
     if (!newText) {
       if (mode === 'quote') {
-        newText = generateWords('quotes', 50, language);
+        newText = generateWords('quotes', 50);
       } else if (mode === 'daily') {
-        newText = generateWords('words', 50, language);
+        newText = generateWords('words', 50);
       } else if (mode === 'time') {
         // Generate plenty of words for time-based tests
-        newText = generateWords(funMode, 200, language);
+        newText = generateWords(funMode, 200);
       } else {
-        newText = generateWords(funMode, wordCount, language);
+        newText = generateWords(funMode, wordCount);
       }
     }
     textRef.current = newText;
@@ -140,7 +135,7 @@ export function TypingTest({
     }
     onStatsUpdate?.({ wpm: 0, accuracy: 100, errors: 0 });
     setTimeout(() => inputRef.current?.focus(), 0);
-  }, [presetText, mode, funMode, wordCount, language, onStatsUpdate]);
+  }, [presetText, mode, funMode, wordCount, onStatsUpdate]);
 
   useEffect(() => {
     reset();
@@ -277,14 +272,8 @@ export function TypingTest({
       {/* Two-line viewport with sliding flow inside */}
       <div
         ref={viewportRef}
-        dir={isRtl ? 'rtl' : 'ltr'}
         className={`overflow-hidden font-serif ${FONT_SIZE_CLASSES[fontSize]}`}
-        style={{
-          height: '3em',
-          fontFamily: isRtl
-            ? '"Noto Naskh Arabic", "Noto Sans Arabic", "Geeza Pro", "Tahoma", serif'
-            : undefined,
-        }}
+        style={{ height: '3em' }}
       >
         <div
           ref={flowRef}

@@ -13,12 +13,12 @@ export const WORDS = [
   "system", "program", "number", "part", "problem", "school", "state", "family", "group", "country",
   "hand", "water", "place", "point", "home", "room", "mother", "father", "child", "world",
   "company", "business", "fact", "line", "right", "left", "form", "life", "car", "book",
-  "thing", "night", "word", "story", "fact", "month", "lot", "study", "kind", "issue",
+  "thing", "night", "word", "story", "month", "lot", "study", "kind", "issue",
   "name", "idea", "result", "body", "minute", "friend", "city", "job", "game", "team",
-  "kid", "parent", "student", "history", "party", "result", "change", "morning", "reason", "research",
+  "kid", "parent", "student", "history", "party", "change", "morning", "reason", "research",
   "girl", "guy", "moment", "air", "teacher", "force", "education", "foot", "boy", "age",
   "policy", "music", "process", "market", "food", "office", "door", "health", "person", "art",
-  "war", "history", "party", "result", "change", "morning", "reason", "research", "girl", "guy"
+  "war",
 ];
 
 export const QUOTES = [
@@ -58,36 +58,28 @@ export const CODE_SNIPPETS = [
   "const uniqueArray = [...new Set([1, 2, 2, 3, 4, 4, 5])];",
   "x = [1, 2, 3, 4, 5]\ny = [i**2 for i in x if i % 2 == 0]",
   "export const handler = async (event, context) => {\n  return {\n    statusCode: 200,\n    body: JSON.stringify({ message: 'Success' })\n  };\n};",
-  "Rust:\nfn main() {\n    println!(\"Hello, world!\");\n}",
-  "Go:\nfunc main() {\n    fmt.Println(\"Hello, World!\")\n}"
 ];
 
 export const PUNCTUATION_NUMBERS = [
-  "100%", "2024", "hello, world!", "$50.00", "what?", "wait...", "user_name123", "(hello)", "[wow]", "{json}", 
-  "1,000,000", "A+!", "B-", "C#", "C++", "3.14159", "24/7", "9:00 AM", "12:00 PM", "50-50",
-  "a-b-c", "x, y, z", "http://", "https://", "www.example.com", "user@email.com", "<br />", "<h1>", "&&", "||"
+  "100%", "2024", "hello,", "world!", "$50.00", "what?", "wait...", "user_name123", "(hello)", "[wow]", "{json}",
+  "1,000,000", "A+!", "B-", "C#", "C++", "3.14159", "24/7", "9:00", "12:00", "50-50",
+  "a-b-c", "x,", "y,", "z", "http://", "https://", "www.example.com", "user@email.com", "&&", "||",
 ];
 
-import { getWordList } from './languages';
-
-export function generateWords(mode: string, count: number = 50, language: string = 'en'): string {
-  let sourceArray: string[] = [];
-
+export function generateWords(mode: string, count: number = 50): string {
   if (mode === 'quotes') {
     return QUOTES[Math.floor(Math.random() * QUOTES.length)];
-  } else if (mode === 'code') {
+  }
+  if (mode === 'code') {
     return CODE_SNIPPETS[Math.floor(Math.random() * CODE_SNIPPETS.length)];
-  } else if (mode === 'punctuation') {
-    sourceArray = PUNCTUATION_NUMBERS;
-  } else {
-    sourceArray = getWordList(language);
   }
 
-  const result = [];
+  const sourceArray = mode === 'punctuation' ? PUNCTUATION_NUMBERS : WORDS;
+
+  const result: string[] = [];
   let last = '';
   for (let i = 0; i < count; i++) {
     let pick = sourceArray[Math.floor(Math.random() * sourceArray.length)];
-    // light de-dup so the same word doesn't immediately repeat
     if (pick === last && sourceArray.length > 1) {
       pick = sourceArray[(sourceArray.indexOf(pick) + 1) % sourceArray.length];
     }
@@ -99,22 +91,22 @@ export function generateWords(mode: string, count: number = 50, language: string
 
 // PRNG for daily challenge
 export function splitmix32(a: number) {
-    return function() {
-      a |= 0; a = a + 0x9e3779b9 | 0;
-      var t = a ^ a >>> 16;
-      t = Math.imul(t, 0x21f0aaad);
-      t = t ^ t >>> 15;
-      t = Math.imul(t, 0x735a2d97);
-      return ((t = t ^ t >>> 15) >>> 0) / 4294967296;
-    }
+  return function () {
+    a |= 0; a = a + 0x9e3779b9 | 0;
+    let t = a ^ a >>> 16;
+    t = Math.imul(t, 0x21f0aaad);
+    t = t ^ t >>> 15;
+    t = Math.imul(t, 0x735a2d97);
+    return ((t = t ^ t >>> 15) >>> 0) / 4294967296;
+  };
 }
 
 export function getDailyChallengeWords(): string {
   const date = new Date();
   const seed = parseInt(`${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`);
   const random = splitmix32(seed);
-  
-  const result = [];
+
+  const result: string[] = [];
   for (let i = 0; i < 50; i++) {
     const index = Math.floor(random() * WORDS.length);
     result.push(WORDS[index]);

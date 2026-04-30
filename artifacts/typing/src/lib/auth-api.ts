@@ -109,14 +109,13 @@ export interface LeaderboardEntry {
   runs: number;
 }
 
-export async function fetchLeaderboard(language: string): Promise<LeaderboardEntry[]> {
-  const res = await fetch(`/api/leaderboard?lang=${encodeURIComponent(language)}`);
+export async function fetchLeaderboard(): Promise<LeaderboardEntry[]> {
+  const res = await fetch(`/api/leaderboard`);
   const data = await jsonOrThrow(res);
   return data.entries ?? [];
 }
 
 export async function submitScore(score: {
-  language: string;
   wpm: number;
   accuracy: number;
   errors: number;
@@ -128,7 +127,7 @@ export async function submitScore(score: {
     const res = await fetch("/api/leaderboard/scores", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeaders() },
-      body: JSON.stringify(score),
+      body: JSON.stringify({ ...score, language: "en" }),
     });
     if (res.status === 401) {
       setStoredToken(null);

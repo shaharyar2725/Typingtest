@@ -3,24 +3,20 @@ import { Trophy, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { fetchLeaderboard, type LeaderboardEntry } from "@/lib/auth-api";
 import { useAuth } from "@/contexts/AuthContext";
-import { LANGUAGE_BY_CODE } from "@/lib/languages";
 
 interface LeaderboardProps {
-  language: string;
   refreshKey?: number;
 }
 
-export function Leaderboard({ language, refreshKey = 0 }: LeaderboardProps) {
+export function Leaderboard({ refreshKey = 0 }: LeaderboardProps) {
   const { user } = useAuth();
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const langMeta = LANGUAGE_BY_CODE[language] ?? LANGUAGE_BY_CODE.en;
-
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetchLeaderboard(language)
+    fetchLeaderboard()
       .then((data) => {
         if (!cancelled) setEntries(data);
       })
@@ -33,7 +29,7 @@ export function Leaderboard({ language, refreshKey = 0 }: LeaderboardProps) {
     return () => {
       cancelled = true;
     };
-  }, [language, refreshKey]);
+  }, [refreshKey]);
 
   const medal = (rank: number) => {
     if (rank === 0) return "text-yellow-500";
@@ -54,10 +50,6 @@ export function Leaderboard({ language, refreshKey = 0 }: LeaderboardProps) {
           <div className="flex items-center gap-2.5 min-w-0">
             <Trophy className="w-5 h-5 text-primary shrink-0" />
             <h2 className="font-bold text-lg">Leaderboard</h2>
-            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-muted text-xs font-semibold">
-              <span>{langMeta.flag}</span>
-              <span>{langMeta.name}</span>
-            </span>
           </div>
           <span className="text-xs text-muted-foreground hidden sm:inline">Top 20 by WPM</span>
         </div>
@@ -69,7 +61,7 @@ export function Leaderboard({ language, refreshKey = 0 }: LeaderboardProps) {
             </div>
           ) : entries.length === 0 ? (
             <div className="text-center py-12 text-sm text-muted-foreground px-4">
-              No scores yet for {langMeta.name}.{" "}
+              No scores yet.{" "}
               {user
                 ? "Run a test to claim the #1 spot!"
                 : "Sign up and run a test to be first!"}

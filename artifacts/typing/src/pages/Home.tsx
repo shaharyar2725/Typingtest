@@ -13,7 +13,6 @@ import { Play, CheckCircle2, Zap, Target, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LESSONS } from '@/lib/lessons';
 import { submitScore } from '@/lib/auth-api';
-import { LANGUAGE_BY_CODE } from '@/lib/languages';
 
 export default function Home() {
   useSEO({
@@ -35,9 +34,8 @@ export default function Home() {
 
   const handleSettingsChange = (newSettings: Partial<AppState['settings']>) => {
     setSettings(updateSettings(newSettings));
-    // changing language/font/word source resets the test
+    // changing font/word source resets the test
     if (
-      'language' in newSettings ||
       'fontSize' in newSettings ||
       'funMode' in newSettings ||
       'mode' in newSettings ||
@@ -54,7 +52,6 @@ export default function Home() {
     setResult(res);
     setHistory(loadState().history);
     const ok = await submitScore({
-      language: settings.language,
       wpm: res.wpm,
       accuracy: res.accuracy,
       errors: res.errors,
@@ -71,7 +68,6 @@ export default function Home() {
   };
 
   const isRunning = stats.timeLeft !== undefined && stats.timeLeft > 0 && !result;
-  const isRtl = (LANGUAGE_BY_CODE[settings.language]?.dir ?? 'ltr') === 'rtl';
 
   const completedCount = Object.values(progress).filter((p: any) => p.completed).length;
   const bestWpm = Math.max(...history.map(h => h.wpm), 0);
@@ -102,16 +98,15 @@ export default function Home() {
               </div>
             )}
 
-            <div className={`min-h-[180px] flex items-center justify-center ${settings.showLiveStats ? 'mt-4' : 'mt-10'}`} dir={isRtl ? 'rtl' : 'ltr'}>
+            <div className={`min-h-[180px] flex items-center justify-center ${settings.showLiveStats ? 'mt-4' : 'mt-10'}`}>
               <TypingTest
-                key={`${restartKey}-${settings.language}-${settings.funMode}`}
+                key={`${restartKey}-${settings.funMode}`}
                 mode={settings.mode}
                 durationSec={settings.duration}
                 wordCount={settings.wordCount}
                 funMode={settings.funMode}
                 stopOnError={settings.stopOnError}
                 soundEnabled={settings.soundEnabled}
-                language={settings.language}
                 fontSize={settings.fontSize}
                 onComplete={handleComplete}
                 onStatsUpdate={setStats}
@@ -123,9 +118,9 @@ export default function Home() {
         )}
       </section>
 
-      {/* Per-language Leaderboard */}
+      {/* Leaderboard */}
       <section className="mb-20">
-        <Leaderboard language={settings.language} refreshKey={leaderboardKey} />
+        <Leaderboard refreshKey={leaderboardKey} />
       </section>
 
       {/* Stats */}
@@ -190,10 +185,10 @@ export default function Home() {
       <SectionHeader>Why TypeFlow</SectionHeader>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <FeatureRow title="Type in 10 languages" body="Practice in English, Spanish, French, German, Italian, Portuguese, Russian, Turkish — plus Arabic and Urdu with full right-to-left support." />
         <FeatureRow title="Real practice modes" body="Common words, classic quotes, code snippets, or punctuation drills — pick your fight." />
         <FeatureRow title="Honest stats" body="WPM, accuracy, error count, plus a per-key heatmap so you know what to work on." />
-        <FeatureRow title="Per-language leaderboards" body="Sign up with email to climb the ladder for every language you practice." />
+        <FeatureRow title="Global leaderboard" body="Sign up with email and climb the global ladder. Every run counts toward your best score." />
+        <FeatureRow title="Structured course" body="Ten focused lessons take you from home row to full keyboard mastery, one drill at a time." />
       </div>
 
       <div className="mt-16 px-6 py-8 sm:px-10 sm:py-10 bg-muted/40 border border-border rounded-3xl text-center">

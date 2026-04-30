@@ -32,10 +32,10 @@ export function Controls({ settings, onSettingsChange, onRestart, timeLeft, dura
           onValueChange={(val) => onSettingsChange({ funMode: val as AppState['settings']['funMode'] })}
         >
           <SelectTrigger className="h-9 w-auto min-w-[110px] border-0 bg-transparent shadow-none px-2 text-sm font-medium hover:bg-muted/50 focus:ring-0">
-            <SelectValue placeholder="English" />
+            <SelectValue placeholder="Words" />
           </SelectTrigger>
           <SelectContent align="start">
-            <SelectItem value="words">English</SelectItem>
+            <SelectItem value="words">Words</SelectItem>
             <SelectItem value="quotes">Quotes</SelectItem>
             <SelectItem value="code">Code</SelectItem>
             <SelectItem value="punctuation">Punctuation</SelectItem>
