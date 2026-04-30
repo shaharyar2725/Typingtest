@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { RotateCcw, Clock, LogIn, ChevronDown, Hash, Quote, Code2, AtSign } from 'lucide-react';
+import { RotateCcw, Clock, ChevronDown, Hash, Quote, Code2, AtSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -8,7 +8,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { AppState } from '@/lib/storage';
-import { useAuth } from '@/contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SettingsPopover } from '@/components/typing/SettingsPopover';
 
@@ -16,7 +15,6 @@ interface TypingHeaderProps {
   settings: AppState['settings'];
   onSettingsChange: (s: Partial<AppState['settings']>) => void;
   onRestart: () => void;
-  onOpenAuth: () => void;
   timeLeft?: number;
   isRunning?: boolean;
   /** When true, hides mode switcher, settings gear, and duration chips. */
@@ -43,14 +41,11 @@ export function TypingHeader({
   settings,
   onSettingsChange,
   onRestart,
-  onOpenAuth,
   timeLeft,
   isRunning,
   lockSettings = false,
   lockedLabel,
 }: TypingHeaderProps) {
-  const { user, signOut } = useAuth();
-
   const isTimeMode = settings.mode === 'time' || settings.mode === 'quote' || settings.mode === 'daily';
 
   const displayTime = useMemo(() => {
@@ -132,44 +127,6 @@ export function TypingHeader({
             </Button>
             {!lockSettings && (
               <SettingsPopover settings={settings} onSettingsChange={onSettingsChange} />
-            )}
-
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    className="ml-1 w-9 h-9 rounded-full overflow-hidden border-2 border-primary/30 hover:border-primary transition-colors shrink-0"
-                    title={user.username}
-                    aria-label="Account"
-                  >
-                    {user.avatarUrl ? (
-                      <img src={user.avatarUrl} alt={user.username} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full bg-primary/20 flex items-center justify-center font-bold text-xs">
-                        {user.username[0]?.toUpperCase()}
-                      </div>
-                    )}
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <div className="px-2 py-1.5 text-xs">
-                    <div className="font-semibold truncate">{user.username}</div>
-                    <div className="text-muted-foreground truncate">{user.email}</div>
-                  </div>
-                  <DropdownMenuItem onSelect={signOut} className="text-destructive">
-                    Sign out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button
-                size="sm"
-                className="ml-1 h-9 font-semibold rounded-xl px-3"
-                onClick={onOpenAuth}
-              >
-                <LogIn className="w-3.5 h-3.5 sm:mr-1.5" />
-                <span className="hidden sm:inline">Sign in</span>
-              </Button>
             )}
           </div>
         </div>

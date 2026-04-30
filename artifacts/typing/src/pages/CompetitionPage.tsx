@@ -175,7 +175,6 @@ export default function CompetitionPage() {
               settings={settings}
               onSettingsChange={noop}
               onRestart={handleRestart}
-              onOpenAuth={() => setAuthOpen(true)}
               timeLeft={stats.timeLeft}
               isRunning={isRunning}
               lockSettings

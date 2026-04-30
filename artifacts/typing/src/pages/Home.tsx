@@ -161,7 +161,6 @@ export default function Home() {
               settings={settings}
               onSettingsChange={handleSettingsChange}
               onRestart={handleRestart}
-              onOpenAuth={() => setAuthOpen(true)}
               timeLeft={stats.timeLeft}
               isRunning={isRunning}
             />

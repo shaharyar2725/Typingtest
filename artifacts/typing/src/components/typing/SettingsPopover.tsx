@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,10 +15,12 @@ import {
   CheckCircle2,
   XCircle,
   LogOut,
+  LogIn,
 } from 'lucide-react';
 import { AppState } from '@/lib/storage';
 import { useTheme } from '@/components/ThemeProvider';
 import { useAuth } from '@/contexts/AuthContext';
+import { AuthDialog } from '@/components/auth/AuthDialog';
 
 interface SettingsPopoverProps {
   settings: AppState['settings'];
@@ -30,172 +33,218 @@ const LINE_OPTIONS: Array<AppState['settings']['linesVisible']> = [1, 2, 3];
 export function SettingsPopover({ settings, onSettingsChange }: SettingsPopoverProps) {
   const { theme, setTheme } = useTheme();
   const { user, signOut } = useAuth();
+  const [authOpen, setAuthOpen] = useState(false);
+
+  // Effective sound state — master is "on" if any sub-toggle is on.
+  const anySoundOn = settings.soundOnError || settings.soundOnSuccess || settings.soundOnKey;
+
+  const toggleAllSound = () => {
+    if (anySoundOn) {
+      // Mute everything
+      onSettingsChange({
+        soundEnabled: false,
+        soundOnError: false,
+        soundOnSuccess: false,
+        soundOnKey: false,
+      });
+    } else {
+      // Unmute to sensible defaults (errors + finish on, keys off)
+      onSettingsChange({
+        soundEnabled: true,
+        soundOnError: true,
+        soundOnSuccess: true,
+        soundOnKey: false,
+      });
+    }
+  };
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-9 w-9 rounded-xl"
-          title="Settings"
-          aria-label="Open settings"
+    <>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 rounded-xl"
+            title="Settings"
+            aria-label="Open settings"
+          >
+            <Settings className="w-4 h-4" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          align="end"
+          sideOffset={8}
+          className="w-[260px] p-0 rounded-2xl shadow-lg"
         >
-          <Settings className="w-4 h-4" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        align="end"
-        sideOffset={8}
-        className="w-[260px] p-0 rounded-2xl shadow-lg"
-      >
-        <div className="px-3 py-2 border-b border-border">
-          <div className="text-xs font-bold">Settings</div>
-        </div>
-
-        <div className="p-3 space-y-3 max-h-[70vh] overflow-y-auto">
-          {/* Theme */}
-          <Section label="Theme">
-            <Grid cols={3}>
-              <Pill active={theme === 'light'} onClick={() => setTheme('light')} title="Light">
-                <Sun className="w-3.5 h-3.5" />
-              </Pill>
-              <Pill active={theme === 'dark'} onClick={() => setTheme('dark')} title="Dark">
-                <Moon className="w-3.5 h-3.5" />
-              </Pill>
-              <Pill active={theme === 'system'} onClick={() => setTheme('system')} title="System">
-                <Monitor className="w-3.5 h-3.5" />
-              </Pill>
-            </Grid>
-          </Section>
-
-          {/* Font size */}
-          <Section
-            label={
-              <span className="flex items-center gap-1">
-                <Type className="w-3 h-3" />Font
-              </span>
-            }
-          >
-            <Grid cols={5}>
-              {FONT_OPTIONS.map((f) => (
-                <Pill
-                  key={f}
-                  active={settings.fontSize === f}
-                  onClick={() => onSettingsChange({ fontSize: f })}
-                >
-                  <span className="text-[10px] font-bold uppercase">{f}</span>
-                </Pill>
-              ))}
-            </Grid>
-          </Section>
-
-          {/* Lines visible */}
-          <Section
-            label={
-              <span className="flex items-center gap-1">
-                <AlignLeft className="w-3 h-3" />Lines
-              </span>
-            }
-          >
-            <Grid cols={3}>
-              {LINE_OPTIONS.map((n) => (
-                <Pill
-                  key={n}
-                  active={settings.linesVisible === n}
-                  onClick={() => onSettingsChange({ linesVisible: n })}
-                >
-                  <span className="text-[11px] font-bold tabular-nums">{n}</span>
-                </Pill>
-              ))}
-            </Grid>
-          </Section>
-
-          {/* Sound master */}
-          <Section
-            label={
-              <span className="flex items-center gap-1">
-                {settings.soundEnabled ? <Volume2 className="w-3 h-3" /> : <VolumeX className="w-3 h-3" />}
-                Sound
-              </span>
-            }
-          >
-            <Grid cols={2}>
-              <Pill active={settings.soundEnabled} onClick={() => onSettingsChange({ soundEnabled: true })}>
-                <span className="text-[10px] font-semibold">On</span>
-              </Pill>
-              <Pill active={!settings.soundEnabled} onClick={() => onSettingsChange({ soundEnabled: false })}>
-                <span className="text-[10px] font-semibold">Off</span>
-              </Pill>
-            </Grid>
-          </Section>
-
-          {/* Sound sub-toggles */}
-          <div className={settings.soundEnabled ? '' : 'opacity-40 pointer-events-none'}>
-            <Grid cols={3}>
-              <SoundChip
-                active={settings.soundOnError}
-                onClick={() => onSettingsChange({ soundOnError: !settings.soundOnError })}
-                icon={<XCircle className="w-3 h-3" />}
-                label="Error"
-              />
-              <SoundChip
-                active={settings.soundOnSuccess}
-                onClick={() => onSettingsChange({ soundOnSuccess: !settings.soundOnSuccess })}
-                icon={<CheckCircle2 className="w-3 h-3" />}
-                label="Done"
-              />
-              <SoundChip
-                active={settings.soundOnKey}
-                onClick={() => onSettingsChange({ soundOnKey: !settings.soundOnKey })}
-                icon={<Music2 className="w-3 h-3" />}
-                label="Keys"
-              />
-            </Grid>
+          <div className="px-3 py-2 border-b border-border">
+            <div className="text-xs font-bold">Settings</div>
           </div>
 
-          {/* Strict mode */}
-          <Section
-            label={
-              <span className="flex items-center gap-1">
-                <ShieldAlert className="w-3 h-3" />Strict
-              </span>
-            }
-          >
-            <Grid cols={2}>
-              <Pill active={settings.stopOnError} onClick={() => onSettingsChange({ stopOnError: true })}>
-                <span className="text-[10px] font-semibold">On</span>
-              </Pill>
-              <Pill active={!settings.stopOnError} onClick={() => onSettingsChange({ stopOnError: false })}>
-                <span className="text-[10px] font-semibold">Off</span>
-              </Pill>
-            </Grid>
-          </Section>
+          <div className="p-3 space-y-3 max-h-[70vh] overflow-y-auto">
+            {/* Theme */}
+            <Section label="Theme">
+              <Grid cols={3}>
+                <Pill active={theme === 'light'} onClick={() => setTheme('light')} title="Light">
+                  <Sun className="w-3.5 h-3.5" />
+                </Pill>
+                <Pill active={theme === 'dark'} onClick={() => setTheme('dark')} title="Dark">
+                  <Moon className="w-3.5 h-3.5" />
+                </Pill>
+                <Pill active={theme === 'system'} onClick={() => setTheme('system')} title="System">
+                  <Monitor className="w-3.5 h-3.5" />
+                </Pill>
+              </Grid>
+            </Section>
 
-          {/* Account */}
-          {user && (
+            {/* Font size */}
+            <Section
+              label={
+                <span className="flex items-center gap-1">
+                  <Type className="w-3 h-3" />Font
+                </span>
+              }
+            >
+              <Grid cols={5}>
+                {FONT_OPTIONS.map((f) => (
+                  <Pill
+                    key={f}
+                    active={settings.fontSize === f}
+                    onClick={() => onSettingsChange({ fontSize: f })}
+                  >
+                    <span className="text-[10px] font-bold uppercase">{f}</span>
+                  </Pill>
+                ))}
+              </Grid>
+            </Section>
+
+            {/* Lines visible */}
+            <Section
+              label={
+                <span className="flex items-center gap-1">
+                  <AlignLeft className="w-3 h-3" />Lines
+                </span>
+              }
+            >
+              <Grid cols={3}>
+                {LINE_OPTIONS.map((n) => (
+                  <Pill
+                    key={n}
+                    active={settings.linesVisible === n}
+                    onClick={() => onSettingsChange({ linesVisible: n })}
+                  >
+                    <span className="text-[11px] font-bold tabular-nums">{n}</span>
+                  </Pill>
+                ))}
+              </Grid>
+            </Section>
+
+            {/* Sound — clickable label icon = master mute toggle, plus 3 sub-chips */}
+            <Section
+              label={
+                <button
+                  type="button"
+                  onClick={toggleAllSound}
+                  className="flex items-center gap-1 hover:text-foreground transition-colors"
+                  title={anySoundOn ? 'Mute all sounds' : 'Unmute sounds'}
+                  aria-label={anySoundOn ? 'Mute all sounds' : 'Unmute sounds'}
+                >
+                  {anySoundOn ? <Volume2 className="w-3 h-3" /> : <VolumeX className="w-3 h-3" />}
+                  Sound
+                </button>
+              }
+            >
+              <Grid cols={3}>
+                <SoundChip
+                  active={settings.soundOnError}
+                  onClick={() =>
+                    onSettingsChange({
+                      soundOnError: !settings.soundOnError,
+                      soundEnabled: true,
+                    })
+                  }
+                  icon={<XCircle className="w-3 h-3" />}
+                  label="Error"
+                />
+                <SoundChip
+                  active={settings.soundOnSuccess}
+                  onClick={() =>
+                    onSettingsChange({
+                      soundOnSuccess: !settings.soundOnSuccess,
+                      soundEnabled: true,
+                    })
+                  }
+                  icon={<CheckCircle2 className="w-3 h-3" />}
+                  label="Done"
+                />
+                <SoundChip
+                  active={settings.soundOnKey}
+                  onClick={() =>
+                    onSettingsChange({
+                      soundOnKey: !settings.soundOnKey,
+                      soundEnabled: true,
+                    })
+                  }
+                  icon={<Music2 className="w-3 h-3" />}
+                  label="Keys"
+                />
+              </Grid>
+            </Section>
+
+            {/* Strict mode */}
+            <Section
+              label={
+                <span className="flex items-center gap-1">
+                  <ShieldAlert className="w-3 h-3" />Strict
+                </span>
+              }
+            >
+              <Grid cols={2}>
+                <Pill active={settings.stopOnError} onClick={() => onSettingsChange({ stopOnError: true })}>
+                  <span className="text-[10px] font-semibold">On</span>
+                </Pill>
+                <Pill active={!settings.stopOnError} onClick={() => onSettingsChange({ stopOnError: false })}>
+                  <span className="text-[10px] font-semibold">Off</span>
+                </Pill>
+              </Grid>
+            </Section>
+
+            {/* Account */}
             <div className="pt-2 border-t border-border">
-              <div className="flex items-center gap-2">
-                {user.avatarUrl ? (
-                  <img src={user.avatarUrl} alt="" className="w-7 h-7 rounded-full" />
-                ) : (
-                  <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center font-bold text-[10px]">
-                    {user.username[0]?.toUpperCase()}
+              {user ? (
+                <div className="flex items-center gap-2">
+                  {user.avatarUrl ? (
+                    <img src={user.avatarUrl} alt="" className="w-7 h-7 rounded-full" />
+                  ) : (
+                    <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center font-bold text-[10px]">
+                      {user.username[0]?.toUpperCase()}
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-[11px] truncate">{user.username}</div>
+                    <div className="text-[9px] text-muted-foreground truncate">{user.email}</div>
                   </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-[11px] truncate">{user.username}</div>
-                  <div className="text-[9px] text-muted-foreground truncate">{user.email}</div>
+                  <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={signOut} title="Sign out">
+                    <LogOut className="w-3 h-3" />
+                  </Button>
                 </div>
-                <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={signOut}>
-                  <LogOut className="w-3 h-3" />
+              ) : (
+                <Button
+                  size="sm"
+                  className="w-full h-8 text-xs font-semibold rounded-lg"
+                  onClick={() => setAuthOpen(true)}
+                >
+                  <LogIn className="w-3.5 h-3.5 mr-1.5" />
+                  Sign in
                 </Button>
-              </div>
+              )}
             </div>
-          )}
-        </div>
-      </PopoverContent>
-    </Popover>
+          </div>
+        </PopoverContent>
+      </Popover>
+
+      <AuthDialog open={authOpen} onOpenChange={setAuthOpen} />
+    </>
   );
 }
 

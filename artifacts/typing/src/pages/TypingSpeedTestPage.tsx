@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { TypingTest } from '@/components/typing/TypingTest';
-import { Controls } from '@/components/typing/Controls';
+import { TypingHeader } from '@/components/typing/TypingHeader';
 import { ResultCard } from '@/components/typing/ResultCard';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
@@ -40,13 +40,15 @@ export default function TypingSpeedTestPage() {
       >
         {!result ? (
           <div className="w-full relative">
-            <Controls timeLeft={(stats as any).timeLeft} durationSec={settings.duration}
-              settings={settings} 
+            <TypingHeader
+              settings={settings}
               onSettingsChange={handleSettingsChange}
               onRestart={handleRestart}
+              timeLeft={(stats as any).timeLeft}
+              isRunning={(stats as any).timeLeft !== undefined && (stats as any).timeLeft < settings.duration}
             />
-            
-            <div className="flex gap-8 justify-center mb-6 opacity-80 text-sm font-mono font-medium tracking-widest text-muted-foreground uppercase transition-opacity hover:opacity-100">
+
+            <div className="flex gap-8 justify-center my-6 opacity-80 text-sm font-mono font-medium tracking-widest text-muted-foreground uppercase transition-opacity hover:opacity-100">
               <div className="flex flex-col items-center"><span className="text-2xl text-foreground mb-1">{stats.wpm}</span>wpm</div>
               <div className="flex flex-col items-center"><span className="text-2xl text-foreground mb-1">{stats.accuracy}%</span>acc</div>
               <div className="flex flex-col items-center"><span className="text-2xl text-foreground mb-1">{stats.errors}</span>err</div>
