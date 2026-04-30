@@ -134,11 +134,11 @@ export default function Home() {
     <div className="container max-w-screen-lg mx-auto px-5 md:px-8 py-10 md:py-14">
 
       {/* SEO H1 + intro — visible content with primary keyword in first 100 words. */}
-      <header className="text-center mb-8 max-w-2xl mx-auto">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+      <header className="text-center mb-6 max-w-2xl mx-auto">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
           Free Typing Practice
         </h1>
-        <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
+        <p className="text-muted-foreground text-xs sm:text-sm leading-snug">
           Sharpen your typing speed and accuracy with free online typing practice.
           Pick a time, word count or quote, then watch your live WPM as you type.
           Your personal best is saved in your browser — no signup needed.
@@ -169,15 +169,7 @@ export default function Home() {
               isRunning={isRunning}
             />
 
-            {settings.showLiveStats && (
-              <div className="flex gap-10 justify-center mt-8 mb-6 text-xs font-mono font-semibold tracking-widest text-muted-foreground uppercase">
-                <div className="flex flex-col items-center gap-1"><span className="text-3xl text-foreground font-bold tabular-nums">{stats.wpm}</span>wpm</div>
-                <div className="flex flex-col items-center gap-1"><span className="text-3xl text-foreground font-bold tabular-nums">{stats.accuracy}%</span>acc</div>
-                <div className="flex flex-col items-center gap-1"><span className="text-3xl text-foreground font-bold tabular-nums">{stats.errors}</span>err</div>
-              </div>
-            )}
-
-            <div className={`min-h-[180px] flex items-center justify-center ${settings.showLiveStats ? 'mt-4' : 'mt-10'}`}>
+            <div className="min-h-[180px] flex items-center justify-center mt-10">
               <TypingTest
                 key={`${restartKey}-${settings.funMode}`}
                 mode={settings.mode}

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Settings, RotateCcw, Clock, Hash, Zap, LogIn } from 'lucide-react';
+import { Settings, RotateCcw, Clock, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -27,12 +27,6 @@ interface TypingHeaderProps {
 
 const TIME_OPTIONS = [15, 30, 60, 120];
 const WORD_OPTIONS = [10, 25, 50, 100];
-
-const MODES = [
-  { id: 'time' as const, label: 'Time', icon: Clock },
-  { id: 'words' as const, label: 'Words', icon: Hash },
-  { id: 'quote' as const, label: 'Quote', icon: Zap },
-];
 
 export function TypingHeader({
   settings,
@@ -66,34 +60,13 @@ export function TypingHeader({
       {/* Top bar: mode pills (left) + actions (right). Stacks on mobile. */}
       <div className="relative bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
-          {/* Mode pills (or locked label) */}
+          {/* Locked label only — mode pills removed per design */}
           <div className="flex items-center justify-center sm:justify-start gap-1 flex-1 min-w-0 order-2 sm:order-1">
-            {lockSettings ? (
+            {lockSettings && (
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-primary/15 text-primary">
                 <Clock className="w-3.5 h-3.5 shrink-0" />
                 <span>{lockedLabel ?? `${settings.duration}s • Competition`}</span>
               </div>
-            ) : (
-              MODES.map((m) => {
-                const Icon = m.icon;
-                const active = settings.mode === m.id;
-                return (
-                  <button
-                    key={m.id}
-                    onClick={() => onSettingsChange({ mode: m.id })}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                      active
-                        ? 'bg-primary/15 text-primary'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
-                    }`}
-                    data-testid={`mode-${m.id}`}
-                    aria-pressed={active}
-                  >
-                    <Icon className="w-3.5 h-3.5 shrink-0" />
-                    <span>{m.label}</span>
-                  </button>
-                );
-              })
             )}
           </div>
 

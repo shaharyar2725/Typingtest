@@ -41,6 +41,8 @@ export function TypingTest({
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(true);
   const [scrollY, setScrollY] = useState(0);
+  const [liveWpm, setLiveWpm] = useState(0);
+  const [activeBadge, setActiveBadge] = useState<{ left: number; top: number } | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -129,6 +131,8 @@ export function TypingTest({
     setText(newText);
     setInput('');
     setScrollY(0);
+    setLiveWpm(0);
+    setActiveBadge(null);
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
@@ -153,6 +157,7 @@ export function TypingTest({
       const now = Date.now();
       const stats = computeStats(now);
       const remaining = mode === 'time' ? Math.max(0, durationSec - stats.elapsed) : undefined;
+      setLiveWpm(stats.wpm);
       onStatsUpdate?.({
         wpm: stats.wpm,
         accuracy: stats.accuracy,
@@ -205,6 +210,7 @@ export function TypingTest({
     setInput(val);
 
     const stats = computeStats(Date.now());
+    setLiveWpm(stats.wpm);
     onStatsUpdate?.({ wpm: stats.wpm, accuracy: stats.accuracy, errors: stats.errors });
 
     if (val.length >= textRef.current.length) {
@@ -218,16 +224,24 @@ export function TypingTest({
   // getBoundingClientRect returns post-transform positions, so (activeTop - flowTop)
   // is already the active char's untransformed offset inside the flow — do NOT add scrollY.
   useLayoutEffect(() => {
-    if (!activeCharRef.current || !flowRef.current) return;
+    if (!activeCharRef.current || !flowRef.current || !viewportRef.current) return;
     const active = activeCharRef.current;
     const flow = flowRef.current;
+    const viewport = viewportRef.current;
     const offset = active.getBoundingClientRect().top - flow.getBoundingClientRect().top;
     const lineH = active.offsetHeight || 40;
     const targetLine = Math.max(0, Math.round(offset / lineH));
     const target = targetLine * lineH;
     setScrollY(prev => (prev === target ? prev : target));
+
+    // Position the live-WPM badge above the active character
+    const activeRect = active.getBoundingClientRect();
+    const viewportRect = viewport.getBoundingClientRect();
+    const left = activeRect.left - viewportRect.left + activeRect.width / 2;
+    const top = activeRect.top - viewportRect.top;
+    setActiveBadge({ left, top });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input, text]);
+  }, [input, text, scrollY]);
 
   const focusInput = () => inputRef.current?.focus();
 
@@ -272,9 +286,25 @@ export function TypingTest({
       {/* Two-line viewport with sliding flow inside */}
       <div
         ref={viewportRef}
-        className={`overflow-hidden font-serif ${FONT_SIZE_CLASSES[fontSize]}`}
+        className={`relative overflow-visible font-serif ${FONT_SIZE_CLASSES[fontSize]}`}
         style={{ height: '3em' }}
       >
+        {/* Live WPM badge anchored above the active character */}
+        {activeBadge && (
+          <div
+            className="pointer-events-none absolute z-20 -translate-x-1/2 -translate-y-full text-primary font-bold tabular-nums leading-none"
+            style={{
+              left: `${activeBadge.left}px`,
+              top: `${activeBadge.top}px`,
+              fontSize: '0.5em',
+              marginTop: '-0.25em',
+            }}
+            aria-hidden="true"
+          >
+            {liveWpm}
+          </div>
+        )}
+        <div className="overflow-hidden" style={{ height: '3em' }}>
         <div
           ref={flowRef}
           className="select-none break-words transition-transform duration-300 ease-out"
@@ -322,6 +352,7 @@ export function TypingTest({
               </span>
             );
           })}
+        </div>
         </div>
       </div>
     </div>
