@@ -10,7 +10,7 @@ import { loadState, AppState, TypingResult } from '@/lib/storage';
 import { submitScore } from '@/lib/auth-api';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSEO } from '@/hooks/useSEO';
-import { Trophy, LogIn, ShieldCheck, Lock, CheckCircle2, AlertCircle } from 'lucide-react';
+import { LogIn, ShieldCheck, Lock, CheckCircle2, AlertCircle } from 'lucide-react';
 
 const COMPETITION_DURATION = 60; // seconds — fixed for everyone
 const SITE_ORIGIN = 'https://typeflow.app';
@@ -143,15 +143,11 @@ export default function CompetitionPage() {
   return (
     <div className="container max-w-screen-lg mx-auto px-5 md:px-8 py-10 md:py-14">
       {/* Page header — H1 leads with primary keyword "typing test" */}
-      <header className="text-center mb-8">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/15 text-primary text-xs font-bold mb-3">
-          <Trophy className="w-3.5 h-3.5" />
-          Official Competition
-        </div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+      <header className="text-center mb-6">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
           Free Typing Test — 60 Seconds
         </h1>
-        <p className="text-muted-foreground max-w-xl mx-auto text-base sm:text-lg leading-relaxed">
+        <p className="text-muted-foreground max-w-xl mx-auto text-xs sm:text-sm leading-snug">
           Take the official 60-second TypeFlow typing test. See your WPM and accuracy in real time,
           then sign in to submit your score to the global leaderboard.
         </p>
@@ -187,13 +183,7 @@ export default function CompetitionPage() {
               lockedLabel={`${COMPETITION_DURATION}s · Competition`}
             />
 
-            <div className="flex gap-10 justify-center mt-8 mb-6 text-xs font-mono font-semibold tracking-widest text-muted-foreground uppercase">
-              <div className="flex flex-col items-center gap-1"><span className="text-3xl text-foreground font-bold tabular-nums">{stats.wpm}</span>wpm</div>
-              <div className="flex flex-col items-center gap-1"><span className="text-3xl text-foreground font-bold tabular-nums">{stats.accuracy}%</span>acc</div>
-              <div className="flex flex-col items-center gap-1"><span className="text-3xl text-foreground font-bold tabular-nums">{stats.errors}</span>err</div>
-            </div>
-
-            <div className="min-h-[180px] flex items-center justify-center mt-4">
+            <div className="min-h-[180px] flex items-center justify-center mt-10">
               <TypingTest
                 key={restartKey}
                 mode={settings.mode}
