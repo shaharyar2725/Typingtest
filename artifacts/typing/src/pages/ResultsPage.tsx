@@ -31,7 +31,7 @@ export default function ResultsPage() {
 
   if (!result) {
     return (
-      <div className="container max-w-screen-md mx-auto px-4 py-20 text-center">
+      <div className="container max-w-screen-md mx-auto px-5 py-20 text-center">
         <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
         <h1 className="text-3xl font-bold mb-4">Result Not Found</h1>
         <p className="text-muted-foreground mb-8">This typing result doesn't exist or was saved in a different browser.</p>
@@ -43,7 +43,7 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className="container max-w-screen-xl mx-auto px-4 py-12">
+    <div className="container max-w-screen-lg mx-auto px-5 md:px-8 py-10 md:py-14">
       <Link href="/">
         <Button variant="ghost" size="sm" className="mb-8 -ml-2 text-muted-foreground hover:text-foreground">
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home

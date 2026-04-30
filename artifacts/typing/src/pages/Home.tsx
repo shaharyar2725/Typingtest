@@ -30,6 +30,7 @@ export default function Home() {
 
   const handleComplete = (res: TypingResult) => {
     setResult(res);
+    // TypingTest auto-saves to history; reload to refresh stats
     setHistory(loadState().history);
   };
 

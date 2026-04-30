@@ -7,7 +7,7 @@ export default function AboutPage() {
   });
 
   return (
-    <div className="container max-w-3xl mx-auto px-4 py-16">
+    <div className="container max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
       <h1 className="text-4xl font-bold tracking-tight mb-8">About TypeFlow</h1>
       
       <div className="prose dark:prose-invert prose-lg max-w-none">

@@ -22,7 +22,7 @@ export default function TypingSpeedTestPage() {
   };
 
   return (
-    <div className="container max-w-screen-xl mx-auto px-4 py-8">
+    <div className="container max-w-screen-lg mx-auto px-5 md:px-8 py-8 md:py-10">
       <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-8 text-center">Typing Speed Test</h1>
       
       <motion.div 
