@@ -1,11 +1,8 @@
-import { LineChart, Line, ResponsiveContainer, YAxis } from 'recharts';
-import { Card, CardContent } from '@/components/ui/card';
+import { LineChart, Line, ResponsiveContainer, YAxis, XAxis, CartesianGrid, Tooltip, Scatter, ComposedChart, Area } from 'recharts';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { RotateCcw, Copy, Share2 } from 'lucide-react';
+import { RotateCcw, Share2 } from 'lucide-react';
 import { TypingResult } from '@/lib/storage';
 import { toast } from 'sonner';
-import { useLocation } from 'wouter';
 import { motion } from 'framer-motion';
 
 interface ResultCardProps {
@@ -14,128 +11,157 @@ interface ResultCardProps {
 }
 
 export function ResultCard({ result, onRestart }: ResultCardProps) {
-  const [, setLocation] = useLocation();
-
-  const handleShare = () => {
-    setLocation(`/results/${result.id}`);
+  const handleShare = async () => {
+    const text = `I typed at ${result.wpm} WPM with ${result.accuracy}% accuracy on TypeFlow!`;
     try {
-      navigator.clipboard.writeText(`${window.location.origin}/results/${result.id}`);
-      toast.success('Link copied to clipboard!');
+      if (navigator.share) {
+        await navigator.share({ title: 'TypeFlow result', text });
+      } else {
+        await navigator.clipboard.writeText(text);
+        toast.success('Result copied to clipboard');
+      }
     } catch {
-      toast.success('Result saved!');
+      // user cancelled
     }
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(`WPM: ${result.wpm} | Acc: ${result.accuracy}% | Errors: ${result.errors} — TypeFlow`);
-    toast.success('Result copied to clipboard!');
-  };
+  const history = result.history || [];
 
-  // Top 6 missed keys
-  const missedKeysEntries = Object.entries(result.missedKeys || {})
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 6);
+  // Build chart data with error/modification markers
+  // Errors: cumulative diff between adjacent samples > 0
+  // For now we plot wpm line + error markers at sample seconds where errors increased
+  const chartData = history.map((h, i) => {
+    const prev = i > 0 ? history[i - 1] : { errors: 0, wpm: 0 };
+    const newErrors = h.errors - prev.errors;
+    return {
+      t: h.t,
+      wpm: h.wpm,
+      error: newErrors > 0 ? Math.max(20, h.wpm) : null,
+    };
+  });
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95, y: 10 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-      className="w-full max-w-4xl mx-auto"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+      className="w-full max-w-3xl mx-auto"
     >
-      <Card className="bg-card text-card-foreground border-border overflow-hidden">
-        <CardContent className="p-5 sm:p-8">
-          <div className="flex flex-wrap items-center gap-3 mb-6 sm:mb-8">
-            <Badge variant="secondary" className="text-sm font-mono tracking-wider">
-              {result.mode}
-            </Badge>
-            <div className="text-sm text-muted-foreground font-mono">
-              {result.durationSec}s
-            </div>
-            <div className="text-sm text-muted-foreground font-mono ml-auto">
-              {new Date(result.timestamp).toLocaleDateString()}
-            </div>
+      {/* Big stats row */}
+      <div className="grid grid-cols-2 gap-6 sm:gap-12 mb-6">
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">Words per minute</div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-5xl sm:text-6xl font-bold text-primary tabular-nums leading-none">{result.wpm}</span>
+            <span className="text-xl sm:text-2xl font-semibold text-primary/80">wpm</span>
           </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-8 sm:mb-12">
-            <div className="flex flex-col min-w-0">
-              <span className="text-4xl sm:text-6xl font-bold text-primary mb-1 sm:mb-2 font-mono tracking-tight">{result.wpm}</span>
-              <span className="text-xs sm:text-sm text-muted-foreground uppercase tracking-widest font-semibold">WPM</span>
-            </div>
-            <div className="flex flex-col min-w-0">
-              <span className="text-4xl sm:text-6xl font-bold text-foreground mb-1 sm:mb-2 font-mono tracking-tight">{result.accuracy}%</span>
-              <span className="text-xs sm:text-sm text-muted-foreground uppercase tracking-widest font-semibold">Accuracy</span>
-            </div>
-            <div className="flex flex-col md:justify-end md:pb-[0.4rem] min-w-0">
-              <span className="text-2xl sm:text-3xl font-semibold text-foreground mb-1 font-mono tracking-tight">{result.errors}</span>
-              <span className="text-xs sm:text-sm text-muted-foreground uppercase tracking-widest font-semibold">Errors</span>
-            </div>
-            <div className="flex flex-col md:justify-end md:pb-[0.4rem] min-w-0">
-              <span className="text-2xl sm:text-3xl font-semibold text-foreground mb-1 font-mono tracking-tight">{result.durationSec}s</span>
-              <span className="text-xs sm:text-sm text-muted-foreground uppercase tracking-widest font-semibold">Time</span>
-            </div>
+        </div>
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">Accuracy</div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-5xl sm:text-6xl font-bold text-foreground tabular-nums leading-none">{result.accuracy}</span>
+            <span className="text-xl sm:text-2xl font-semibold text-foreground/80">%</span>
           </div>
+        </div>
+      </div>
 
-          {result.history && result.history.length > 0 && (
-            <div className="h-[120px] w-full mb-12 relative opacity-80 hover:opacity-100 transition-opacity">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={result.history}>
-                  <YAxis domain={['auto', 'auto']} hide />
-                  <Line 
-                    type="monotone" 
-                    dataKey="wpm" 
-                    stroke="hsl(var(--primary))" 
-                    strokeWidth={3} 
-                    dot={false}
-                    isAnimationActive={false}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="errors" 
-                    stroke="hsl(var(--destructive))" 
-                    strokeWidth={2} 
-                    dot={false}
-                    isAnimationActive={false}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-              <div className="absolute top-0 left-0 text-xs text-primary font-mono opacity-50">WPM</div>
-              <div className="absolute top-4 left-0 text-xs text-destructive font-mono opacity-50">Errors</div>
+      <div className="text-sm text-muted-foreground mb-6 capitalize">
+        {result.mode === 'time' ? `Typing test · ${result.durationSec}s` : result.mode === 'lesson' ? 'Lesson drill' : `${result.mode} test`}
+      </div>
+
+      {/* Chart */}
+      {chartData.length > 1 && (
+        <div className="mb-6">
+          <div className="flex items-center gap-5 mb-3 text-xs font-semibold">
+            <div className="text-muted-foreground uppercase tracking-wider">Words per minute</div>
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-primary" /> WPM
             </div>
-          )}
-
-          {missedKeysEntries.length > 0 && (
-            <div className="mb-10">
-              <h4 className="text-sm text-muted-foreground uppercase tracking-widest font-semibold mb-4">Missed Keys</h4>
-              <div className="flex flex-wrap gap-3">
-                {missedKeysEntries.map(([key, count]) => (
-                  <div key={key} className="flex items-center bg-muted/50 rounded-md overflow-hidden border border-border">
-                    <span className="px-3 py-1.5 font-mono text-lg bg-muted text-foreground border-r border-border">{key === ' ' ? '␣' : key}</span>
-                    <span className="px-3 py-1.5 text-sm font-mono text-destructive">{count}</span>
-                  </div>
-                ))}
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-destructive" /> Errors
+            </div>
+            {(result.modifications ?? 0) > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-amber-500" /> Modifications
               </div>
-            </div>
-          )}
-
-          <div className="flex flex-wrap items-center gap-4 justify-center md:justify-start">
-            {onRestart && (
-              <Button onClick={onRestart} size="lg" className="font-semibold px-8 hover-elevate">
-                <RotateCcw className="w-4 h-4 mr-2" />
-                Try Again
-              </Button>
             )}
-            <Button onClick={handleCopy} variant="secondary" size="lg" className="hover-elevate">
-              <Copy className="w-4 h-4 mr-2" />
-              Copy
-            </Button>
-            <Button onClick={handleShare} variant="outline" size="lg" className="hover-elevate border-primary/20 hover:border-primary/50 hover:bg-primary/5">
-              <Share2 className="w-4 h-4 mr-2 text-primary" />
-              <span className="text-primary">Share</span>
-            </Button>
           </div>
-        </CardContent>
-      </Card>
+
+          <div className="h-[220px] sm:h-[260px] w-full bg-card border border-border rounded-2xl p-3 sm:p-4">
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="wpmFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity={0.25} />
+                    <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="2 4" stroke="hsl(var(--border))" vertical={false} />
+                <XAxis
+                  dataKey="t"
+                  stroke="hsl(var(--muted-foreground))"
+                  tick={{ fontSize: 11 }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis
+                  stroke="hsl(var(--muted-foreground))"
+                  tick={{ fontSize: 11 }}
+                  axisLine={false}
+                  tickLine={false}
+                  domain={[0, 'auto']}
+                  width={40}
+                />
+                <Tooltip
+                  contentStyle={{
+                    background: 'hsl(var(--card))',
+                    border: '1px solid hsl(var(--border))',
+                    borderRadius: '8px',
+                    fontSize: '12px',
+                  }}
+                  labelFormatter={(t) => `${t}s`}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="wpm"
+                  stroke="hsl(var(--primary))"
+                  strokeWidth={2.5}
+                  fill="url(#wpmFill)"
+                  isAnimationActive={false}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="wpm"
+                  stroke="hsl(var(--primary))"
+                  strokeWidth={2.5}
+                  dot={false}
+                  isAnimationActive={false}
+                />
+                <Scatter
+                  dataKey="error"
+                  fill="hsl(var(--destructive))"
+                  shape="circle"
+                  isAnimationActive={false}
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
+
+      {/* Action row */}
+      <div className="flex flex-wrap items-center gap-3 justify-center">
+        {onRestart && (
+          <Button onClick={onRestart} size="lg" className="font-semibold px-8">
+            <RotateCcw className="w-4 h-4 mr-2" />
+            Try again
+          </Button>
+        )}
+        <Button onClick={handleShare} variant="outline" size="lg" className="font-semibold">
+          <Share2 className="w-4 h-4 mr-2" />
+          Share
+        </Button>
+      </div>
     </motion.div>
   );
 }

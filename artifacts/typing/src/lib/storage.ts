@@ -29,6 +29,7 @@ export interface TypingResult {
   wpm: number;
   accuracy: number;
   errors: number;
+  modifications?: number;
   timestamp: number;
   snippet: string;
   history?: { t: number, wpm: number, errors: number }[];

@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, useLayoutEffect } from 'react';
 import { generateWords } from '@/lib/words';
 import { sounds } from '@/lib/sounds';
 import { TypingResult, addResult } from '@/lib/storage';
-import { RotateCcw } from 'lucide-react';
 
 interface TypingTestProps {
   mode: 'time' | 'words' | 'quote' | 'daily' | 'paragraph';
@@ -13,13 +12,13 @@ interface TypingTestProps {
   soundEnabled: boolean;
   onComplete: (result: TypingResult) => void;
   presetText?: string;
-  onStatsUpdate?: (stats: { wpm: number; accuracy: number; errors: number }) => void;
+  onStatsUpdate?: (stats: { wpm: number; accuracy: number; errors: number; timeLeft?: number }) => void;
   saveToHistory?: boolean;
 }
 
 export function TypingTest({
   mode,
-  durationSec = 30,
+  durationSec = 60,
   wordCount = 50,
   funMode,
   stopOnError,
@@ -31,19 +30,24 @@ export function TypingTest({
 }: TypingTestProps) {
   const [text, setText] = useState('');
   const [input, setInput] = useState('');
-  const [timeLeft, setTimeLeft] = useState(durationSec);
   const [isFocused, setIsFocused] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
 
-  // Refs for hot-path values (avoid stale closures in interval / handlers)
   const inputRef = useRef<HTMLInputElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const flowRef = useRef<HTMLDivElement>(null);
+  const activeCharRef = useRef<HTMLSpanElement>(null);
+
   const textRef = useRef('');
   const inputValueRef = useRef('');
   const errorsRef = useRef(0);
+  const modificationsRef = useRef(0);
   const historyRef = useRef<{ t: number; wpm: number; errors: number }[]>([]);
   const missedKeysRef = useRef<Record<string, number>>({});
   const startTimeRef = useRef<number | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const finishedRef = useRef(false);
+  const lastSecondRef = useRef(0);
 
   const computeStats = useCallback((nowMs: number) => {
     const startedAt = startTimeRef.current;
@@ -83,6 +87,7 @@ export function TypingTest({
       snippet: textRef.current.slice(0, 80),
       history: historyRef.current,
       missedKeys: missedKeysRef.current,
+      modifications: modificationsRef.current,
     };
 
     if (saveToHistory) addResult(result);
@@ -103,20 +108,22 @@ export function TypingTest({
     textRef.current = newText;
     inputValueRef.current = '';
     errorsRef.current = 0;
+    modificationsRef.current = 0;
     historyRef.current = [];
     missedKeysRef.current = {};
     startTimeRef.current = null;
     finishedRef.current = false;
+    lastSecondRef.current = 0;
     setText(newText);
     setInput('');
-    setTimeLeft(durationSec);
+    setScrollY(0);
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
     onStatsUpdate?.({ wpm: 0, accuracy: 100, errors: 0 });
     setTimeout(() => inputRef.current?.focus(), 0);
-  }, [presetText, mode, funMode, wordCount, durationSec, onStatsUpdate]);
+  }, [presetText, mode, funMode, wordCount, onStatsUpdate]);
 
   useEffect(() => {
     reset();
@@ -133,14 +140,21 @@ export function TypingTest({
     timerRef.current = setInterval(() => {
       const now = Date.now();
       const stats = computeStats(now);
-      onStatsUpdate?.({ wpm: stats.wpm, accuracy: stats.accuracy, errors: stats.errors });
-      historyRef.current.push({ t: Math.round(stats.elapsed), wpm: stats.wpm, errors: stats.errors });
+      const remaining = mode === 'time' ? Math.max(0, durationSec - stats.elapsed) : undefined;
+      onStatsUpdate?.({
+        wpm: stats.wpm,
+        accuracy: stats.accuracy,
+        errors: stats.errors,
+        timeLeft: remaining,
+      });
 
-      if (mode === 'time') {
-        const remaining = Math.max(0, durationSec - stats.elapsed);
-        setTimeLeft(Math.ceil(remaining));
-        if (remaining <= 0) finish();
+      const sec = Math.round(stats.elapsed);
+      if (sec > lastSecondRef.current) {
+        lastSecondRef.current = sec;
+        historyRef.current.push({ t: sec, wpm: stats.wpm, errors: stats.errors });
       }
+
+      if (mode === 'time' && remaining !== undefined && remaining <= 0) finish();
     }, 250);
   }, [computeStats, durationSec, finish, mode, onStatsUpdate, soundEnabled]);
 
@@ -150,7 +164,6 @@ export function TypingTest({
     const prev = inputValueRef.current;
 
     if (val.length === 0 && prev.length === 0) return;
-
     if (!startTimeRef.current && val.length > 0) startTimer();
 
     const isDeletion = val.length < prev.length;
@@ -164,7 +177,6 @@ export function TypingTest({
         missedKeysRef.current[targetChar] = (missedKeysRef.current[targetChar] || 0) + 1;
         if (soundEnabled) sounds.playError();
         if (stopOnError) {
-          // refresh stats so error count goes up immediately
           const stats = computeStats(Date.now());
           onStatsUpdate?.({ wpm: stats.wpm, accuracy: stats.accuracy, errors: stats.errors });
           return;
@@ -173,13 +185,13 @@ export function TypingTest({
         if (soundEnabled) sounds.playKey();
       }
     } else if (isDeletion) {
+      modificationsRef.current += 1;
       if (soundEnabled) sounds.playKey();
     }
 
     inputValueRef.current = val;
     setInput(val);
 
-    // refresh stats immediately on each keystroke
     const stats = computeStats(Date.now());
     onStatsUpdate?.({ wpm: stats.wpm, accuracy: stats.accuracy, errors: stats.errors });
 
@@ -189,12 +201,27 @@ export function TypingTest({
   };
 
   const words = useMemo(() => text.split(' '), [text]);
-  let globalCharIndex = 0;
-  const currentWordIndex = input.length === text.length
-    ? words.length - 1
-    : text.slice(0, input.length).split(' ').length - 1;
+
+  // Keep the active character in the top visible line by translating the flow up.
+  useLayoutEffect(() => {
+    if (!activeCharRef.current || !flowRef.current) return;
+    const active = activeCharRef.current;
+    const flow = flowRef.current;
+    const flowTop = flow.getBoundingClientRect().top;
+    const activeTop = active.getBoundingClientRect().top;
+    const offset = activeTop - flowTop + scrollY;
+    setScrollY(prev => {
+      // Snap to whole line increments to avoid mid-line jitter
+      const lineH = active.offsetHeight || 40;
+      const targetLine = Math.max(0, Math.round(offset / lineH));
+      return targetLine * lineH;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input, text]);
 
   const focusInput = () => inputRef.current?.focus();
+
+  let charCounter = 0;
 
   return (
     <div
@@ -202,12 +229,12 @@ export function TypingTest({
       onClick={focusInput}
       onTouchStart={focusInput}
     >
-      {/* Hidden but reachable input — font-size 16px+ prevents iOS zoom */}
+      {/* Hidden input — font-size 16px+ prevents iOS zoom */}
       <input
         ref={inputRef}
         type="text"
         inputMode="text"
-        className="absolute top-0 left-0 w-full h-full opacity-0 cursor-default text-base"
+        className="absolute top-0 left-0 w-full h-full opacity-0 cursor-default"
         style={{ fontSize: '16px' }}
         value={input}
         onChange={handleInput}
@@ -220,7 +247,6 @@ export function TypingTest({
         spellCheck={false}
       />
 
-      {/* Focus overlay */}
       {!isFocused && (
         <div
           className="absolute inset-0 z-10 flex items-center justify-center bg-background/60 backdrop-blur-sm rounded-xl cursor-pointer"
@@ -233,65 +259,60 @@ export function TypingTest({
         </div>
       )}
 
-      {/* Timer */}
-      {mode === 'time' && (
-        <div className="text-primary font-mono text-xl sm:text-2xl mb-3 sm:mb-4">
-          {Math.ceil(timeLeft)}s
-        </div>
-      )}
-
-      {/* Typing Area */}
-      <div className="text-xl sm:text-2xl md:text-3xl leading-relaxed font-mono select-none outline-none break-words overflow-hidden">
-        {words.map((word, wordIndex) => {
-          const isCurrentWord = wordIndex === currentWordIndex;
-          return (
-            <span
-              key={wordIndex}
-              className={`inline-block mr-[0.5em] rounded ${isCurrentWord ? 'bg-primary/5' : ''}`}
-            >
-              {word.split('').map((char, charIndexInWord) => {
-                const charIndex = globalCharIndex++;
-                const typedChar = input[charIndex];
-                const isCurrentChar = charIndex === input.length;
-                let className = 'text-muted-foreground/40';
-                if (typedChar !== undefined) {
-                  className = typedChar === char
-                    ? 'text-foreground'
-                    : 'text-destructive bg-destructive/10 rounded-sm';
-                }
-                return (
-                  <span key={charIndexInWord} className="relative">
-                    <span className={className}>{char}</span>
-                    {isCurrentChar && isFocused && (
-                      <span className="absolute left-0 bottom-0 w-full h-[3px] bg-primary animate-pulse rounded-full" />
-                    )}
-                  </span>
-                );
-              })}
-              {/* trailing space cursor */}
-              {wordIndex < words.length - 1 && (() => {
-                const spaceIndex = globalCharIndex++;
-                const isCurrentChar = spaceIndex === input.length;
-                return isCurrentChar && isFocused ? (
-                  <span className="relative inline-block w-[0.4em]">
-                    <span className="absolute left-0 bottom-0 w-full h-[3px] bg-primary animate-pulse rounded-full" />
-                  </span>
-                ) : null;
-              })()}
-            </span>
-          );
-        })}
-      </div>
-
-      <div className="mt-6 sm:mt-8 flex justify-center text-sm text-muted-foreground">
-        <button
-          type="button"
-          onClick={(e) => { e.stopPropagation(); reset(); }}
-          className="hover:text-foreground transition-colors flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted/50"
+      {/* Two-line viewport with sliding flow inside */}
+      <div
+        ref={viewportRef}
+        className="overflow-hidden font-serif text-2xl sm:text-3xl md:text-4xl leading-[1.5em]"
+        style={{ height: '3em' }}
+      >
+        <div
+          ref={flowRef}
+          className="select-none break-words transition-transform duration-300 ease-out"
+          style={{ transform: `translateY(-${scrollY}px)` }}
         >
-          <RotateCcw className="w-4 h-4" />
-          <span>Restart</span>
-        </button>
+          {words.map((word, wi) => {
+            const wordChars = word.split('');
+            const isLast = wi === words.length - 1;
+
+            return (
+              <span key={wi} className="inline-block whitespace-nowrap mr-[0.4em]">
+                {wordChars.map((ch, ci) => {
+                  const idx = charCounter++;
+                  const typed = input[idx];
+                  const isActive = idx === input.length;
+                  let cls = 'text-muted-foreground/50';
+                  if (typed !== undefined) {
+                    cls = typed === ch
+                      ? 'text-foreground'
+                      : 'text-destructive bg-destructive/15 rounded';
+                  }
+                  if (isActive) cls += ' bg-primary/25 rounded';
+                  return (
+                    <span
+                      key={ci}
+                      ref={isActive ? activeCharRef : null}
+                      className={cls}
+                    >
+                      {ch}
+                    </span>
+                  );
+                })}
+                {!isLast && (() => {
+                  const idx = charCounter++;
+                  const isActive = idx === input.length;
+                  return (
+                    <span
+                      ref={isActive ? activeCharRef : null}
+                      className={isActive ? 'bg-primary/25 rounded' : ''}
+                    >
+                      {' '}
+                    </span>
+                  );
+                })()}
+              </span>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

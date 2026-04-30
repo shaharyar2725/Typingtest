@@ -3,12 +3,14 @@ import { useLocation, Link } from 'wouter';
 import { TypingTest } from '@/components/typing/TypingTest';
 import { Controls } from '@/components/typing/Controls';
 import { ResultCard } from '@/components/typing/ResultCard';
+import { Leaderboard } from '@/components/typing/Leaderboard';
 import { SectionHeader } from '@/components/SectionHeader';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
 import { Play, CheckCircle2, Zap, Target, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LESSONS } from '@/lib/lessons';
+import { submitScore } from '@/lib/leaderboard-api';
 
 export default function Home() {
   useSEO({
@@ -21,18 +23,26 @@ export default function Home() {
   const [history, setHistory] = useState<TypingResult[]>(initial.history);
   const [progress, setProgress] = useState(initial.lessonProgress);
   const [result, setResult] = useState<TypingResult | null>(null);
-  const [stats, setStats] = useState({ wpm: 0, accuracy: 100, errors: 0 });
+  const [stats, setStats] = useState<{ wpm: number; accuracy: number; errors: number; timeLeft?: number }>({ wpm: 0, accuracy: 100, errors: 0 });
   const [restartKey, setRestartKey] = useState(0);
+  const [leaderboardKey, setLeaderboardKey] = useState(0);
   const [, setLocation] = useLocation();
 
   const handleSettingsChange = (newSettings: Partial<AppState['settings']>) => {
     setSettings(updateSettings(newSettings));
   };
 
-  const handleComplete = (res: TypingResult) => {
+  const handleComplete = async (res: TypingResult) => {
     setResult(res);
-    // TypingTest auto-saves to history; reload to refresh stats
     setHistory(loadState().history);
+    const ok = await submitScore({
+      wpm: res.wpm,
+      accuracy: res.accuracy,
+      errors: res.errors,
+      mode: res.mode,
+      durationSec: res.durationSec,
+    });
+    if (ok) setLeaderboardKey(k => k + 1);
   };
 
   const handleRestart = () => {
@@ -56,6 +66,8 @@ export default function Home() {
               settings={settings}
               onSettingsChange={handleSettingsChange}
               onRestart={handleRestart}
+              timeLeft={stats.timeLeft}
+              durationSec={settings.duration}
             />
 
             <div className="flex gap-10 justify-center mt-8 mb-6 text-xs font-mono font-semibold tracking-widest text-muted-foreground uppercase">
@@ -81,6 +93,11 @@ export default function Home() {
         ) : (
           <ResultCard result={result} onRestart={handleRestart} />
         )}
+      </section>
+
+      {/* Leaderboard — sits directly below the test */}
+      <section className="mb-20">
+        <Leaderboard refreshKey={leaderboardKey} />
       </section>
 
       {/* Stats — typewizz-style 3 simple white cards */}

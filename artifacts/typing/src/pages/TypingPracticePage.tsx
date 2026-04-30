@@ -44,7 +44,7 @@ export default function TypingPracticePage() {
       >
         {!result ? (
           <div className="w-full relative">
-            <Controls 
+            <Controls timeLeft={(stats as any).timeLeft} durationSec={settings.duration}
               settings={settings} 
               onSettingsChange={handleSettingsChange}
               onRestart={handleRestart}
