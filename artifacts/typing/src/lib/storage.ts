@@ -11,7 +11,7 @@ export interface AppState {
     wordCount: number; // 10, 25, 50, 100
     funMode: 'words' | 'quotes' | 'code' | 'punctuation';
     fontSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-    linesVisible: 1 | 2 | 3;
+    linesVisible: 1 | 2 | 3 | 4 | 5 | 10 | 15 | 20;
     showLiveStats: boolean;
   };
   history: TypingResult[];

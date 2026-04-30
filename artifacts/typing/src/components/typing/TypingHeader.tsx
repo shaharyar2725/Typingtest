@@ -125,9 +125,9 @@ export function TypingHeader({
             >
               <RotateCcw className="w-4 h-4" />
             </Button>
-            {!lockSettings && (
-              <SettingsPopover settings={settings} onSettingsChange={onSettingsChange} />
-            )}
+            {/* Settings gear is always available — even in locked/competition mode
+                so users can still tweak theme, font, lines visible, sounds, etc. */}
+            <SettingsPopover settings={settings} onSettingsChange={onSettingsChange} />
           </div>
         </div>
 

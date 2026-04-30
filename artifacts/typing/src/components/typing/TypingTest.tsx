@@ -18,7 +18,7 @@ interface TypingTestProps {
   onStatsUpdate?: (stats: { wpm: number; accuracy: number; errors: number; timeLeft?: number }) => void;
   saveToHistory?: boolean;
   fontSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  linesVisible?: 1 | 2 | 3;
+  linesVisible?: 1 | 2 | 3 | 4 | 5 | 10 | 15 | 20;
 }
 
 const FONT_SIZE_CLASSES: Record<string, string> = {

@@ -6,7 +6,7 @@ import { ResultCard } from '@/components/typing/ResultCard';
 import { Leaderboard } from '@/components/typing/Leaderboard';
 import { AuthDialog } from '@/components/auth/AuthDialog';
 import { Button } from '@/components/ui/button';
-import { loadState, AppState, TypingResult } from '@/lib/storage';
+import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { submitScore } from '@/lib/auth-api';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSEO } from '@/hooks/useSEO';
@@ -97,8 +97,16 @@ export default function CompetitionPage() {
   });
 
   const { user } = useAuth();
-  const baseSettings = useMemo(() => loadState().settings, []);
+  const [baseSettings, setBaseSettings] = useState<AppState['settings']>(() => loadState().settings);
   const settings = useMemo(() => buildCompSettings(baseSettings), [baseSettings]);
+
+  // Lets the settings popover (gear) update appearance/sound/lines/etc. while
+  // keeping the locked competition test parameters (mode, duration, funMode,
+  // stopOnError) untouched.
+  const handleSettingsChange = (patch: Partial<AppState['settings']>) => {
+    const saved = updateSettings(patch);
+    setBaseSettings(saved);
+  };
 
   const [result, setResult] = useState<TypingResult | null>(null);
   const [stats, setStats] = useState<{ wpm: number; accuracy: number; errors: number; timeLeft?: number }>({ wpm: 0, accuracy: 100, errors: 0 });
@@ -138,8 +146,6 @@ export default function CompetitionPage() {
 
   const isRunning = stats.timeLeft !== undefined && stats.timeLeft > 0 && !result;
 
-  const noop = () => {};
-
   return (
     <div className="container max-w-screen-lg mx-auto px-5 md:px-8 py-10 md:py-14">
       {/* Page header — H1 leads with primary keyword "typing test" */}
@@ -173,7 +179,7 @@ export default function CompetitionPage() {
           <div>
             <TypingHeader
               settings={settings}
-              onSettingsChange={noop}
+              onSettingsChange={handleSettingsChange}
               onRestart={handleRestart}
               timeLeft={stats.timeLeft}
               isRunning={isRunning}
