@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { useLocation, Link } from 'wouter';
 import { TypingTest } from '@/components/typing/TypingTest';
 import { TypingHeader } from '@/components/typing/TypingHeader';
-import { SettingsSheet } from '@/components/typing/SettingsSheet';
 import { ResultCard } from '@/components/typing/ResultCard';
 import { AuthDialog } from '@/components/auth/AuthDialog';
 import { SectionHeader } from '@/components/SectionHeader';
@@ -92,7 +91,6 @@ export default function Home() {
   const [result, setResult] = useState<TypingResult | null>(null);
   const [stats, setStats] = useState<{ wpm: number; accuracy: number; errors: number; timeLeft?: number }>({ wpm: 0, accuracy: 100, errors: 0 });
   const [restartKey, setRestartKey] = useState(0);
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [, setLocation] = useLocation();
 
@@ -163,7 +161,6 @@ export default function Home() {
               settings={settings}
               onSettingsChange={handleSettingsChange}
               onRestart={handleRestart}
-              onOpenSettings={() => setSettingsOpen(true)}
               onOpenAuth={() => setAuthOpen(true)}
               timeLeft={stats.timeLeft}
               isRunning={isRunning}
@@ -178,7 +175,11 @@ export default function Home() {
                 funMode={settings.funMode}
                 stopOnError={settings.stopOnError}
                 soundEnabled={settings.soundEnabled}
+                soundOnError={settings.soundOnError}
+                soundOnSuccess={settings.soundOnSuccess}
+                soundOnKey={settings.soundOnKey}
                 fontSize={settings.fontSize}
+                linesVisible={settings.linesVisible}
                 onComplete={handleComplete}
                 onStatsUpdate={setStats}
               />
@@ -377,13 +378,6 @@ export default function Home() {
           </Button>
         </div>
       </div>
-
-      <SettingsSheet
-        open={settingsOpen}
-        onOpenChange={setSettingsOpen}
-        settings={settings}
-        onSettingsChange={handleSettingsChange}
-      />
 
       <AuthDialog open={authOpen} onOpenChange={setAuthOpen} />
     </div>

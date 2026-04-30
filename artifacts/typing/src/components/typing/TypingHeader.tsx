@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Settings, RotateCcw, Clock, LogIn } from 'lucide-react';
+import { RotateCcw, Clock, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -10,12 +10,12 @@ import {
 import { AppState } from '@/lib/storage';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SettingsPopover } from '@/components/typing/SettingsPopover';
 
 interface TypingHeaderProps {
   settings: AppState['settings'];
   onSettingsChange: (s: Partial<AppState['settings']>) => void;
   onRestart: () => void;
-  onOpenSettings: () => void;
   onOpenAuth: () => void;
   timeLeft?: number;
   isRunning?: boolean;
@@ -32,7 +32,6 @@ export function TypingHeader({
   settings,
   onSettingsChange,
   onRestart,
-  onOpenSettings,
   onOpenAuth,
   timeLeft,
   isRunning,
@@ -88,16 +87,7 @@ export function TypingHeader({
               <RotateCcw className="w-4 h-4" />
             </Button>
             {!lockSettings && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9 rounded-xl"
-                onClick={onOpenSettings}
-                title="Settings"
-                aria-label="Open settings"
-              >
-                <Settings className="w-4 h-4" />
-              </Button>
+              <SettingsPopover settings={settings} onSettingsChange={onSettingsChange} />
             )}
 
             {user ? (

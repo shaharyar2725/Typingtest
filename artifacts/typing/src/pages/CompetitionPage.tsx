@@ -175,7 +175,6 @@ export default function CompetitionPage() {
               settings={settings}
               onSettingsChange={noop}
               onRestart={handleRestart}
-              onOpenSettings={noop}
               onOpenAuth={() => setAuthOpen(true)}
               timeLeft={stats.timeLeft}
               isRunning={isRunning}
@@ -192,7 +191,11 @@ export default function CompetitionPage() {
                 funMode={settings.funMode}
                 stopOnError={settings.stopOnError}
                 soundEnabled={settings.soundEnabled}
+                soundOnError={settings.soundOnError}
+                soundOnSuccess={settings.soundOnSuccess}
+                soundOnKey={settings.soundOnKey}
                 fontSize={settings.fontSize}
+                linesVisible={settings.linesVisible}
                 onComplete={handleComplete}
                 onStatsUpdate={setStats}
                 saveToHistory={false}

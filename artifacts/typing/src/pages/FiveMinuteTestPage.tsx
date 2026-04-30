@@ -43,6 +43,11 @@ export default function FiveMinuteTestPage() {
                 funMode={settings.funMode}
                 stopOnError={settings.stopOnError}
                 soundEnabled={settings.soundEnabled}
+                soundOnError={settings.soundOnError}
+                soundOnSuccess={settings.soundOnSuccess}
+                soundOnKey={settings.soundOnKey}
+                fontSize={settings.fontSize}
+                linesVisible={settings.linesVisible}
                 onComplete={(res) => setResult(res)}
                 onStatsUpdate={setStats}
               />

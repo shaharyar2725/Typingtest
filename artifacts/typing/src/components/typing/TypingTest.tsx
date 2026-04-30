@@ -10,14 +10,19 @@ interface TypingTestProps {
   funMode: 'words' | 'quotes' | 'code' | 'punctuation';
   stopOnError: boolean;
   soundEnabled: boolean;
+  soundOnError?: boolean;
+  soundOnSuccess?: boolean;
+  soundOnKey?: boolean;
   onComplete: (result: TypingResult) => void;
   presetText?: string;
   onStatsUpdate?: (stats: { wpm: number; accuracy: number; errors: number; timeLeft?: number }) => void;
   saveToHistory?: boolean;
-  fontSize?: 'sm' | 'md' | 'lg' | 'xl';
+  fontSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  linesVisible?: 1 | 2 | 3;
 }
 
 const FONT_SIZE_CLASSES: Record<string, string> = {
+  xs: 'text-base sm:text-lg md:text-xl leading-[1.5em]',
   sm: 'text-lg sm:text-xl md:text-2xl leading-[1.5em]',
   md: 'text-2xl sm:text-3xl md:text-4xl leading-[1.5em]',
   lg: 'text-3xl sm:text-4xl md:text-5xl leading-[1.5em]',
@@ -31,11 +36,15 @@ export function TypingTest({
   funMode,
   stopOnError,
   soundEnabled,
+  soundOnError = true,
+  soundOnSuccess = true,
+  soundOnKey = false,
   onComplete,
   presetText,
   onStatsUpdate,
   saveToHistory = true,
   fontSize = 'md',
+  linesVisible = 2,
 }: TypingTestProps) {
   const [text, setText] = useState('');
   const [input, setInput] = useState('');
@@ -83,7 +92,7 @@ export function TypingTest({
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
-    if (soundEnabled) sounds.playFinish();
+    if (soundEnabled && soundOnSuccess) sounds.playFinish();
 
     const { wpm, accuracy, errors, elapsed } = computeStats(Date.now());
 
@@ -103,7 +112,7 @@ export function TypingTest({
 
     if (saveToHistory) addResult(result);
     onComplete(result);
-  }, [computeStats, mode, presetText, soundEnabled, onComplete, saveToHistory]);
+  }, [computeStats, mode, presetText, soundEnabled, soundOnSuccess, onComplete, saveToHistory]);
 
   const reset = useCallback(() => {
     let newText = presetText || '';
@@ -192,18 +201,18 @@ export function TypingTest({
       if (charTyped !== targetChar) {
         errorsRef.current += 1;
         missedKeysRef.current[targetChar] = (missedKeysRef.current[targetChar] || 0) + 1;
-        if (soundEnabled) sounds.playError();
+        if (soundEnabled && soundOnError) sounds.playError();
         if (stopOnError) {
           const stats = computeStats(Date.now());
           onStatsUpdate?.({ wpm: stats.wpm, accuracy: stats.accuracy, errors: stats.errors });
           return;
         }
       } else {
-        if (soundEnabled) sounds.playKey();
+        if (soundEnabled && soundOnKey) sounds.playKey();
       }
     } else if (isDeletion) {
       modificationsRef.current += 1;
-      if (soundEnabled) sounds.playKey();
+      if (soundEnabled && soundOnKey) sounds.playKey();
     }
 
     inputValueRef.current = val;
@@ -283,11 +292,11 @@ export function TypingTest({
         </div>
       )}
 
-      {/* Two-line viewport with sliding flow inside */}
+      {/* N-line viewport with sliding flow inside (height = lines × 1.5em line-height) */}
       <div
         ref={viewportRef}
         className={`relative overflow-visible font-serif ${FONT_SIZE_CLASSES[fontSize]}`}
-        style={{ height: '3em' }}
+        style={{ height: `${linesVisible * 1.5}em` }}
       >
         {/* Live WPM badge anchored above the active character */}
         {activeBadge && (
@@ -304,7 +313,7 @@ export function TypingTest({
             {liveWpm}
           </div>
         )}
-        <div className="overflow-hidden" style={{ height: '3em' }}>
+        <div className="overflow-hidden" style={{ height: `${linesVisible * 1.5}em` }}>
         <div
           ref={flowRef}
           className="select-none break-words transition-transform duration-300 ease-out"

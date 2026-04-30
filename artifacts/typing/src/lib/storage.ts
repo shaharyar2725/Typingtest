@@ -2,12 +2,16 @@ export interface AppState {
   settings: {
     theme: 'light' | 'dark' | 'system';
     soundEnabled: boolean;
+    soundOnError: boolean;
+    soundOnSuccess: boolean;
+    soundOnKey: boolean;
     stopOnError: boolean;
     mode: 'time' | 'words' | 'quote' | 'daily';
     duration: number; // 15, 30, 60, 120
     wordCount: number; // 10, 25, 50, 100
     funMode: 'words' | 'quotes' | 'code' | 'punctuation';
-    fontSize: 'sm' | 'md' | 'lg' | 'xl';
+    fontSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+    linesVisible: 1 | 2 | 3;
     showLiveStats: boolean;
   };
   history: TypingResult[];
@@ -42,12 +46,16 @@ const DEFAULT_STATE: AppState = {
   settings: {
     theme: 'system',
     soundEnabled: true,
+    soundOnError: true,
+    soundOnSuccess: true,
+    soundOnKey: false,
     stopOnError: false,
     mode: 'time',
     duration: 30,
     wordCount: 50,
     funMode: 'words',
     fontSize: 'md',
+    linesVisible: 2,
     showLiveStats: true,
   },
   history: [],
