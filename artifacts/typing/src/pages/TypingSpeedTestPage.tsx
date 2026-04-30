@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { TypingTest } from '@/components/typing/TypingTest';
 import { Controls } from '@/components/typing/Controls';
@@ -12,16 +12,9 @@ export default function TypingSpeedTestPage() {
     description: "Measure your typing speed and accuracy with our advanced typing speed test. Discover your true WPM and improve your keyboard skills.",
   });
 
-  const [settings, setSettings] = useState<AppState['settings'] | null>(null);
+  const [settings, setSettings] = useState<AppState['settings']>(() => loadState().settings);
   const [result, setResult] = useState<TypingResult | null>(null);
   const [stats, setStats] = useState({ wpm: 0, accuracy: 100, errors: 0 });
-
-  useEffect(() => {
-    const state = loadState();
-    setSettings(state.settings);
-  }, [result]);
-
-  if (!settings) return null;
 
   const handleSettingsChange = (newSettings: Partial<AppState['settings']>) => {
     const updated = updateSettings(newSettings);

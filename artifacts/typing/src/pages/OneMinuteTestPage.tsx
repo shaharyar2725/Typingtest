@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { TypingTest } from '@/components/typing/TypingTest';
 import { ResultCard } from '@/components/typing/ResultCard';
@@ -11,16 +11,10 @@ export default function OneMinuteTestPage() {
     description: "Take our free 1-minute typing test to quickly check your words per minute (WPM). The perfect quick drill to track your daily progress.",
   });
 
-  const [settings, setSettings] = useState<AppState['settings'] | null>(null);
+  const [settings, setSettings] = useState<AppState['settings']>(() => ({ ...loadState().settings, mode: 'time', duration: 60 }));
   const [result, setResult] = useState<TypingResult | null>(null);
   const [stats, setStats] = useState({ wpm: 0, accuracy: 100, errors: 0 });
-
-  useEffect(() => {
-    const state = loadState();
-    setSettings({ ...state.settings, mode: 'time', duration: 60 });
-  }, [result]);
-
-  if (!settings) return null;
+  void setSettings;
 
   return (
     <div className="container max-w-screen-xl mx-auto px-4 py-8">

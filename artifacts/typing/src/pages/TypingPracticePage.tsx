@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { TypingTest } from '@/components/typing/TypingTest';
@@ -16,16 +16,9 @@ export default function TypingPracticePage() {
     description: "Practice your typing skills with custom drills, daily challenges, and targeted lessons. Track your progress daily.",
   });
 
-  const [settings, setSettings] = useState<AppState['settings'] | null>(null);
+  const [settings, setSettings] = useState<AppState['settings']>(() => loadState().settings);
   const [result, setResult] = useState<TypingResult | null>(null);
   const [stats, setStats] = useState({ wpm: 0, accuracy: 100, errors: 0 });
-
-  useEffect(() => {
-    const state = loadState();
-    setSettings(state.settings);
-  }, [result]);
-
-  if (!settings) return null;
 
   const handleSettingsChange = (newSettings: Partial<AppState['settings']>) => {
     const updated = updateSettings(newSettings);
