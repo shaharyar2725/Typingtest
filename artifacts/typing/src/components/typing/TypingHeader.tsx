@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { RotateCcw, Clock, LogIn } from 'lucide-react';
+import { RotateCcw, Clock, LogIn, ChevronDown, Hash, Quote, Code2, AtSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -27,6 +27,17 @@ interface TypingHeaderProps {
 
 const TIME_OPTIONS = [15, 30, 60, 120];
 const WORD_OPTIONS = [10, 25, 50, 100];
+
+const SOURCE_OPTIONS: Array<{
+  value: AppState['settings']['funMode'];
+  label: string;
+  Icon: typeof Hash;
+}> = [
+  { value: 'words', label: 'Words', Icon: Hash },
+  { value: 'punctuation', label: 'Punctuation', Icon: AtSign },
+  { value: 'code', label: 'Code', Icon: Code2 },
+  { value: 'quotes', label: 'Quotes', Icon: Quote },
+];
 
 export function TypingHeader({
   settings,
@@ -69,13 +80,46 @@ export function TypingHeader({
             )}
           </div>
 
-          {/* Right cluster: timer + restart + settings + auth */}
+          {/* Right cluster: timer + source + restart + settings + auth */}
           <div className="flex items-center justify-end gap-1 shrink-0 order-1 sm:order-2">
             {settings.mode === 'time' && (
               <div className="font-mono font-bold text-sm tabular-nums px-2 mr-auto sm:mr-0">
                 {displayTime}
               </div>
             )}
+            {!lockSettings && (() => {
+              const current = SOURCE_OPTIONS.find((s) => s.value === settings.funMode) ?? SOURCE_OPTIONS[0];
+              const CurrentIcon = current.Icon;
+              return (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-9 px-2.5 rounded-xl gap-1.5 text-xs font-semibold"
+                      title="Source"
+                      aria-label="Choose source"
+                    >
+                      <CurrentIcon className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">{current.label}</span>
+                      <ChevronDown className="w-3 h-3 opacity-60" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-40">
+                    {SOURCE_OPTIONS.map(({ value, label, Icon }) => (
+                      <DropdownMenuItem
+                        key={value}
+                        onSelect={() => onSettingsChange({ funMode: value })}
+                        className={`gap-2 text-xs ${settings.funMode === value ? 'font-bold text-primary' : ''}`}
+                      >
+                        <Icon className="w-3.5 h-3.5" />
+                        {label}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              );
+            })()}
             <Button
               variant="ghost"
               size="icon"

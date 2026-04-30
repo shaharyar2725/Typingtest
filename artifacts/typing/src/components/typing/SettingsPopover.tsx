@@ -26,7 +26,6 @@ interface SettingsPopoverProps {
 
 const FONT_OPTIONS: Array<AppState['settings']['fontSize']> = ['xs', 'sm', 'md', 'lg', 'xl'];
 const LINE_OPTIONS: Array<AppState['settings']['linesVisible']> = [1, 2, 3];
-const SOURCE_OPTIONS: Array<AppState['settings']['funMode']> = ['words', 'punctuation', 'code', 'quotes'];
 
 export function SettingsPopover({ settings, onSettingsChange }: SettingsPopoverProps) {
   const { theme, setTheme } = useTheme();
@@ -48,16 +47,16 @@ export function SettingsPopover({ settings, onSettingsChange }: SettingsPopoverP
       <PopoverContent
         align="end"
         sideOffset={8}
-        className="w-[320px] p-0 rounded-2xl shadow-lg"
+        className="w-[260px] p-0 rounded-2xl shadow-lg"
       >
-        <div className="px-4 py-3 border-b border-border">
-          <div className="text-sm font-bold">Settings</div>
+        <div className="px-3 py-2 border-b border-border">
+          <div className="text-xs font-bold">Settings</div>
         </div>
 
-        <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+        <div className="p-3 space-y-3 max-h-[70vh] overflow-y-auto">
           {/* Theme */}
-          <Row label="Theme">
-            <Pills>
+          <Section label="Theme">
+            <Grid cols={3}>
               <Pill active={theme === 'light'} onClick={() => setTheme('light')} title="Light">
                 <Sun className="w-3.5 h-3.5" />
               </Pill>
@@ -67,27 +66,39 @@ export function SettingsPopover({ settings, onSettingsChange }: SettingsPopoverP
               <Pill active={theme === 'system'} onClick={() => setTheme('system')} title="System">
                 <Monitor className="w-3.5 h-3.5" />
               </Pill>
-            </Pills>
-          </Row>
+            </Grid>
+          </Section>
 
           {/* Font size */}
-          <Row label={<span className="flex items-center gap-1.5"><Type className="w-3.5 h-3.5" />Font size</span>}>
-            <Pills>
+          <Section
+            label={
+              <span className="flex items-center gap-1">
+                <Type className="w-3 h-3" />Font
+              </span>
+            }
+          >
+            <Grid cols={5}>
               {FONT_OPTIONS.map((f) => (
                 <Pill
                   key={f}
                   active={settings.fontSize === f}
                   onClick={() => onSettingsChange({ fontSize: f })}
                 >
-                  <span className="text-[11px] font-bold uppercase tabular-nums">{f}</span>
+                  <span className="text-[10px] font-bold uppercase">{f}</span>
                 </Pill>
               ))}
-            </Pills>
-          </Row>
+            </Grid>
+          </Section>
 
           {/* Lines visible */}
-          <Row label={<span className="flex items-center gap-1.5"><AlignLeft className="w-3.5 h-3.5" />Lines</span>}>
-            <Pills>
+          <Section
+            label={
+              <span className="flex items-center gap-1">
+                <AlignLeft className="w-3 h-3" />Lines
+              </span>
+            }
+          >
+            <Grid cols={3}>
               {LINE_OPTIONS.map((n) => (
                 <Pill
                   key={n}
@@ -97,88 +108,87 @@ export function SettingsPopover({ settings, onSettingsChange }: SettingsPopoverP
                   <span className="text-[11px] font-bold tabular-nums">{n}</span>
                 </Pill>
               ))}
-            </Pills>
-          </Row>
+            </Grid>
+          </Section>
 
-          {/* Word source */}
-          <Row label="Source">
-            <Pills wrap>
-              {SOURCE_OPTIONS.map((m) => (
-                <Pill
-                  key={m}
-                  active={settings.funMode === m}
-                  onClick={() => onSettingsChange({ funMode: m })}
-                >
-                  <span className="text-[11px] font-semibold capitalize">{m}</span>
-                </Pill>
-              ))}
-            </Pills>
-          </Row>
+          {/* Sound master */}
+          <Section
+            label={
+              <span className="flex items-center gap-1">
+                {settings.soundEnabled ? <Volume2 className="w-3 h-3" /> : <VolumeX className="w-3 h-3" />}
+                Sound
+              </span>
+            }
+          >
+            <Grid cols={2}>
+              <Pill active={settings.soundEnabled} onClick={() => onSettingsChange({ soundEnabled: true })}>
+                <span className="text-[10px] font-semibold">On</span>
+              </Pill>
+              <Pill active={!settings.soundEnabled} onClick={() => onSettingsChange({ soundEnabled: false })}>
+                <span className="text-[10px] font-semibold">Off</span>
+              </Pill>
+            </Grid>
+          </Section>
 
-          {/* Sound master + sub-toggles */}
-          <div>
-            <Row label={<span className="flex items-center gap-1.5">{settings.soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}Sound</span>}>
-              <Pills>
-                <Pill active={settings.soundEnabled} onClick={() => onSettingsChange({ soundEnabled: true })}>
-                  <span className="text-[11px] font-semibold">On</span>
-                </Pill>
-                <Pill active={!settings.soundEnabled} onClick={() => onSettingsChange({ soundEnabled: false })}>
-                  <span className="text-[11px] font-semibold">Off</span>
-                </Pill>
-              </Pills>
-            </Row>
-
-            <div className={`mt-2 grid grid-cols-3 gap-1.5 ${settings.soundEnabled ? '' : 'opacity-40 pointer-events-none'}`}>
+          {/* Sound sub-toggles */}
+          <div className={settings.soundEnabled ? '' : 'opacity-40 pointer-events-none'}>
+            <Grid cols={3}>
               <SoundChip
                 active={settings.soundOnError}
                 onClick={() => onSettingsChange({ soundOnError: !settings.soundOnError })}
-                icon={<XCircle className="w-3.5 h-3.5" />}
+                icon={<XCircle className="w-3 h-3" />}
                 label="Error"
               />
               <SoundChip
                 active={settings.soundOnSuccess}
                 onClick={() => onSettingsChange({ soundOnSuccess: !settings.soundOnSuccess })}
-                icon={<CheckCircle2 className="w-3.5 h-3.5" />}
-                label="Finish"
+                icon={<CheckCircle2 className="w-3 h-3" />}
+                label="Done"
               />
               <SoundChip
                 active={settings.soundOnKey}
                 onClick={() => onSettingsChange({ soundOnKey: !settings.soundOnKey })}
-                icon={<Music2 className="w-3.5 h-3.5" />}
+                icon={<Music2 className="w-3 h-3" />}
                 label="Keys"
               />
-            </div>
+            </Grid>
           </div>
 
           {/* Strict mode */}
-          <Row label={<span className="flex items-center gap-1.5"><ShieldAlert className="w-3.5 h-3.5" />Strict</span>}>
-            <Pills>
+          <Section
+            label={
+              <span className="flex items-center gap-1">
+                <ShieldAlert className="w-3 h-3" />Strict
+              </span>
+            }
+          >
+            <Grid cols={2}>
               <Pill active={settings.stopOnError} onClick={() => onSettingsChange({ stopOnError: true })}>
-                <span className="text-[11px] font-semibold">On</span>
+                <span className="text-[10px] font-semibold">On</span>
               </Pill>
               <Pill active={!settings.stopOnError} onClick={() => onSettingsChange({ stopOnError: false })}>
-                <span className="text-[11px] font-semibold">Off</span>
+                <span className="text-[10px] font-semibold">Off</span>
               </Pill>
-            </Pills>
-          </Row>
+            </Grid>
+          </Section>
 
           {/* Account */}
           {user && (
-            <div className="pt-3 border-t border-border">
-              <div className="flex items-center gap-2.5">
+            <div className="pt-2 border-t border-border">
+              <div className="flex items-center gap-2">
                 {user.avatarUrl ? (
-                  <img src={user.avatarUrl} alt="" className="w-8 h-8 rounded-full" />
+                  <img src={user.avatarUrl} alt="" className="w-7 h-7 rounded-full" />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center font-bold text-xs">
+                  <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center font-bold text-[10px]">
                     {user.username[0]?.toUpperCase()}
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-xs truncate">{user.username}</div>
-                  <div className="text-[10px] text-muted-foreground truncate">{user.email}</div>
+                  <div className="font-semibold text-[11px] truncate">{user.username}</div>
+                  <div className="text-[9px] text-muted-foreground truncate">{user.email}</div>
                 </div>
-                <Button size="sm" variant="ghost" className="h-7 px-2" onClick={signOut}>
-                  <LogOut className="w-3.5 h-3.5" />
+                <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={signOut}>
+                  <LogOut className="w-3 h-3" />
                 </Button>
               </div>
             </div>
@@ -189,17 +199,24 @@ export function SettingsPopover({ settings, onSettingsChange }: SettingsPopoverP
   );
 }
 
-function Row({ label, children }: { label: React.ReactNode; children: React.ReactNode }) {
+function Section({ label, children }: { label: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div className="flex items-center justify-between gap-3">
-      <div className="text-xs font-semibold text-muted-foreground">{label}</div>
+    <div>
+      <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">{label}</div>
       {children}
     </div>
   );
 }
 
-function Pills({ children, wrap }: { children: React.ReactNode; wrap?: boolean }) {
-  return <div className={`flex gap-1 ${wrap ? 'flex-wrap justify-end' : ''}`}>{children}</div>;
+function Grid({ cols, children }: { cols: number; children: React.ReactNode }) {
+  return (
+    <div
+      className="grid gap-1"
+      style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+    >
+      {children}
+    </div>
+  );
 }
 
 function Pill({
@@ -217,7 +234,7 @@ function Pill({
     <button
       onClick={onClick}
       title={title}
-      className={`min-w-[28px] h-7 px-2 rounded-md flex items-center justify-center transition-all ${
+      className={`h-7 rounded-md flex items-center justify-center transition-all ${
         active
           ? 'bg-primary text-primary-foreground shadow-sm'
           : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -242,7 +259,7 @@ function SoundChip({
   return (
     <button
       onClick={onClick}
-      className={`flex items-center justify-center gap-1 h-8 rounded-lg text-[10px] font-bold transition-all ${
+      className={`flex items-center justify-center gap-1 h-7 rounded-md text-[9px] font-bold transition-all ${
         active
           ? 'bg-primary/15 text-primary border border-primary/30'
           : 'bg-muted/40 text-muted-foreground border border-transparent hover:bg-muted'
