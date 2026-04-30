@@ -4,22 +4,61 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <meta name="theme-color" content="#0ba6c2" />
-    <meta name="description" content="Improve your typing speed and accuracy with TypeFlow's free typing test and interactive courses. No signup required." />
-    <title>TypeFlow — Typing Test & Course</title>
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+    <!-- Default fallback meta (overridden per-page by useSEO). -->
+    <title>TypeFlow — Free Typing Practice & Online Typing Test</title>
+    <meta name="description" content="Free online typing practice and typing test. Pick your time, words or quotes, watch your live WPM and accuracy, and climb the global leaderboard. No signup required." />
+    <meta name="keywords" content="typing practice, typing test, free typing test, wpm test, words per minute, online typing practice, typing speed test, typing leaderboard" />
+    <link rel="canonical" href="https://typeflow.app/" />
+
+    <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/og-image.png" />
+
+    <!-- Open Graph (defaults; per-page hook overrides) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="TypeFlow" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="TypeFlow — Free Typing Practice & Online Typing Test" />
+    <meta property="og:description" content="Free online typing practice and typing test. Live WPM, accuracy and a global leaderboard. No signup required." />
+    <meta property="og:image" content="https://typeflow.app/og-image.png" />
+    <meta property="og:url" content="https://typeflow.app/" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="TypeFlow — Free Typing Practice & Online Typing Test" />
+    <meta name="twitter:description" content="Free online typing practice and typing test. Live WPM, accuracy and a global leaderboard." />
+    <meta name="twitter:image" content="https://typeflow.app/og-image.png" />
+
+    <!-- Fonts (preconnect for performance) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Site-wide entity graph: WebSite + Organization. Per-page schemas are
+         injected by the useSEO hook with the data-seo-jsonld attribute. -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "TypeFlow",
-      "description": "Free typing test and interactive touch typing courses.",
-      "url": "https://typeflow.app",
-      "applicationCategory": "EducationalApplication",
-      "operatingSystem": "Web"
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://typeflow.app/#website",
+          "url": "https://typeflow.app/",
+          "name": "TypeFlow",
+          "description": "Free typing practice, typing tests and an interactive touch-typing course.",
+          "inLanguage": "en-US",
+          "publisher": { "@id": "https://typeflow.app/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://typeflow.app/#organization",
+          "name": "TypeFlow",
+          "url": "https://typeflow.app/",
+          "logo": "https://typeflow.app/og-image.png"
+        }
+      ]
     }
     </script>
   </head>

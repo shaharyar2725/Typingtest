@@ -1,3 +1,20 @@
 User-agent: *
 Allow: /
+
+# Search engines and AI search crawlers — explicit allow.
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
 Sitemap: https://typeflow.app/sitemap.xml

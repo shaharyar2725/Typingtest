@@ -10,12 +10,12 @@ import CompetitionPage from "@/pages/CompetitionPage";
 import TypingSpeedTestPage from "@/pages/TypingSpeedTestPage";
 import OneMinuteTestPage from "@/pages/OneMinuteTestPage";
 import FiveMinuteTestPage from "@/pages/FiveMinuteTestPage";
-import TypingPracticePage from "@/pages/TypingPracticePage";
 import LearnTypingPage from "@/pages/LearnTypingPage";
 import LessonPage from "@/pages/LessonPage";
 import ResultsPage from "@/pages/ResultsPage";
 import AboutPage from "@/pages/AboutPage";
 import NotFound from "@/pages/not-found";
+import { Redirect } from "@/components/Redirect";
 
 function Router() {
   return (
@@ -23,12 +23,14 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/competition" component={CompetitionPage} />
-        {/* Legacy redirect: /typing-test was the duplicate test page; the homepage is now the test. */}
-        <Route path="/typing-test" component={Home} />
+        {/* SEO consolidation: legacy "typing test" URL → /competition (the canonical test page). */}
+        <Route path="/typing-test">{() => <Redirect to="/competition" />}</Route>
+        {/* SEO consolidation: legacy "typing practice" URL → / (the canonical practice page). */}
+        <Route path="/typing-practice">{() => <Redirect to="/" />}</Route>
+        {/* Long-tail variants kept as their own SEO landing pages. */}
         <Route path="/typing-speed-test" component={TypingSpeedTestPage} />
         <Route path="/1-minute-typing-test" component={OneMinuteTestPage} />
         <Route path="/5-minute-typing-test" component={FiveMinuteTestPage} />
-        <Route path="/typing-practice" component={TypingPracticePage} />
         <Route path="/learn-typing" component={LearnTypingPage} />
         <Route path="/lessons/:slug" component={LessonPage} />
         <Route path="/results/:id" component={ResultsPage} />

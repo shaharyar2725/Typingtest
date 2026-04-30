@@ -37,10 +37,10 @@ export function Header() {
     root.classList.add(newTheme);
   };
 
+  // Nav labels mirror the SEO target of each canonical URL — anchor text matters.
   const navItems = [
-    { href: "/", label: "Test" },
-    { href: "/competition", label: "Competition" },
-    { href: "/typing-practice", label: "Practice" },
+    { href: "/", label: "Practice" },
+    { href: "/competition", label: "Typing Test" },
     { href: "/learn-typing", label: "Course" },
     { href: "/about", label: "About" },
   ];

@@ -30,11 +30,21 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 
 English-only typing test app with two-line scrolling display, results dashboard, and a single global leaderboard. Email+password auth + a shared predefined avatar set.
 
-Pages:
-- `/` — **Home / Test page**: open-ended test where users freely change mode, duration, word source. Personal best (WPM, accuracy, total runs) is stored locally only — runs from this page do **NOT** submit to the leaderboard.
-- `/competition` — **Competition page**: locked 60-second time mode using the same `TypingHeader` (with `lockSettings`). Only signed-in users' scores are submitted to the global leaderboard. Includes the leaderboard and rules.
-- `/typing-speed-test`, `/1-minute-typing-test`, `/5-minute-typing-test`, `/typing-practice` — SEO landing pages with their own variants.
-- `/typing-test` is a legacy route kept as a redirect to `/` (the old duplicate page was removed).
+Pages (canonical URLs and primary SEO targets):
+- `/` — **Home / Practice page**. Primary keyword: **"typing practice"**. Open-ended test where users freely change mode, duration, word source. Personal best stored locally only — runs from this page do **NOT** submit to the leaderboard. Has H1 "Free Typing Practice", long-form content, FAQ, and `WebApplication` + `BreadcrumbList` + `FAQPage` JSON-LD.
+- `/competition` — **Competition / Test page**. Primary keyword: **"typing test"**. Locked 60-second time mode using `TypingHeader` (with `lockSettings`). Only signed-in users' scores submit to the global leaderboard. H1 "Free Typing Test — 60 Seconds", long-form content, FAQ, same three JSON-LD blocks.
+- `/typing-speed-test`, `/1-minute-typing-test`, `/5-minute-typing-test` — long-tail SEO landing pages with their own variants.
+- `/typing-test` → 301-style SPA redirect to `/competition` (consolidates "typing test" link equity).
+- `/typing-practice` → 301-style SPA redirect to `/` (consolidates "typing practice" link equity, prevents cannibalization).
+- `Redirect` component (`src/components/Redirect.tsx`) implements the SPA redirects via `useLocation().setLocation(to, { replace: true })`.
+
+SEO infrastructure:
+- `hooks/useSEO.ts` — sets `<title>`, description, keywords, canonical (defaults to `origin + pathname`), OG tags (with `og:site_name=TypeFlow`, `og:locale=en_US`, absolute OG image URL), Twitter Card defaults, and injects an arbitrary number of JSON-LD blocks (tagged with `data-seo-jsonld` for cleanup on unmount).
+- `index.html` — SPA fallback shell carries comprehensive defaults: title, description, keywords, canonical, OG, Twitter Card, theme-color, robots directive, plus a global `WebSite` + `Organization` `@graph` JSON-LD that's always present.
+- `public/robots.txt` — allows all bots and explicitly whitelists Googlebot, Bingbot, DuckDuckBot, OAI-SearchBot, PerplexityBot.
+- `public/sitemap.xml` — lists only canonical URLs (`/`, `/competition`, `/typing-speed-test`, `/1-minute-typing-test`, `/5-minute-typing-test`, `/learn-typing`, `/about`) with priorities reflecting importance.
+- Header nav anchor text uses keyword-rich labels: **Practice** → `/`, **Typing Test** → `/competition`.
+- Footer "Practice & Test" column links to canonicals first, with descriptive anchors for the variants.
 
 Key frontend components:
 - `components/typing/TypingTest.tsx` — two-line viewport, accepts `fontSize`. Has `saveToHistory` prop (default true; competition passes `false` to keep personal best clean).

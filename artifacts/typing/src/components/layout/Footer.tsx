@@ -16,7 +16,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-              A minimalist, high-performance typing test and course platform. Built for fast fingers.
+              Free online typing practice and typing test with live WPM, accuracy, and a global leaderboard. Built for fast fingers.
             </p>
             <div className="text-xs text-muted-foreground/60">
               © {new Date().getFullYear()} TypeFlow. All rights reserved.
@@ -24,14 +24,13 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Tests</h3>
+            <h3 className="font-semibold text-foreground mb-4">Practice & Test</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li><Link href="/" className="hover:text-primary transition-colors">Typing Test</Link></li>
-              <li><Link href="/competition" className="hover:text-primary transition-colors">Competition</Link></li>
+              <li><Link href="/" className="hover:text-primary transition-colors">Typing Practice</Link></li>
+              <li><Link href="/competition" className="hover:text-primary transition-colors">Typing Test</Link></li>
               <li><Link href="/typing-speed-test" className="hover:text-primary transition-colors">Typing Speed Test</Link></li>
-              <li><Link href="/1-minute-typing-test" className="hover:text-primary transition-colors">1 Minute Test</Link></li>
-              <li><Link href="/5-minute-typing-test" className="hover:text-primary transition-colors">5 Minute Test</Link></li>
-              <li><Link href="/typing-practice" className="hover:text-primary transition-colors">Typing Practice</Link></li>
+              <li><Link href="/1-minute-typing-test" className="hover:text-primary transition-colors">1 Minute Typing Test</Link></li>
+              <li><Link href="/5-minute-typing-test" className="hover:text-primary transition-colors">5 Minute Typing Test</Link></li>
             </ul>
           </div>
 
