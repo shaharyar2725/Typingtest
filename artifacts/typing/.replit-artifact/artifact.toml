@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "TypeFlow — Typing Test & Course"
+version = "1.0.0"
+id = "artifacts/typing"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19991
+
+[services.development]
+run = "pnpm --filter @workspace/typing run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/typing", "run", "build" ]
+publicDir = "artifacts/typing/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19991"
+BASE_PATH = "/"

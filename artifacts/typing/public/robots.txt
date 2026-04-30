@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://typeflow.app/sitemap.xml

@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "FBxK1CoxGISuXqjPW2f7A"
+uri = "file://artifacts/typing/public/og-image.png"
+type = "image"
+title = "TypeFlow social sharing og image"
