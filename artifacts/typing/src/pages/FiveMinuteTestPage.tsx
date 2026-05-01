@@ -93,7 +93,6 @@ export default function FiveMinuteTestPage() {
               timeLeft={stats.timeLeft}
               isRunning={isRunning}
               lockSettings
-              lockedLabel="5 min · Time Mode"
             />
 
             <div className="min-h-[180px] flex items-center justify-center mt-10">

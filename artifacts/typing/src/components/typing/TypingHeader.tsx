@@ -67,10 +67,10 @@ export function TypingHeader({
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
           {/* Locked label only — mode pills removed per design */}
           <div className="flex items-center justify-center sm:justify-start gap-1 flex-1 min-w-0 order-2 sm:order-1">
-            {lockSettings && (
+            {lockSettings && lockedLabel !== undefined && (
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-primary/15 text-primary">
                 <Clock className="w-3.5 h-3.5 shrink-0" />
-                <span>{lockedLabel ?? `${settings.duration}s • Competition`}</span>
+                <span>{lockedLabel}</span>
               </div>
             )}
           </div>
