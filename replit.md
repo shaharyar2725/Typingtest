@@ -42,7 +42,8 @@ SEO infrastructure:
 - `hooks/useSEO.ts` — sets `<title>`, description, keywords, canonical (defaults to `origin + pathname`), OG tags (with `og:site_name=TypeFlow`, `og:locale=en_US`, absolute OG image URL), Twitter Card defaults, and injects an arbitrary number of JSON-LD blocks (tagged with `data-seo-jsonld` for cleanup on unmount).
 - `index.html` — SPA fallback shell carries comprehensive defaults: title, description, keywords, canonical, OG, Twitter Card, theme-color, robots directive, plus a global `WebSite` + `Organization` `@graph` JSON-LD that's always present.
 - `public/robots.txt` — allows all bots and explicitly whitelists Googlebot, Bingbot, DuckDuckBot, OAI-SearchBot, PerplexityBot.
-- `public/sitemap.xml` — lists only canonical URLs (`/`, `/competition`, `/typing-speed-test`, `/1-minute-typing-test`, `/5-minute-typing-test`, `/learn-typing`, `/about`) with priorities reflecting importance.
+- `public/sitemap.xml` — lists all canonical URLs including all 10 lesson pages (`/lessons/home-row-basics`, etc.) with appropriate priorities.
+- `index.html` — fonts loaded asynchronously (`rel="preload"` + `media="print" onload` + noscript fallback) to eliminate render-blocking font requests.
 - Header nav anchor text uses keyword-rich labels: **Practice** → `/`, **Typing Test** → `/competition`.
 - Footer "Practice & Test" column links to canonicals first, with descriptive anchors for the variants.
 

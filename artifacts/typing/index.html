@@ -31,10 +31,12 @@
     <meta name="twitter:description" content="Free online typing practice and typing test. Live WPM, accuracy and a global leaderboard." />
     <meta name="twitter:image" content="https://typeflow.app/og-image.png" />
 
-    <!-- Fonts (preconnect for performance) -->
+    <!-- Fonts: preconnect + async load to eliminate render-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"></noscript>
 
     <!-- Site-wide entity graph: WebSite + Organization. Per-page schemas are
          injected by the useSEO hook with the data-seo-jsonld attribute. -->

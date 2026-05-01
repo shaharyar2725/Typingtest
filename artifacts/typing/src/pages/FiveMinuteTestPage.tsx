@@ -8,13 +8,36 @@ import { useSEO } from '@/hooks/useSEO';
 const SITE_ORIGIN = 'https://typeflow.app';
 const PAGE_URL = `${SITE_ORIGIN}/5-minute-typing-test`;
 
+const FAQS = [
+  {
+    q: 'What is a 5-minute typing test?',
+    a: 'A 5-minute typing test measures your sustained typing speed — words per minute (WPM) and accuracy — over a full five minutes. It\'s the standard duration used by many employers, transcription agencies, and legal offices to verify that a typist can maintain speed and accuracy under realistic working conditions.',
+  },
+  {
+    q: 'Is a 5-minute typing test harder than a 1-minute test?',
+    a: 'Yes. Over five minutes, finger fatigue, concentration lapses, and mental endurance become factors that a 60-second sprint doesn\'t test. Most typists see a WPM drop of 5–15% on a 5-minute test compared to their 1-minute score — which is why sustained practice matters.',
+  },
+  {
+    q: 'What WPM is good on a 5-minute test?',
+    a: '50–60 WPM is solid for most professional roles. Transcription and legal secretary positions often require 65–80 WPM sustained. Data-entry positions may specify 5-minute test minimums of 60–70 WPM with 98% accuracy.',
+  },
+  {
+    q: 'How can I improve my 5-minute typing speed?',
+    a: 'Practice at the pace you want to sustain — not at your sprint pace. Use TypeFlow\'s 5-minute test daily and track your average WPM across the full test, not just the peak. Also work on accuracy: errors over five minutes add up quickly and tank your net WPM.',
+  },
+  {
+    q: 'Can I use this 5-minute test for job applications?',
+    a: 'TypeFlow\'s 5-minute test uses the standard net WPM formula (correct characters ÷ 5 ÷ minutes). It\'s a reliable gauge of your speed, but official employer tests may have their own rules. Use TypeFlow to build and verify your speed before the formal test.',
+  },
+];
+
 export default function FiveMinuteTestPage() {
   useSEO({
-    title: '5 Minute Typing Test — Endurance WPM | TypeFlow',
+    title: '5 Minute Typing Test — Sustained WPM & Accuracy | TypeFlow',
     description:
-      'Take the free 5-minute typing test and discover your sustained WPM speed. The ultimate endurance challenge to prove you can maintain your pace over time.',
+      'Take the free 5-minute typing test and measure your sustained WPM and accuracy. The endurance benchmark used by employers — no signup, instant results.',
     keywords:
-      '5 minute typing test, five minute typing test, endurance typing test, sustained wpm, typing speed endurance',
+      '5 minute typing test, five minute typing test, 5 min typing test, endurance typing test, sustained wpm typing test, typing speed test 5 minutes',
     canonical: PAGE_URL,
     jsonLd: [
       {
@@ -27,6 +50,21 @@ export default function FiveMinuteTestPage() {
         description:
           'Free 5-minute typing endurance test. Measures sustained words per minute (WPM) and accuracy with live feedback. No signup required.',
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        featureList: [
+          'Fixed 5-minute endurance mode',
+          'Live WPM and accuracy tracking',
+          'Switch word sources (common words, quotes, code)',
+          'No account required',
+        ],
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: FAQS.map(({ q, a }) => ({
+          '@type': 'Question',
+          name: q,
+          acceptedAnswer: { '@type': 'Answer', text: a },
+        })),
       },
       {
         '@context': 'https://schema.org',
@@ -78,8 +116,8 @@ export default function FiveMinuteTestPage() {
           5 Minute Typing Test
         </h1>
         <p className="text-muted-foreground text-xs sm:text-sm leading-snug">
-          The endurance challenge: type for a full five minutes and find out your sustained WPM.
-          Live feedback, no signup, free forever.
+          Five minutes. Sustained speed. The endurance benchmark used by employers worldwide.
+          Free, no signup, instant results.
         </p>
       </header>
 
@@ -120,30 +158,79 @@ export default function FiveMinuteTestPage() {
       </section>
 
       <article className="max-w-3xl mx-auto prose dark:prose-invert mt-12">
-        <h2>The Endurance Challenge</h2>
+        <h2>Why the 5-Minute Test Is the Employer Standard</h2>
         <p>
-          While a 1-minute test measures your sprint speed, a 5-minute test measures your marathon
-          pace. Maintaining high speed and accuracy for five continuous minutes requires significant
-          focus and well-developed muscle memory.
+          A 1-minute typing test is a sprint; a 5-minute test is a marathon. Many professional
+          environments — transcription agencies, law firms, government offices, and data-entry
+          departments — specifically require a 5-minute typing test because it reveals something a
+          60-second sprint cannot: whether your speed holds up under real working conditions.
         </p>
         <p>
-          Many professional data-entry and transcription jobs require candidates to pass a 5-minute
-          typing test to prove they can sustain their speed over long working sessions without
-          succumbing to finger fatigue.
+          Finger fatigue, concentration lapses, and mental endurance all become measurable factors
+          over five minutes. A typist who clocks 80 WPM in one minute but drops to 55 WPM by minute
+          five will not perform the same as one who sustains 70 WPM consistently.
         </p>
-        <h3>How to pace yourself over 5 minutes</h3>
+
+        <h2>WPM Drop: What to Expect</h2>
+        <p>
+          Most typists see a WPM drop of 5–15% on a 5-minute test compared to their 1-minute
+          personal best. This is normal. Elite typists have a much smaller drop — sometimes under 5%
+          — because their muscle memory is so deep that individual words cost almost no conscious
+          effort.
+        </p>
+        <p>
+          Tracking your "5-minute WPM / 1-minute WPM" ratio over time is a useful endurance metric:
+          higher ratios mean more consistent speed.
+        </p>
+
+        <h2>Who Needs a 5-Minute Typing Test?</h2>
+        <ul>
+          <li><strong>Transcriptionists:</strong> Converting audio to text requires consistent, sustained typing speed. Most agencies require 65–80 WPM on a 5-minute test.</li>
+          <li><strong>Legal secretaries &amp; paralegals:</strong> Dictation and brief transcription demand both speed and accuracy over long sessions.</li>
+          <li><strong>Data-entry clerks:</strong> High-volume data entry requires reliable, repeatable speed — not just peak performance.</li>
+          <li><strong>Court reporters (digital):</strong> Real-time transcription under pressure; 5-minute tests are a standard part of certification.</li>
+          <li><strong>Executive assistants:</strong> Correspondence, meeting notes, and scheduling require sustained typing throughout the day.</li>
+        </ul>
+
+        <h2>How to Improve Your 5-Minute Typing Speed</h2>
+
+        <h3>Train at your target pace, not your sprint pace</h3>
+        <p>
+          If you want to sustain 70 WPM over five minutes, practice regularly at 65–70 WPM — not
+          at your maximum 80 WPM burst. Practicing above your endurance pace builds speed in short
+          bursts but not stamina.
+        </p>
+
+        <h3>Watch your accuracy, not just WPM</h3>
+        <p>
+          Errors over five minutes accumulate and compound your net WPM penalty. A 95% accuracy
+          rate over five minutes is much harder to maintain than over one minute. Build the habit of
+          slowing down when you start making mistakes rather than pushing through.
+        </p>
+
+        <h3>Pace yourself through the full test</h3>
         <p>
           The most common mistake is sprinting through the first minute and slowing down sharply
-          afterwards. Aim for a steady rhythm — choose a comfortable WPM target and hold it rather
-          than burning out. Watch your live WPM in the header to stay on track.
+          afterwards. Use TypeFlow's live WPM counter to check your pace. If you're above your
+          target in minute one, ease off — you'll finish stronger.
         </p>
-        <h3>Who should use the 5-minute test?</h3>
+
+        <h3>Build endurance with structured lessons</h3>
         <p>
-          Anyone preparing for a job that requires sustained typing — transcriptionists, writers,
-          legal secretaries, data-entry clerks — should practice with 5-minute sessions regularly.
-          Use the settings gear above to adjust word source, font size, and visible lines to match
-          your preferred working setup.
+          Use TypeFlow's <a href="/learn-typing">touch-typing course</a> to drill weak keys and
+          patterns. Once you've covered the full keyboard, come back to the 5-minute test and
+          track your improvement.
         </p>
+
+        <h2>Frequently Asked Questions</h2>
+        <dl>
+          {FAQS.map(({ q, a }) => (
+            <div key={q} className="mb-4">
+              <dt className="font-semibold">{q}</dt>
+              <dd className="mt-1 text-muted-foreground">{a}</dd>
+            </div>
+          ))}
+        </dl>
       </article>
     </div>
   );
