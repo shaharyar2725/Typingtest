@@ -229,18 +229,29 @@ export function TypingTest({
 
   const words = useMemo(() => text.split(' '), [text]);
 
-  // Keep the active character in the top visible line by translating the flow up.
-  // getBoundingClientRect returns post-transform positions, so (activeTop - flowTop)
-  // is already the active char's untransformed offset inside the flow — do NOT add scrollY.
+  // Keep the active character aligned to the top visible line.
+  // getBoundingClientRect returns post-transform positions — the transforms on both
+  // active and flow cancel out, so the difference is the untransformed offset within flow.
   useLayoutEffect(() => {
     if (!activeCharRef.current || !flowRef.current || !viewportRef.current) return;
     const active = activeCharRef.current;
     const flow = flowRef.current;
     const viewport = viewportRef.current;
+
+    // Measure real line height from computed style — inline span.offsetHeight is 0.
+    // getComputedStyle(flow) inherits the font-size set on the viewport wrapper,
+    // so lineHeight is already in pixels (e.g. 54px for text-4xl at 1.5em).
+    const computedLH = parseFloat(getComputedStyle(flow).lineHeight);
+    const parentH = (active.parentElement as HTMLElement | null)?.offsetHeight ?? 0;
+    const lineH = Number.isFinite(computedLH) && computedLH > 4
+      ? computedLH
+      : parentH > 0 ? parentH : 40;
+
+    // Natural offset of active char from flow's top (scrollY cancels out in both rects).
     const offset = active.getBoundingClientRect().top - flow.getBoundingClientRect().top;
-    const lineH = active.offsetHeight || 40;
-    const targetLine = Math.max(0, Math.round(offset / lineH));
-    const target = targetLine * lineH;
+    const targetLine = Math.max(0, Math.floor(offset / lineH));
+    const target = Math.round(targetLine * lineH);
+
     setScrollY(prev => (prev === target ? prev : target));
 
     // Position the live-WPM badge above the active character
@@ -282,12 +293,13 @@ export function TypingTest({
 
       {!isFocused && (
         <div
-          className="absolute inset-0 z-10 flex items-center justify-center bg-background/60 backdrop-blur-sm rounded-xl cursor-pointer"
+          className="absolute inset-0 z-10 flex items-end justify-center pb-2 cursor-pointer"
+          style={{ background: 'linear-gradient(to bottom, transparent 40%, hsl(var(--background) / 0.25) 100%)' }}
           onClick={focusInput}
           onTouchStart={focusInput}
         >
-          <span className="text-foreground font-semibold text-sm sm:text-base px-4 py-2 rounded-lg bg-card border border-border shadow-sm">
-            Tap to focus
+          <span className="text-muted-foreground/60 text-[11px] tracking-wide">
+            click to focus
           </span>
         </div>
       )}
@@ -316,7 +328,7 @@ export function TypingTest({
         <div className="overflow-hidden" style={{ height: `${linesVisible * 1.5}em` }}>
         <div
           ref={flowRef}
-          className="select-none break-words transition-transform duration-300 ease-out"
+          className="select-none break-words transition-transform duration-200 ease-in-out"
           style={{ transform: `translateY(-${scrollY}px)` }}
         >
           {words.map((word, wi) => {
