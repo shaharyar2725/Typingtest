@@ -1,10 +1,17 @@
 import express, { type Express, type Request, type Response } from "express";
 import cors from "cors";
-import helmet = require("helmet");
 import { rateLimit } from "express-rate-limit";
-import pinoHttp = require("pino-http");
 import router from "./routes";
 import { logger } from "./lib/logger";
+
+const helmet = (await import("helmet")).default as (options?: Record<string, unknown>) => ReturnType<typeof express>;
+const pinoHttp = (await import("pino-http")).default as (options?: {
+  logger: typeof logger;
+  serializers?: {
+    req?: (req: Request) => unknown;
+    res?: (res: Response) => unknown;
+  };
+}) => ReturnType<typeof express>;
 
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS ?? "")
   .split(",")
