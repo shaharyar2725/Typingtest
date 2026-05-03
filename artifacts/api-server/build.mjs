@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { build as esbuild } from "esbuild";
 import esbuildPluginPino from "esbuild-plugin-pino";
 import { rm } from "node:fs/promises";
+import { execSync } from "node:child_process";
 
 // Plugins (e.g. 'esbuild-plugin-pino') may use `require` to resolve dependencies
 globalThis.require = createRequire(import.meta.url);
@@ -11,6 +12,14 @@ globalThis.require = createRequire(import.meta.url);
 const artifactDir = path.dirname(fileURLToPath(import.meta.url));
 
 async function buildAll() {
+  const workspaceRoot = path.resolve(artifactDir, "../..");
+
+  // Generate lib declaration files (.d.ts) so TypeScript can resolve
+  // workspace package types on fresh clones (e.g. Vercel CI).
+  // --force bypasses .tsbuildinfo cache so dist files are always emitted.
+  console.log("Building lib declarations (tsc --build --force)…");
+  execSync("node_modules/.bin/tsc --build --force", { cwd: workspaceRoot, stdio: "inherit" });
+
   const distDir = path.resolve(artifactDir, "dist");
   await rm(distDir, { recursive: true, force: true });
 
