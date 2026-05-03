@@ -1,8 +1,8 @@
 import express, { type Express, type Request, type Response } from "express";
 import cors from "cors";
-import helmet from "helmet";
+import helmet = require("helmet");
 import { rateLimit } from "express-rate-limit";
-import pinoHttp from "pino-http";
+import pinoHttp = require("pino-http");
 import router from "./routes";
 import { logger } from "./lib/logger";
 
