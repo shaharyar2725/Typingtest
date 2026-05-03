@@ -4,14 +4,18 @@ import { rateLimit } from "express-rate-limit";
 import router from "./routes";
 import { logger } from "./lib/logger";
 
-const helmet = (await import("helmet")).default as (options?: Record<string, unknown>) => ReturnType<typeof express>;
-const pinoHttp = (await import("pino-http")).default as (options?: {
-  logger: typeof logger;
-  serializers?: {
-    req?: (req: Request) => unknown;
-    res?: (res: Response) => unknown;
-  };
-}) => ReturnType<typeof express>;
+const helmet = ((await import("helmet")).default as unknown) as (
+  options?: Record<string, unknown>,
+) => Express;
+const pinoHttp = ((await import("pino-http")).default as unknown) as (
+  options?: {
+    logger: typeof logger;
+    serializers?: {
+      req?: (req: Request) => unknown;
+      res?: (res: Response) => unknown;
+    };
+  },
+) => Express;
 
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS ?? "")
   .split(",")
