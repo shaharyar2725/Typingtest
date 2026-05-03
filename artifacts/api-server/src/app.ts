@@ -1,8 +1,8 @@
 import express, { type Express, type Request, type Response } from "express";
 import cors from "cors";
-import * as helmet from "helmet";
+import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
-import * as pinoHttp from "pino-http";
+import pinoHttp from "pino-http";
 import router from "./routes";
 import { logger } from "./lib/logger";
 
@@ -32,13 +32,13 @@ const app: Express = express();
 app.set("trust proxy", 1);
 
 app.use(
-  helmet.default({
+  helmet({
     crossOriginEmbedderPolicy: false,
   }),
 );
 
 app.use(
-  pinoHttp.default({
+  pinoHttp({
     logger,
     serializers: {
       req(req: Request) {
