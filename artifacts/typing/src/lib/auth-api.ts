@@ -1,3 +1,7 @@
+// In production (Vercel), VITE_API_BASE_URL points to the deployed API project.
+// In development (Replit), it is empty and relative paths work via Replit's path routing.
+const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
+
 const TOKEN_KEY = "typeflow_auth_token";
 
 export interface AuthUser {
@@ -35,7 +39,7 @@ async function jsonOrThrow(res: Response) {
 }
 
 export async function fetchAvatars(): Promise<Avatar[]> {
-  const res = await fetch("/api/avatars");
+  const res = await fetch(`${API_BASE}/api/avatars`);
   const data = await jsonOrThrow(res);
   return data.avatars ?? [];
 }
@@ -46,7 +50,7 @@ export async function signup(input: {
   username: string;
   avatarId: number;
 }): Promise<{ token: string; user: AuthUser }> {
-  const res = await fetch("/api/auth/signup", {
+  const res = await fetch(`${API_BASE}/api/auth/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -56,8 +60,11 @@ export async function signup(input: {
   return data;
 }
 
-export async function login(email: string, password: string): Promise<{ token: string; user: AuthUser }> {
-  const res = await fetch("/api/auth/login", {
+export async function login(
+  email: string,
+  password: string,
+): Promise<{ token: string; user: AuthUser }> {
+  const res = await fetch(`${API_BASE}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -69,7 +76,10 @@ export async function login(email: string, password: string): Promise<{ token: s
 
 export async function logout(): Promise<void> {
   try {
-    await fetch("/api/auth/logout", { method: "POST", headers: authHeaders() });
+    await fetch(`${API_BASE}/api/auth/logout`, {
+      method: "POST",
+      headers: authHeaders(),
+    });
   } catch {
     // ignore network errors on logout
   }
@@ -79,7 +89,7 @@ export async function logout(): Promise<void> {
 export async function fetchMe(): Promise<AuthUser | null> {
   if (!getStoredToken()) return null;
   try {
-    const res = await fetch("/api/auth/me", { headers: authHeaders() });
+    const res = await fetch(`${API_BASE}/api/auth/me`, { headers: authHeaders() });
     if (res.status === 401) {
       setStoredToken(null);
       return null;
@@ -92,7 +102,7 @@ export async function fetchMe(): Promise<AuthUser | null> {
 }
 
 export async function updateAvatar(avatarId: number): Promise<AuthUser> {
-  const res = await fetch("/api/auth/avatar", {
+  const res = await fetch(`${API_BASE}/api/auth/avatar`, {
     method: "PUT",
     headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify({ avatarId }),
@@ -110,7 +120,7 @@ export interface LeaderboardEntry {
 }
 
 export async function fetchLeaderboard(): Promise<LeaderboardEntry[]> {
-  const res = await fetch(`/api/leaderboard`);
+  const res = await fetch(`${API_BASE}/api/leaderboard`);
   const data = await jsonOrThrow(res);
   return data.entries ?? [];
 }
@@ -124,7 +134,7 @@ export async function submitScore(score: {
 }): Promise<boolean> {
   if (!getStoredToken()) return false;
   try {
-    const res = await fetch("/api/leaderboard/scores", {
+    const res = await fetch(`${API_BASE}/api/leaderboard/scores`, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeaders() },
       body: JSON.stringify({ ...score, language: "en" }),

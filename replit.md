@@ -21,10 +21,44 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
+- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only, local DB only)
+- `pnpm --filter @workspace/db run generate` — generate SQL migration files from schema changes
+- `pnpm --filter @workspace/db run migrate` — apply generated migrations to production DB (uses DIRECT_URL)
 - `pnpm --filter @workspace/api-server run dev` — run API server locally
 
 See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
+
+## Vercel Deployment
+
+Two separate Vercel projects, one for each artifact. See `.env.example` for all required environment variables.
+
+### Project 1 — Frontend (`artifacts/typing`)
+- **Root Directory**: `artifacts/typing`
+- **Install Command**: `cd ../.. && pnpm install --frozen-lockfile`
+- **Build Command**: `cd ../.. && BASE_PATH=/ pnpm --filter @workspace/typing run build`
+- **Output Directory**: `dist/public`
+- **Framework Preset**: Other
+- **Environment variables**: `VITE_API_BASE_URL` → your API project URL
+
+### Project 2 — API Server (`artifacts/api-server`)
+- **Root Directory**: `artifacts/api-server`
+- **Install Command**: `cd ../.. && pnpm install --frozen-lockfile` (auto-set by vercel.json)
+- **Framework Preset**: Other
+- **Environment variables**: `DATABASE_URL` (pooled), `DIRECT_URL` (direct), `ALLOWED_ORIGINS`
+
+### Database Setup (Neon)
+1. Create a project at neon.tech
+2. Copy the **Pooled** connection string → `DATABASE_URL` in Vercel API project env
+3. Copy the **Direct** connection string → `DIRECT_URL` in Vercel API project env
+4. Run schema migrations: `DIRECT_URL=<direct_url> pnpm --filter @workspace/db run generate && pnpm --filter @workspace/db run migrate`
+
+### Security measures implemented
+- `helmet` — security headers on all API responses
+- `express-rate-limit` — 200 req/15 min general; 20 req/15 min on auth endpoints
+- CORS allowlist via `ALLOWED_ORIGINS` env var
+- `trust proxy 1` — accurate IP detection behind Vercel's edge
+- Neon HTTP driver — stateless connections, no pool exhaustion in serverless
+- `DIRECT_URL` bypasses PgBouncer for safe DDL migrations
 
 ## TypeFlow (artifacts/typing)
 
