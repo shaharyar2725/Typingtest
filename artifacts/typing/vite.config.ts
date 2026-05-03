@@ -5,13 +5,7 @@ import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 const rawPort = process.env.PORT;
-
-// PORT is only used by the dev server — Vercel production builds do not set it.
-if (!rawPort && process.env.NODE_ENV !== "production") {
-  throw new Error("PORT environment variable is required in development.");
-}
-
-const port = rawPort ? Number(rawPort) : 5173;
+const port = rawPort ? Number(rawPort) : 5000;
 
 if (rawPort && (Number.isNaN(port) || port <= 0)) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
