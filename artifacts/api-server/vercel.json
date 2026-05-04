@@ -1,8 +1,5 @@
 {
   "version": 2,
-  "typescript": {
-    "ignoreBuildErrors": true
-  },
   "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
   "functions": {
     "api/index.js": {
