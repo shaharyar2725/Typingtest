@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
-import { AuthUser, fetchMe, logout as apiLogout } from "@/lib/auth-api";
+import { supabase } from "@/lib/supabase";
+import type { AuthUser } from "@/lib/auth-api";
 
 interface AuthContextValue {
   user: AuthUser | null;
@@ -11,6 +12,20 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+async function resolveUser(sbUser: { id: string; email?: string }): Promise<AuthUser | null> {
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", sbUser.id)
+    .single();
+
+  return {
+    id: sbUser.id,
+    email: sbUser.email ?? "",
+    username: profile?.username ?? sbUser.email ?? "",
+  };
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
@@ -18,19 +33,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      const u = await fetchMe();
-      setUser(u);
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ? await resolveUser(session.user) : null);
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    refresh();
-  }, [refresh]);
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      setUser(session?.user ? await resolveUser(session.user) : null);
+      setLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === "SIGNED_OUT" || !session) {
+        setUser(null);
+      } else if (session.user) {
+        setUser(await resolveUser(session.user));
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const signOut = useCallback(async () => {
-    await apiLogout();
+    await supabase.auth.signOut();
     setUser(null);
   }, []);
 

@@ -211,13 +211,9 @@ export function SettingsPopover({ settings, onSettingsChange }: SettingsPopoverP
             <div className="pt-1.5 border-t border-border">
               {user ? (
                 <div className="flex items-center gap-2">
-                  {user.avatarUrl ? (
-                    <img src={user.avatarUrl} alt="" className="w-6 h-6 rounded-full" />
-                  ) : (
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center font-bold text-[9px]">
-                      {user.username[0]?.toUpperCase()}
-                    </div>
-                  )}
+                  <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center font-bold text-[9px]">
+                    {user.username[0]?.toUpperCase()}
+                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="font-semibold text-[11px] truncate leading-tight">{user.username}</div>
                     <div className="text-[9px] text-muted-foreground truncate leading-tight">{user.email}</div>

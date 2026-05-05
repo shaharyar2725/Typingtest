@@ -1,128 +1,114 @@
-// In production (Vercel), VITE_API_BASE_URL points to the deployed API project.
-// In development (Replit), it is empty and relative paths work via Replit's path routing.
-const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
-
-const TOKEN_KEY = "typeflow_auth_token";
+import { supabase } from "./supabase";
 
 export interface AuthUser {
-  id: number;
+  id: string;
   email: string;
   username: string;
-  avatarId: number | null;
-  avatarUrl: string | null;
 }
 
-export interface Avatar {
-  id: number;
-  url: string;
-  label: string;
-}
-
-export function getStoredToken(): string | null {
-  return localStorage.getItem(TOKEN_KEY);
-}
-
-export function setStoredToken(token: string | null) {
-  if (token) localStorage.setItem(TOKEN_KEY, token);
-  else localStorage.removeItem(TOKEN_KEY);
-}
-
-function authHeaders(): HeadersInit {
-  const token = getStoredToken();
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
-
-async function jsonOrThrow(res: Response) {
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error ?? `Request failed (${res.status})`);
-  return data;
-}
-
-export async function fetchAvatars(): Promise<Avatar[]> {
-  const res = await fetch(`${API_BASE}/api/avatars`);
-  const data = await jsonOrThrow(res);
-  return data.avatars ?? [];
+export interface LeaderboardEntry {
+  username: string;
+  wpm: number;
+  accuracy: number;
+  runs: number;
 }
 
 export async function signup(input: {
   email: string;
   password: string;
   username: string;
-  avatarId: number;
-}): Promise<{ token: string; user: AuthUser }> {
-  const res = await fetch(`${API_BASE}/api/auth/signup`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input),
+}): Promise<{ user: AuthUser }> {
+  const { data, error } = await supabase.auth.signUp({
+    email: input.email.trim(),
+    password: input.password,
   });
-  const data = await jsonOrThrow(res);
-  setStoredToken(data.token);
-  return data;
+
+  if (error) throw new Error(error.message);
+  if (!data.user) throw new Error("Signup failed — please try again.");
+
+  const { error: profileError } = await supabase
+    .from("profiles")
+    .insert({ id: data.user.id, username: input.username.trim() });
+
+  if (profileError) {
+    await supabase.auth.signOut();
+    throw new Error(
+      profileError.code === "23505"
+        ? "That username is already taken."
+        : profileError.message,
+    );
+  }
+
+  return {
+    user: {
+      id: data.user.id,
+      email: data.user.email!,
+      username: input.username.trim(),
+    },
+  };
 }
 
 export async function login(
   email: string,
   password: string,
-): Promise<{ token: string; user: AuthUser }> {
-  const res = await fetch(`${API_BASE}/api/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+): Promise<{ user: AuthUser }> {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email.trim(),
+    password,
   });
-  const data = await jsonOrThrow(res);
-  setStoredToken(data.token);
-  return data;
+
+  if (error) throw new Error(error.message);
+  if (!data.user) throw new Error("Sign in failed.");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", data.user.id)
+    .single();
+
+  return {
+    user: {
+      id: data.user.id,
+      email: data.user.email!,
+      username: profile?.username ?? data.user.email!,
+    },
+  };
 }
 
 export async function logout(): Promise<void> {
-  try {
-    await fetch(`${API_BASE}/api/auth/logout`, {
-      method: "POST",
-      headers: authHeaders(),
-    });
-  } catch {
-    // ignore network errors on logout
-  }
-  setStoredToken(null);
+  await supabase.auth.signOut();
 }
 
 export async function fetchMe(): Promise<AuthUser | null> {
-  if (!getStoredToken()) return null;
-  try {
-    const res = await fetch(`${API_BASE}/api/auth/me`, { headers: authHeaders() });
-    if (res.status === 401) {
-      setStoredToken(null);
-      return null;
-    }
-    const data = await jsonOrThrow(res);
-    return data.user;
-  } catch {
-    return null;
-  }
-}
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
 
-export async function updateAvatar(avatarId: number): Promise<AuthUser> {
-  const res = await fetch(`${API_BASE}/api/auth/avatar`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json", ...authHeaders() },
-    body: JSON.stringify({ avatarId }),
-  });
-  const data = await jsonOrThrow(res);
-  return data.user;
-}
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", user.id)
+    .single();
 
-export interface LeaderboardEntry {
-  username: string;
-  avatarUrl: string | null;
-  wpm: number;
-  accuracy: number;
-  runs: number;
+  return {
+    id: user.id,
+    email: user.email!,
+    username: profile?.username ?? user.email!,
+  };
 }
 
 export async function fetchLeaderboard(): Promise<LeaderboardEntry[]> {
-  const res = await fetch(`${API_BASE}/api/leaderboard`);
-  const data = await jsonOrThrow(res);
-  return data.entries ?? [];
+  const { data, error } = await supabase
+    .from("leaderboard")
+    .select("username, wpm, accuracy, runs");
+
+  if (error) {
+    console.error("fetchLeaderboard:", error.message);
+    return [];
+  }
+
+  return (data ?? []) as LeaderboardEntry[];
 }
 
 export async function submitScore(score: {
@@ -132,19 +118,29 @@ export async function submitScore(score: {
   mode: string;
   durationSec: number;
 }): Promise<boolean> {
-  if (!getStoredToken()) return false;
-  try {
-    const res = await fetch(`${API_BASE}/api/leaderboard/scores`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...authHeaders() },
-      body: JSON.stringify({ ...score, language: "en" }),
-    });
-    if (res.status === 401) {
-      setStoredToken(null);
-      return false;
-    }
-    return res.ok;
-  } catch {
-    return false;
-  }
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return false;
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", user.id)
+    .single();
+
+  if (!profile) return false;
+
+  const { error } = await supabase.from("scores").insert({
+    user_id: user.id,
+    username: profile.username,
+    wpm: score.wpm,
+    accuracy: score.accuracy,
+    errors: score.errors,
+    mode: score.mode,
+    duration_sec: score.durationSec,
+    language: "en",
+  });
+
+  return !error;
 }

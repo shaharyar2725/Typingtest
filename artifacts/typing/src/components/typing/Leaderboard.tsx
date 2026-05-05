@@ -80,15 +80,9 @@ export function Leaderboard({ refreshKey = 0 }: LeaderboardProps) {
                     {i < 3 ? "★" : ""} {i + 1}
                   </div>
                   <div className="flex-1 min-w-0 flex items-center gap-2.5">
-                    {entry.avatarUrl ? (
-                      <img
-                        src={entry.avatarUrl}
-                        alt=""
-                        className="w-7 h-7 rounded-full shrink-0"
-                      />
-                    ) : (
-                      <div className="w-7 h-7 rounded-full bg-muted shrink-0" />
-                    )}
+                    <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center font-bold text-xs text-primary shrink-0">
+                      {entry.username[0]?.toUpperCase()}
+                    </div>
                     <span className="font-semibold truncate">{entry.username}</span>
                     {isMe && (
                       <span className="text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded bg-primary/15 text-primary">
