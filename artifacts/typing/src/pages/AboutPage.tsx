@@ -8,7 +8,7 @@ export default function AboutPage() {
   useSEO({
     title: 'About TypeFlow — Free Typing Test & Touch Typing Course',
     description:
-      'TypeFlow is a free, minimalist typing practice platform with a live WPM typing test, global leaderboard, and a 10-lesson touch-typing course. No ads. No signup required.',
+      'TypeFlow is a free, minimalist typing practice platform with a live WPM typing test, a 10-lesson touch-typing course, and no ads. No signup required.',
     keywords:
       'about typeflow, typing test platform, free typing test, touch typing course, typing practice app',
     canonical: PAGE_URL,

@@ -1,20 +1,13 @@
 import { Link, useLocation } from "wouter";
 import { Sun, Moon, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { loadState, updateSettings } from "@/lib/storage";
+import { useTheme } from "@/components/ThemeProvider";
 import { useEffect, useState } from "react";
 
 export function Header() {
   const [location] = useLocation();
-  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>(() => {
-    if (typeof window === 'undefined') return 'system';
-    return loadState().settings.theme;
-  });
+  const { theme, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    setTheme(loadState().settings.theme);
-  }, []);
 
   useEffect(() => {
     setOpen(false);
@@ -25,16 +18,6 @@ export function Header() {
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
-  const toggleTheme = () => {
-    const root = window.document.documentElement;
-    const isDark = root.classList.contains('dark');
-    const newTheme = isDark ? 'light' : 'dark';
-    setTheme(newTheme);
-    updateSettings({ theme: newTheme });
-    root.classList.remove('light', 'dark');
-    root.classList.add(newTheme);
-  };
-
   const navItems = [
     { href: "/", label: "Practice" },
     { href: "/typing-speed-test", label: "Typing Test" },
@@ -42,7 +25,11 @@ export function Header() {
     { href: "/about", label: "About" },
   ];
 
-  const isDark = theme === 'dark' || (theme === 'system' && typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches);
+  const isDark = theme === 'dark' || (
+    theme === 'system' &&
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-color-scheme: dark)').matches
+  );
 
   return (
     <header className="w-full border-b border-border/60 bg-background relative z-50">
@@ -58,19 +45,33 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className={`text-sm font-semibold px-3 py-2 rounded-lg transition-colors hover:text-foreground ${location === item.href ? 'text-foreground' : 'text-muted-foreground'}`}
+              className={`text-sm font-semibold px-3 py-2 rounded-lg transition-colors hover:text-foreground ${
+                location === item.href ? 'text-foreground' : 'text-muted-foreground'
+              }`}
             >
               {item.label}
             </Link>
           ))}
-          <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-9 w-9 ml-1 rounded-lg" aria-label="Toggle theme">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleTheme}
+            className="h-9 w-9 ml-1 rounded-lg"
+            aria-label="Toggle theme"
+          >
             {isDark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
           </Button>
         </nav>
 
         {/* Mobile actions */}
         <div className="ml-auto flex md:hidden items-center gap-1">
-          <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-9 w-9 rounded-lg" aria-label="Toggle theme">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleTheme}
+            className="h-9 w-9 rounded-lg"
+            aria-label="Toggle theme"
+          >
             {isDark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
           </Button>
           <Button
@@ -98,7 +99,11 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-base font-semibold px-4 py-3 rounded-xl transition-colors ${location === item.href ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'}`}
+                className={`text-base font-semibold px-4 py-3 rounded-xl transition-colors ${
+                  location === item.href
+                    ? 'bg-muted text-foreground'
+                    : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
+                }`}
               >
                 {item.label}
               </Link>

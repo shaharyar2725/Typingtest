@@ -1,4 +1,4 @@
-import { LineChart, Line, ResponsiveContainer, YAxis, XAxis, CartesianGrid, Tooltip, Scatter, ComposedChart, Area } from 'recharts';
+import { ResponsiveContainer, YAxis, XAxis, CartesianGrid, Tooltip, Scatter, ComposedChart, Area } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { RotateCcw, Share2 } from 'lucide-react';
 import { TypingResult } from '@/lib/storage';
@@ -25,11 +25,8 @@ export function ResultCard({ result, onRestart }: ResultCardProps) {
     }
   };
 
-  const history = result.history || [];
+  const history = result.history ?? [];
 
-  // Build chart data with error/modification markers
-  // Errors: cumulative diff between adjacent samples > 0
-  // For now we plot wpm line + error markers at sample seconds where errors increased
   const chartData = history.map((h, i) => {
     const prev = i > 0 ? history[i - 1] : { errors: 0, wpm: 0 };
     const newErrors = h.errors - prev.errors;
@@ -39,6 +36,13 @@ export function ResultCard({ result, onRestart }: ResultCardProps) {
       error: newErrors > 0 ? Math.max(20, h.wpm) : null,
     };
   });
+
+  const modeLabel =
+    result.mode === 'time'
+      ? `Typing test · ${result.durationSec}s`
+      : result.mode === 'lesson'
+      ? 'Lesson drill'
+      : `${result.mode} test`;
 
   return (
     <motion.div
@@ -50,41 +54,42 @@ export function ResultCard({ result, onRestart }: ResultCardProps) {
       {/* Big stats row */}
       <div className="grid grid-cols-2 gap-6 sm:gap-12 mb-6">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">Words per minute</div>
+          <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+            Words per minute
+          </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-5xl sm:text-6xl font-bold text-primary tabular-nums leading-none">{result.wpm}</span>
+            <span className="text-5xl sm:text-6xl font-bold text-primary tabular-nums leading-none">
+              {result.wpm}
+            </span>
             <span className="text-xl sm:text-2xl font-semibold text-primary/80">wpm</span>
           </div>
         </div>
         <div>
-          <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">Accuracy</div>
+          <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+            Accuracy
+          </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-5xl sm:text-6xl font-bold text-foreground tabular-nums leading-none">{result.accuracy}</span>
+            <span className="text-5xl sm:text-6xl font-bold text-foreground tabular-nums leading-none">
+              {result.accuracy}
+            </span>
             <span className="text-xl sm:text-2xl font-semibold text-foreground/80">%</span>
           </div>
         </div>
       </div>
 
-      <div className="text-sm text-muted-foreground mb-6 capitalize">
-        {result.mode === 'time' ? `Typing test · ${result.durationSec}s` : result.mode === 'lesson' ? 'Lesson drill' : `${result.mode} test`}
-      </div>
+      <div className="text-sm text-muted-foreground mb-6 capitalize">{modeLabel}</div>
 
-      {/* Chart */}
+      {/* Chart — only render when we have at least 2 data points */}
       {chartData.length > 1 && (
         <div className="mb-6">
           <div className="flex items-center gap-5 mb-3 text-xs font-semibold">
-            <div className="text-muted-foreground uppercase tracking-wider">Words per minute</div>
+            <div className="text-muted-foreground uppercase tracking-wider">WPM over time</div>
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-primary" /> WPM
             </div>
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-destructive" /> Errors
             </div>
-            {(result.modifications ?? 0) > 0 && (
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-amber-500" /> Modifications
-              </div>
-            )}
           </div>
 
           <div className="h-[220px] sm:h-[260px] w-full bg-card border border-border rounded-2xl p-3 sm:p-4">
@@ -96,7 +101,11 @@ export function ResultCard({ result, onRestart }: ResultCardProps) {
                     <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="2 4" stroke="hsl(var(--border))" vertical={false} />
+                <CartesianGrid
+                  strokeDasharray="2 4"
+                  stroke="hsl(var(--border))"
+                  vertical={false}
+                />
                 <XAxis
                   dataKey="t"
                   stroke="hsl(var(--muted-foreground))"
@@ -127,13 +136,6 @@ export function ResultCard({ result, onRestart }: ResultCardProps) {
                   stroke="hsl(var(--primary))"
                   strokeWidth={2.5}
                   fill="url(#wpmFill)"
-                  isAnimationActive={false}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="wpm"
-                  stroke="hsl(var(--primary))"
-                  strokeWidth={2.5}
                   dot={false}
                   isAnimationActive={false}
                 />

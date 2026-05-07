@@ -7,12 +7,11 @@ export interface AppState {
     soundOnKey: boolean;
     stopOnError: boolean;
     mode: 'time' | 'words' | 'quote' | 'daily';
-    duration: number; // 15, 30, 60, 120
-    wordCount: number; // 10, 25, 50, 100
+    duration: number;
+    wordCount: number;
     funMode: 'words' | 'quotes' | 'code' | 'punctuation';
     fontSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     linesVisible: 1 | 2 | 3 | 4 | 5 | 10 | 15 | 20;
-    showLiveStats: boolean;
   };
   history: TypingResult[];
   lessonProgress: Record<string, {
@@ -21,11 +20,6 @@ export interface AppState {
     bestAccuracy: number;
     attempts: number;
   }>;
-  dailyChallenge: {
-    date: string;
-    completed: boolean;
-    bestWpm: number;
-  };
 }
 
 export interface TypingResult {
@@ -38,7 +32,7 @@ export interface TypingResult {
   modifications?: number;
   timestamp: number;
   snippet: string;
-  history?: { t: number, wpm: number, errors: number }[];
+  history?: { t: number; wpm: number; errors: number }[];
   missedKeys?: Record<string, number>;
 }
 
@@ -56,15 +50,9 @@ const DEFAULT_STATE: AppState = {
     funMode: 'words',
     fontSize: 'md',
     linesVisible: 2,
-    showLiveStats: true,
   },
   history: [],
   lessonProgress: {},
-  dailyChallenge: {
-    date: '',
-    completed: false,
-    bestWpm: 0
-  }
 };
 
 const STORAGE_KEY = 'typeflow:v1';
@@ -74,9 +62,12 @@ export function loadState(): AppState {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) return DEFAULT_STATE;
     const parsed = JSON.parse(stored);
-    return { ...DEFAULT_STATE, ...parsed, settings: { ...DEFAULT_STATE.settings, ...parsed.settings } };
-  } catch (e) {
-    console.error("Failed to load state", e);
+    return {
+      ...DEFAULT_STATE,
+      ...parsed,
+      settings: { ...DEFAULT_STATE.settings, ...parsed.settings },
+    };
+  } catch {
     return DEFAULT_STATE;
   }
 }
@@ -84,8 +75,8 @@ export function loadState(): AppState {
 export function saveState(state: AppState) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch (e) {
-    console.error("Failed to save state", e);
+  } catch {
+    // Silently ignore storage errors (e.g. private browsing quota)
   }
 }
 
@@ -106,31 +97,28 @@ export function addResult(result: TypingResult) {
 }
 
 export function getResult(id: string): TypingResult | undefined {
-  const state = loadState();
-  return state.history.find(r => r.id === id);
+  return loadState().history.find(r => r.id === id);
 }
 
-export function updateLessonProgress(slug: string, wpm: number, accuracy: number, passed: boolean) {
+export function updateLessonProgress(
+  slug: string,
+  wpm: number,
+  accuracy: number,
+  passed: boolean,
+) {
   const state = loadState();
-  const current = state.lessonProgress[slug] || { completed: false, bestWpm: 0, bestAccuracy: 0, attempts: 0 };
-  
+  const current = state.lessonProgress[slug] ?? {
+    completed: false,
+    bestWpm: 0,
+    bestAccuracy: 0,
+    attempts: 0,
+  };
   state.lessonProgress[slug] = {
     completed: current.completed || passed,
     bestWpm: Math.max(current.bestWpm, wpm),
     bestAccuracy: Math.max(current.bestAccuracy, accuracy),
-    attempts: current.attempts + 1
+    attempts: current.attempts + 1,
   };
-  
   saveState(state);
   return state.lessonProgress;
-}
-
-export function updateDailyChallenge(date: string, wpm: number) {
-  const state = loadState();
-  state.dailyChallenge = {
-    date,
-    completed: true,
-    bestWpm: Math.max(state.dailyChallenge.date === date ? state.dailyChallenge.bestWpm : 0, wpm)
-  };
-  saveState(state);
 }

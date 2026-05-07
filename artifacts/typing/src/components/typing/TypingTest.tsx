@@ -230,8 +230,9 @@ export function TypingTest({
   const words = useMemo(() => text.split(' '), [text]);
 
   // Keep the active character aligned to the top visible line.
-  // getBoundingClientRect returns post-transform positions — the transforms on both
-  // active and flow cancel out, so the difference is the untransformed offset within flow.
+  // getBoundingClientRect returns post-transform positions — because the transform
+  // on the flow div shifts both rects equally, the difference is always the
+  // untransformed offset, so scrollY does NOT need to be in the dependency array.
   useLayoutEffect(() => {
     if (!activeCharRef.current || !flowRef.current || !viewportRef.current) return;
     const active = activeCharRef.current;
@@ -239,15 +240,16 @@ export function TypingTest({
     const viewport = viewportRef.current;
 
     // Measure real line height from computed style — inline span.offsetHeight is 0.
-    // getComputedStyle(flow) inherits the font-size set on the viewport wrapper,
-    // so lineHeight is already in pixels (e.g. 54px for text-4xl at 1.5em).
     const computedLH = parseFloat(getComputedStyle(flow).lineHeight);
     const parentH = (active.parentElement as HTMLElement | null)?.offsetHeight ?? 0;
-    const lineH = Number.isFinite(computedLH) && computedLH > 4
-      ? computedLH
-      : parentH > 0 ? parentH : 40;
+    const lineH =
+      Number.isFinite(computedLH) && computedLH > 4
+        ? computedLH
+        : parentH > 0
+        ? parentH
+        : 40;
 
-    // Natural offset of active char from flow's top (scrollY cancels out in both rects).
+    // Natural offset of active char from flow's top (transform cancels in both rects).
     const offset = active.getBoundingClientRect().top - flow.getBoundingClientRect().top;
     const targetLine = Math.max(0, Math.floor(offset / lineH));
     const target = Math.round(targetLine * lineH);
@@ -260,8 +262,9 @@ export function TypingTest({
     const left = activeRect.left - viewportRect.left + activeRect.width / 2;
     const top = activeRect.top - viewportRect.top;
     setActiveBadge({ left, top });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input, text, scrollY]);
+  // scrollY intentionally excluded — transforms cancel out in getBoundingClientRect
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input, text]);
 
   const focusInput = () => inputRef.current?.focus();
 
