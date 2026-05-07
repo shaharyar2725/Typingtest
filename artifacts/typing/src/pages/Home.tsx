@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { useLocation, Link } from 'wouter';
+import { Link } from 'wouter';
 import { TypingTest } from '@/components/typing/TypingTest';
 import { TypingHeader } from '@/components/typing/TypingHeader';
 import { ResultCard } from '@/components/typing/ResultCard';
-import { AuthDialog } from '@/components/auth/AuthDialog';
 import { SectionHeader } from '@/components/SectionHeader';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
-import { Play, CheckCircle2, ArrowRight, Trophy } from 'lucide-react';
+import { Play, CheckCircle2, ArrowRight, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LESSONS } from '@/lib/lessons';
 
@@ -29,11 +28,11 @@ const FAQS = [
   },
   {
     q: 'Is TypeFlow typing practice free?',
-    a: 'Yes — every typing practice mode, the full course, and your personal best stats are 100% free with no signup required. Sign up only if you want to submit your scores to the public Competition leaderboard.',
+    a: 'Yes — every typing practice mode, the full course, and your personal best stats are 100% free with no signup required.',
   },
   {
-    q: 'Does my score on the practice page count for the leaderboard?',
-    a: 'No. The home practice page is for personal training only — your best WPM is saved in your browser. The official Competition page (60 seconds, fixed rules) is what counts for the global leaderboard.',
+    q: 'How is WPM calculated?',
+    a: 'TypeFlow uses net WPM: total correctly typed characters divided by 5, divided by the test duration in minutes, with uncorrected errors penalized.',
   },
 ];
 
@@ -41,7 +40,7 @@ export default function Home() {
   useSEO({
     title: 'Free Typing Practice — Boost Your WPM & Accuracy | TypeFlow',
     description:
-      'Free online typing practice with live WPM, accuracy and error tracking. Pick time, words or quote mode, beat your personal best, and prep for the global leaderboard.',
+      'Free online typing practice with live WPM, accuracy and error tracking. Pick time, words or quote mode and beat your personal best.',
     keywords:
       'typing practice, online typing practice, free typing practice, typing exercises, improve typing speed, wpm practice, daily typing drills',
     canonical: PAGE_URL,
@@ -90,8 +89,6 @@ export default function Home() {
   const [result, setResult] = useState<TypingResult | null>(null);
   const [stats, setStats] = useState<{ wpm: number; accuracy: number; errors: number; timeLeft?: number }>({ wpm: 0, accuracy: 100, errors: 0 });
   const [restartKey, setRestartKey] = useState(0);
-  const [authOpen, setAuthOpen] = useState(false);
-  const [, setLocation] = useLocation();
 
   const handleSettingsChange = (newSettings: Partial<AppState['settings']>) => {
     setSettings(updateSettings(newSettings));
@@ -125,7 +122,6 @@ export default function Home() {
   return (
     <div className="container max-w-screen-lg mx-auto px-5 md:px-8 py-10 md:py-14">
 
-      {/* SEO H1 + intro — visible content with primary keyword in first 100 words. */}
       <header className="text-center mb-6 max-w-2xl mx-auto">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
           Free Typing Practice
@@ -169,45 +165,31 @@ export default function Home() {
             </div>
           </div>
         ) : (
-          <div>
-            <ResultCard result={result} onRestart={handleRestart} />
-            <div className="flex justify-center mt-6">
-              <Button
-                variant="outline"
-                className="font-semibold rounded-xl"
-                onClick={() => setLocation('/competition')}
-              >
-                <Trophy className="w-4 h-4 mr-2" />
-                Take the official typing test
-              </Button>
-            </div>
-          </div>
+          <ResultCard result={result} onRestart={handleRestart} />
         )}
       </section>
 
-      {/* Internal-link CTA — keyword-rich anchor "typing test" pointing to canonical */}
+      {/* CTA — typing test */}
       <section className="mt-12">
         <div className="relative overflow-hidden bg-gradient-to-br from-primary/15 via-card to-card border border-border rounded-3xl p-6 sm:p-8">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             <div className="flex-1">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/15 text-primary text-xs font-bold mb-3">
-                <Trophy className="w-3.5 h-3.5" />
-                Leaderboard
+                <Zap className="w-3.5 h-3.5" />
+                Speed Test
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">Ready for the typing test?</h2>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">Ready to test your speed?</h2>
               <p className="text-muted-foreground max-w-lg">
-                Sign up and take the official <Link href="/competition" className="text-primary font-semibold underline-offset-4 hover:underline">60-second typing test</Link>.
-                Your WPM goes straight to the global leaderboard alongside every other signed-up typist.
+                Try the free <Link href="/typing-speed-test" className="text-primary font-semibold underline-offset-4 hover:underline">typing speed test</Link> and
+                see your official WPM score. No account needed — just start typing.
               </p>
             </div>
-            <Button
-              size="lg"
-              className="font-semibold rounded-xl shrink-0"
-              onClick={() => setLocation('/competition')}
-            >
-              Start typing test
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </Button>
+            <Link href="/typing-speed-test">
+              <Button size="lg" className="font-semibold rounded-xl shrink-0">
+                Start typing test
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -244,13 +226,12 @@ export default function Home() {
             See all {LESSONS.length} lessons <ArrowRight className="ml-2 w-4 h-4" />
           </Button>
         </Link>
-        {/* Tiny hint about lesson completion */}
         {completedCount > 0 && (
           <span className="sr-only">{completedCount} lessons completed</span>
         )}
       </div>
 
-      {/* Long-form SEO content — body answers search intent for "typing practice" */}
+      {/* Long-form SEO content */}
       <SectionHeader>How to get the most out of typing practice</SectionHeader>
 
       <article className="max-w-3xl mx-auto prose dark:prose-invert prose-headings:font-bold prose-h3:text-xl prose-h3:mt-8">
@@ -284,12 +265,13 @@ export default function Home() {
         <h3>Track your personal best</h3>
         <p>
           Every run is saved locally in your browser, so you always know your best WPM and best accuracy. Once you&apos;re
-          consistently beating your personal best, head to the <Link href="/competition" className="text-primary font-semibold">typing test competition</Link> and
-          put your score on the public leaderboard.
+          consistently beating your personal best, head to the{' '}
+          <Link href="/typing-speed-test" className="text-primary font-semibold">typing speed test</Link>{' '}
+          to get your official score.
         </p>
       </article>
 
-      {/* FAQ — visible content + JSON-LD twin in <head> for AI Overviews & rich results */}
+      {/* FAQ */}
       <SectionHeader>Typing practice FAQ</SectionHeader>
 
       <div className="max-w-3xl mx-auto space-y-3">
@@ -303,8 +285,6 @@ export default function Home() {
           </details>
         ))}
       </div>
-
-      <AuthDialog open={authOpen} onOpenChange={setAuthOpen} />
     </div>
   );
 }

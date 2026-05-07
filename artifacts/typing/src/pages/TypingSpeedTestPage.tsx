@@ -27,7 +27,7 @@ const FAQS = [
   },
   {
     q: 'Is this typing speed test free?',
-    a: 'Yes — TypeFlow\'s typing speed test is 100% free, runs entirely in your browser, and requires no download or account. You only need an account if you want to submit your score to the global leaderboard on the Competition page.',
+    a: 'Yes — TypeFlow\'s typing speed test is 100% free, runs entirely in your browser, and requires no download or account.',
   },
 ];
 

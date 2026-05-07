@@ -16,12 +16,10 @@ export function Header() {
     setTheme(loadState().settings.theme);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setOpen(false);
   }, [location]);
 
-  // Lock body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -37,10 +35,9 @@ export function Header() {
     root.classList.add(newTheme);
   };
 
-  // Nav labels mirror the SEO target of each canonical URL — anchor text matters.
   const navItems = [
     { href: "/", label: "Practice" },
-    { href: "/competition", label: "Typing Test" },
+    { href: "/typing-speed-test", label: "Typing Test" },
     { href: "/learn-typing", label: "Course" },
     { href: "/about", label: "About" },
   ];

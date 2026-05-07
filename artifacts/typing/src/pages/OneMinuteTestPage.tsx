@@ -23,7 +23,7 @@ const FAQS = [
   },
   {
     q: 'Is the 1-minute typing test free?',
-    a: 'Yes — 100% free, no download, and no account required. Take as many tests as you like. Sign up only if you want to post your best score to the global leaderboard.',
+    a: 'Yes — 100% free, no download, and no account required. Take as many tests as you like.',
   },
   {
     q: 'How often should I take a 1-minute typing test?',

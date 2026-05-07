@@ -65,8 +65,8 @@ export default function AboutPage() {
             WPM, accuracy, and error tracking.
           </li>
           <li>
-            <strong>Official typing test</strong> with a 60-second fixed mode and a global
-            leaderboard for signed-in users.
+            <strong>Free typing speed test</strong> — measure your WPM and accuracy instantly,
+            no account needed.
           </li>
           <li>
             <strong>Structured 10-lesson course</strong> — a curriculum designed to build

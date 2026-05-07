@@ -7,7 +7,7 @@ export function Footer() {
     <footer className="w-full border-t border-border/40 bg-muted/20 py-12 md:py-16 lg:py-20 mt-20">
       <div className="container max-w-screen-2xl px-4 md:px-8 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 lg:gap-16">
-          
+
           <div className="col-span-1 md:col-span-1">
             <Link href="/" className="flex items-center space-x-2 font-bold mb-4 w-fit">
               <Keyboard className="h-5 w-5 text-primary" />
@@ -16,7 +16,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-              Free online typing practice and typing test with live WPM, accuracy, and a global leaderboard. Built for fast fingers.
+              Free online typing practice and typing tests with live WPM, accuracy tracking, and structured courses. Built for fast fingers.
             </p>
             <div className="text-xs text-muted-foreground/60">
               © {new Date().getFullYear()} TypeFlow. All rights reserved.
@@ -27,7 +27,6 @@ export function Footer() {
             <h3 className="font-semibold text-foreground mb-4">Practice & Test</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li><Link href="/" className="hover:text-primary transition-colors">Typing Practice</Link></li>
-              <li><Link href="/competition" className="hover:text-primary transition-colors">Typing Test</Link></li>
               <li><Link href="/typing-speed-test" className="hover:text-primary transition-colors">Typing Speed Test</Link></li>
               <li><Link href="/1-minute-typing-test" className="hover:text-primary transition-colors">1 Minute Typing Test</Link></li>
               <li><Link href="/5-minute-typing-test" className="hover:text-primary transition-colors">5 Minute Typing Test</Link></li>
