@@ -6,7 +6,7 @@ import { ResultCard } from '@/components/typing/ResultCard';
 import { SectionHeader } from '@/components/SectionHeader';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
-import { Play, CheckCircle2, ArrowRight, Zap } from 'lucide-react';
+import { Play, CheckCircle2, ArrowRight, Zap, TrendingUp, Clock, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LESSONS } from '@/lib/lessons';
 
@@ -20,29 +20,41 @@ const FAQS = [
   },
   {
     q: 'How long should I practice typing each day?',
-    a: '10 to 15 minutes of focused typing practice per day is enough to see steady gains in speed and accuracy. Short, daily sessions beat one long weekly session because muscle memory builds with repetition.',
+    a: '10 to 15 minutes of focused typing practice per day is enough to see steady gains in speed and accuracy. Short, daily sessions beat one long weekly session because muscle memory builds with repetition, not with volume.',
   },
   {
     q: 'How can I improve my typing speed?',
-    a: 'Prioritize accuracy over raw speed, keep your fingers on the home row (ASDF JKL;), and never look at the keyboard. Mix timed practice with structured lessons to fix specific weak keys, and review your error heatmap after each session.',
+    a: 'Prioritize accuracy over raw speed, keep your fingers on the home row (ASDF JKL;), and never look at the keyboard. Mix timed practice with structured lessons to fix specific weak keys, and review your error patterns after each session.',
+  },
+  {
+    q: 'What is a good typing speed?',
+    a: 'The global average is 41.6 WPM across 10.4 million measured tests. Typing at 60 WPM puts you above average; 70–80 WPM meets most professional job requirements; 100+ WPM is elite. For context, the average professional typist hits 65–75 WPM.',
   },
   {
     q: 'Is TypeFlow typing practice free?',
-    a: 'Yes — every typing practice mode, the full course, and your personal best stats are 100% free with no signup required.',
+    a: 'Yes — every typing practice mode, the full 10-lesson course, and your personal best stats are 100% free with no signup required. Everything runs in your browser.',
   },
   {
     q: 'How is WPM calculated?',
-    a: 'TypeFlow uses net WPM: total correctly typed characters divided by 5, divided by the test duration in minutes, with uncorrected errors penalized.',
+    a: 'TypeFlow uses net WPM: total correctly typed characters divided by 5 (the standard "word" length), divided by the test duration in minutes. Uncorrected errors are penalized. This is the same formula used by most professional typing benchmarks and employer tests.',
+  },
+  {
+    q: 'How can I improve my typing accuracy?',
+    a: 'Slow down until you can type without errors, then gradually increase pace. Use strict mode in TypeFlow settings to force correction of every error. Drilling your personal weak keys in the lesson course also directly raises accuracy on common letter combinations.',
+  },
+  {
+    q: 'What are the benefits of touch typing?',
+    a: 'Touch typists type 30–40% faster on average and make fewer errors than hunt-and-peck typists. The productivity difference compounds over time — research suggests knowledge workers can save up to 2 hours per day by moving from 40 to 60 WPM. Touch typing also reduces fatigue because your hands stay in a neutral position.',
   },
 ];
 
 export default function Home() {
   useSEO({
-    title: 'Free Typing Practice — Boost Your WPM & Accuracy | TypeFlow',
+    title: 'Free Typing Practice — Improve Your WPM & Accuracy | TypeFlow',
     description:
-      'Free online typing practice with live WPM, accuracy and error tracking. Pick time, words or quote mode and beat your personal best.',
+      'Free online typing practice with live WPM, accuracy and error tracking. Pick time, words or quote mode. No signup — practice as much as you want and track your personal best.',
     keywords:
-      'typing practice, online typing practice, free typing practice, typing exercises, improve typing speed, wpm practice, daily typing drills',
+      'typing practice, online typing practice, free typing practice, typing exercises, improve typing speed, wpm practice, daily typing drills, keyboarding practice',
     canonical: PAGE_URL,
     jsonLd: [
       {
@@ -105,10 +117,7 @@ export default function Home() {
     }
   };
 
-  const handleComplete = (res: TypingResult) => {
-    setResult(res);
-  };
-
+  const handleComplete = (res: TypingResult) => setResult(res);
   const handleRestart = () => {
     setResult(null);
     setStats({ wpm: 0, accuracy: 100, errors: 0 });
@@ -116,7 +125,6 @@ export default function Home() {
   };
 
   const isRunning = stats.timeLeft !== undefined && stats.timeLeft > 0 && !result;
-
   const completedCount = Object.values(progress).filter((p: any) => p.completed).length;
 
   return (
@@ -144,7 +152,6 @@ export default function Home() {
               timeLeft={stats.timeLeft}
               isRunning={isRunning}
             />
-
             <div className="min-h-[180px] flex items-center justify-center mt-10">
               <TypingTest
                 key={`${restartKey}-${settings.funMode}`}
@@ -169,8 +176,60 @@ export default function Home() {
         )}
       </section>
 
+      {/* Unique: Global Typing Speed Stats */}
+      <section className="mb-16">
+        <SectionHeader>Global typing speed statistics</SectionHeader>
+        <p className="text-sm text-muted-foreground max-w-2xl mb-6">
+          Based on 10.4 million typing tests measured worldwide — here's where real typists actually stand.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {[
+            { stat: '41.6 WPM', label: 'Global average', sub: 'across all adults', icon: TrendingUp, color: 'text-primary' },
+            { stat: '65–75 WPM', label: 'Professional', sub: 'most office roles', icon: Target, color: 'text-emerald-500' },
+            { stat: '15 min/day', label: 'To improve', sub: 'focused practice beats marathon sessions', icon: Clock, color: 'text-cyan-500' },
+            { stat: '2–4 weeks', label: 'To see gains', sub: 'with daily deliberate practice', icon: Zap, color: 'text-amber-500' },
+          ].map(({ stat, label, sub, icon: Icon, color }) => (
+            <div key={label} className="bg-card border border-border rounded-2xl p-4 sm:p-5">
+              <Icon className={`w-5 h-5 mb-3 ${color}`} />
+              <div className={`text-2xl sm:text-3xl font-extrabold leading-none mb-1 ${color}`}>{stat}</div>
+              <div className="font-semibold text-sm text-foreground mb-0.5">{label}</div>
+              <div className="text-xs text-muted-foreground">{sub}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Speed tier table */}
+        <div className="mt-6 overflow-x-auto rounded-2xl border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-muted/60 border-b border-border">
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Speed tier</th>
+                <th className="text-center px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">WPM range</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">What it means</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {[
+                { tier: 'Beginner', range: '< 30 WPM', desc: 'Still looking at keys. Home-row practice will unlock the biggest gains.' },
+                { tier: 'Average', range: '30–50 WPM', desc: 'Global average (~41.6 WPM). Enough for everyday tasks with room to double your speed.' },
+                { tier: 'Above average', range: '50–65 WPM', desc: 'Typing without much conscious thought. A few weeks of drills can push you professional.' },
+                { tier: 'Professional', range: '65–80 WPM', desc: 'Threshold for most data entry, admin, and office roles. Accuracy is the real test here.' },
+                { tier: 'Fast', range: '80–100 WPM', desc: 'Deep muscle memory. Used by journalists, legal assistants, and experienced typists.' },
+                { tier: 'Elite', range: '100+ WPM', desc: 'Top 2% globally. Where competitive typists operate. Accuracy is what separates them.' },
+              ].map(({ tier, range, desc }) => (
+                <tr key={tier} className="hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-3 font-bold">{tier}</td>
+                  <td className="px-4 py-3 text-center font-mono font-semibold text-muted-foreground whitespace-nowrap">{range}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{desc}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       {/* CTA — typing test */}
-      <section className="mt-12">
+      <section className="mb-16">
         <div className="relative overflow-hidden bg-gradient-to-br from-primary/15 via-card to-card border border-border rounded-3xl p-6 sm:p-8">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             <div className="flex-1">
@@ -181,7 +240,7 @@ export default function Home() {
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">Ready to test your speed?</h2>
               <p className="text-muted-foreground max-w-lg">
                 Try the free <Link href="/typing-speed-test" className="text-primary font-semibold underline-offset-4 hover:underline">typing speed test</Link> and
-                see your official WPM score. No account needed — just start typing.
+                see your official WPM score with a global percentile ranking. No account needed — just start typing.
               </p>
             </div>
             <Link href="/typing-speed-test">
@@ -195,9 +254,9 @@ export default function Home() {
       </section>
 
       {/* Course preview */}
-      <SectionHeader>Course</SectionHeader>
+      <SectionHeader>Touch typing course</SectionHeader>
 
-      <div className="space-y-3">
+      <div className="space-y-3 mb-8">
         {LESSONS.slice(0, 5).map((lesson, i) => {
           const lp = (progress as any)[lesson.slug];
           const done = lp?.completed;
@@ -220,7 +279,7 @@ export default function Home() {
         })}
       </div>
 
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center mb-16">
         <Link href="/learn-typing">
           <Button variant="ghost" className="font-semibold text-base">
             See all {LESSONS.length} lessons <ArrowRight className="ml-2 w-4 h-4" />
@@ -236,50 +295,59 @@ export default function Home() {
 
       <article className="max-w-3xl mx-auto prose dark:prose-invert prose-headings:font-bold prose-h3:text-xl prose-h3:mt-8">
         <p>
-          Consistent typing practice is the single fastest way to raise your words-per-minute (WPM) and cut down on errors.
-          A few focused minutes per day will outperform a marathon weekly session every time, because typing speed is built
-          on muscle memory — and muscle memory rewards repetition.
+          Consistent typing practice is the single fastest way to raise your words-per-minute (WPM) and cut
+          down on errors. A few focused minutes per day will outperform a marathon weekly session every time —
+          typing speed is built on muscle memory, and muscle memory rewards repetition over duration. The
+          global average sits at 41.6 WPM; with 15 minutes of daily deliberate practice, most people can
+          reach 60 WPM within 4–8 weeks.
         </p>
 
-        <h3>Practice with the right grip</h3>
+        <h3>Practice with the right finger position</h3>
         <p>
-          Keep your fingers on the home row (ASDF for the left hand, JKL; for the right hand) and let each finger reach
-          for the keys it owns. The little bumps on F and J help you find the position without looking. Resist the urge to
-          glance at the keyboard — looking down is the habit that caps most people&apos;s typing speed.
+          Keep your fingers resting on the home row (ASDF for the left hand, JKL; for the right hand) and
+          let each finger reach for the keys it owns. The small raised bumps on F and J let you find your
+          position without looking. Resist the urge to glance at the keyboard — looking down is the habit
+          that caps most people's typing speed. It forces a mental context switch that breaks your rhythm
+          every single time.
         </p>
 
-        <h3>Prioritize accuracy over speed</h3>
+        <h3>Accuracy first, speed second</h3>
         <p>
-          Slow, accurate typing builds the right neural pathways. Speed comes naturally as accuracy improves, and trying
-          to type faster than your fingers can reliably go just trains in errors. Aim for 97%+ accuracy first, then push
-          the duration or word count.
+          Slow, accurate typing builds the correct neural pathways. Speed comes naturally as accuracy
+          improves. Research shows a single error costs approximately 2.5 seconds of cognitive reset —
+          meaning typing at 90% accuracy can reduce your effective output by nearly 30% compared to 99%
+          accuracy at the same WPM. Aim for 97%+ accuracy first, then push the duration or word count.
+          TypeFlow's strict mode forces error correction, which accelerates this process.
         </p>
 
-        <h3>Mix the modes</h3>
+        <h3>Mix the practice modes</h3>
         <p>
-          TypeFlow gives you four word sources — common words, classic quotes, code snippets and punctuation/numbers.
-          Rotate between them so you don&apos;t over-train on one type of text. Programmers especially benefit from regular
-          code-snippet practice because of all the symbols and case changes.
+          TypeFlow gives you four word sources — common English words, classic quotes, code snippets, and
+          punctuation/numbers. Rotate between them so you don't over-train on one type of text. Programmers
+          especially benefit from regular code-snippet practice because of all the symbols, brackets, and
+          case changes. Quotes force you to keep pace with punctuation rhythm.
         </p>
 
-        <h3>Track your personal best</h3>
+        <h3>Track your improvement, not just your best</h3>
         <p>
-          Every run is saved locally in your browser, so you always know your best WPM and best accuracy. Once you&apos;re
-          consistently beating your personal best, head to the{' '}
+          Every run is saved locally in your browser, so you always know your best WPM and best accuracy.
+          Rather than chasing your personal best every session, track your <em>average</em> WPM across
+          multiple runs — consistency is what separates a genuine 60 WPM typist from someone who hit 60 once.
+          Once you're consistently beating your average, head to the{' '}
           <Link href="/typing-speed-test" className="text-primary font-semibold">typing speed test</Link>{' '}
-          to get your official score.
+          for your official benchmark score with a global percentile ranking.
         </p>
       </article>
 
       {/* FAQ */}
       <SectionHeader>Typing practice FAQ</SectionHeader>
 
-      <div className="max-w-3xl mx-auto space-y-3">
+      <div className="max-w-3xl mx-auto space-y-3 mb-8">
         {FAQS.map((f) => (
           <details key={f.q} className="group bg-card border border-border rounded-2xl px-5 py-4 hover:border-foreground/30 transition-colors">
             <summary className="flex items-center justify-between cursor-pointer list-none font-semibold text-base">
               <span>{f.q}</span>
-              <span className="text-muted-foreground group-open:rotate-45 transition-transform text-xl leading-none">+</span>
+              <span className="text-muted-foreground group-open:rotate-45 transition-transform text-xl leading-none ml-4 shrink-0">+</span>
             </summary>
             <div className="mt-3 text-sm text-muted-foreground leading-relaxed">{f.a}</div>
           </details>

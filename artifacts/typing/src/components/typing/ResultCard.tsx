@@ -2,15 +2,17 @@ import { ResponsiveContainer, YAxis, XAxis, CartesianGrid, Tooltip, Scatter, Com
 import { Button } from '@/components/ui/button';
 import { RotateCcw, Share2 } from 'lucide-react';
 import { TypingResult } from '@/lib/storage';
+import { WpmPercentile } from '@/components/WpmPercentile';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 
 interface ResultCardProps {
   result: TypingResult;
   onRestart?: () => void;
+  showPercentile?: boolean;
 }
 
-export function ResultCard({ result, onRestart }: ResultCardProps) {
+export function ResultCard({ result, onRestart, showPercentile = true }: ResultCardProps) {
   const handleShare = async () => {
     const text = `I typed at ${result.wpm} WPM with ${result.accuracy}% accuracy on TypeFlow!`;
     try {
@@ -79,9 +81,14 @@ export function ResultCard({ result, onRestart }: ResultCardProps) {
 
       <div className="text-sm text-muted-foreground mb-6 capitalize">{modeLabel}</div>
 
+      {/* WPM Percentile Widget */}
+      {showPercentile && result.wpm > 0 && (
+        <WpmPercentile wpm={result.wpm} />
+      )}
+
       {/* Chart — only render when we have at least 2 data points */}
       {chartData.length > 1 && (
-        <div className="mb-6">
+        <div className="mt-6 mb-6">
           <div className="flex items-center gap-5 mb-3 text-xs font-semibold">
             <div className="text-muted-foreground uppercase tracking-wider">WPM over time</div>
             <div className="flex items-center gap-2">
@@ -152,7 +159,7 @@ export function ResultCard({ result, onRestart }: ResultCardProps) {
       )}
 
       {/* Action row */}
-      <div className="flex flex-wrap items-center gap-3 justify-center">
+      <div className="flex flex-wrap items-center gap-3 justify-center mt-6">
         {onRestart && (
           <Button onClick={onRestart} size="lg" className="font-semibold px-8">
             <RotateCcw className="w-4 h-4 mr-2" />
@@ -161,7 +168,7 @@ export function ResultCard({ result, onRestart }: ResultCardProps) {
         )}
         <Button onClick={handleShare} variant="outline" size="lg" className="font-semibold">
           <Share2 className="w-4 h-4 mr-2" />
-          Share
+          Share result
         </Button>
       </div>
     </motion.div>
