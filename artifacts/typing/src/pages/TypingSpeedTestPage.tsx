@@ -266,6 +266,20 @@ export default function TypingSpeedTestPage() {
           employer asks for your WPM, they almost always mean net WPM.
         </p>
 
+        <h2>Choose Your Test Duration</h2>
+        <p>
+          Different durations test different aspects of your typing skill. The{' '}
+          <Link href="/1-minute-typing-test">1-minute test</Link> measures your peak speed — the ceiling of
+          what's possible. The <Link href="/3-minute-typing-test">3-minute test</Link> is the daily practice
+          sweet spot, used widely by government and office employers. The{' '}
+          <Link href="/5-minute-typing-test">5-minute test</Link> mirrors professional employment conditions
+          for transcription and legal roles. The{' '}
+          <Link href="/10-minute-typing-test">10-minute test</Link> is the civil service and advanced
+          certification standard. The{' '}
+          <Link href="/20-minute-typing-test">20-minute test</Link> is an elite endurance benchmark for court
+          reporter trainees and professional transcriptionists.
+        </p>
+
         <h2>Frequently Asked Questions</h2>
         <dl>
           {FAQS.map(({ q, a }) => (

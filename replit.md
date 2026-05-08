@@ -64,38 +64,71 @@ Two separate Vercel projects, one for each artifact. See `.env.example` for all 
 
 English-only typing test app with two-line scrolling display, results dashboard, and a single global leaderboard. Email+password auth + a shared predefined avatar set.
 
-Pages (canonical URLs and primary SEO targets):
-- `/` — **Home / Practice page**. Primary keyword: **"typing practice"**. Open-ended test where users freely change mode, duration, word source. Personal best stored locally only — runs from this page do **NOT** submit to the leaderboard. Has H1 "Free Typing Practice", long-form content, FAQ, and `WebApplication` + `BreadcrumbList` + `FAQPage` JSON-LD.
-- `/competition` — **Competition / Test page**. Primary keyword: **"typing test"**. Locked 60-second time mode using `TypingHeader` (with `lockSettings`). Only signed-in users' scores submit to the global leaderboard. H1 "Free Typing Test — 60 Seconds", long-form content, FAQ, same three JSON-LD blocks.
-- `/typing-speed-test`, `/1-minute-typing-test`, `/5-minute-typing-test` — long-tail SEO landing pages with their own variants.
-- `/typing-test` → 301-style SPA redirect to `/competition` (consolidates "typing test" link equity).
-- `/typing-practice` → 301-style SPA redirect to `/` (consolidates "typing practice" link equity, prevents cannibalization).
-- `Redirect` component (`src/components/Redirect.tsx`) implements the SPA redirects via `useLocation().setLocation(to, { replace: true })`.
+### Pages & Routes
 
-SEO infrastructure:
-- `hooks/useSEO.ts` — sets `<title>`, description, keywords, canonical (defaults to `origin + pathname`), OG tags (with `og:site_name=TypeFlow`, `og:locale=en_US`, absolute OG image URL), Twitter Card defaults, and injects an arbitrary number of JSON-LD blocks (tagged with `data-seo-jsonld` for cleanup on unmount).
-- `index.html` — SPA fallback shell carries comprehensive defaults: title, description, keywords, canonical, OG, Twitter Card, theme-color, robots directive, plus a global `WebSite` + `Organization` `@graph` JSON-LD that's always present.
-- `public/robots.txt` — allows all bots and explicitly whitelists Googlebot, Bingbot, DuckDuckBot, OAI-SearchBot, PerplexityBot.
-- `public/sitemap.xml` — lists all canonical URLs including all 10 lesson pages (`/lessons/home-row-basics`, etc.) with appropriate priorities.
-- `index.html` — fonts loaded asynchronously (`rel="preload"` + `media="print" onload` + noscript fallback) to eliminate render-blocking font requests.
-- Header nav anchor text uses keyword-rich labels: **Practice** → `/`, **Typing Test** → `/competition`.
-- Footer "Practice & Test" column links to canonicals first, with descriptive anchors for the variants.
+| URL | Primary Keyword | Notes |
+|-----|----------------|-------|
+| `/` | typing practice | Home / open practice. Does NOT submit to leaderboard. |
+| `/typing-speed-test` | typing speed test | Main test page, adjustable duration, leaderboard eligible. |
+| `/1-minute-typing-test` | 1 minute typing test | Locked to 60s. Angle: peak speed / daily benchmark. |
+| `/3-minute-typing-test` | 3 minute typing test | Locked to 180s. Angle: daily practice sweet spot / office & govt standard. |
+| `/5-minute-typing-test` | 5 minute typing test | Locked to 300s. Angle: endurance / employer standard / WPM endurance ratio. |
+| `/10-minute-typing-test` | 10 minute typing test | Locked to 600s. Angle: professional certification / transcription / civil service. |
+| `/20-minute-typing-test` | 20 minute typing test | Locked to 1200s. Angle: elite marathon / court reporter training. |
+| `/learn-typing` | learn touch typing | Course overview + all lesson links. |
+| `/lessons/:slug` | (per lesson) | 10 structured lessons. |
+| `/about` | — | About page. |
+| `/results/:id` | — | Per-result detail page. |
+| `/typing-test` | — | SPA redirect → `/typing-speed-test` |
+| `/typing-practice` | — | SPA redirect → `/` |
+| `/competition` | — | SPA redirect → `/typing-speed-test` |
 
-Key frontend components:
-- `components/typing/TypingTest.tsx` — two-line viewport, accepts `fontSize`. Has `saveToHistory` prop (default true; competition passes `false` to keep personal best clean).
-- `components/typing/TypingHeader.tsx` — clean responsive bar: mode pills (Time/Words/Quote), live mm:ss timer, restart, settings gear, avatar/sign-in. Stacks vertically on mobile. Supports `lockSettings` + `lockedLabel` for competition mode (hides mode pills, settings gear, and duration chips).
-- `components/typing/SettingsSheet.tsx` — slide-over panel: theme, font size (sm/md/lg/xl), sound, strict mode, live stats toggle, word source, sign-out
-- `components/typing/Leaderboard.tsx` — global top-20 by WPM, shows avatars
-- `components/auth/AuthDialog.tsx` — sign in / sign up tabs with avatar picker grid
-- `contexts/AuthContext.tsx` — token + user state via localStorage
-- `lib/auth-api.ts` — fetch helpers (auth + scores + leaderboard)
-- `lib/words.ts` — English WORDS, QUOTES, CODE_SNIPPETS, PUNCTUATION_NUMBERS
+### SEO Infrastructure
 
-Auth model: email + password (bcryptjs), shared avatar set referenced by `avatarId`. Server issues an opaque session token stored in localStorage; required for score submission. Default avatars are seeded on API server startup (`api-server/src/lib/seed.ts`).
+- `hooks/useSEO.ts` — sets `<title>`, description, keywords, canonical, all OG tags (`og:site_name=TypeFlow`, `og:locale=en_US`, absolute image URL), Twitter Card, and injects JSON-LD blocks tagged with `data-seo-jsonld` (cleaned up on unmount).
+- `index.html` — SPA shell carries full fallback defaults: title, description, keywords, canonical, OG, Twitter Card, `theme-color`, `robots` directive, and a permanent `WebSite` + `Organization` `@graph` JSON-LD block.
+- `public/robots.txt` — allows all bots; explicitly whitelists Googlebot, Bingbot, DuckDuckBot, OAI-SearchBot, PerplexityBot. References sitemap.
+- `public/sitemap.xml` — all 7 timed-test/practice pages + learn-typing + 10 lesson pages + about. Priorities set correctly.
+- Fonts: loaded async via `rel="preload"` + `media="print" onload` + noscript fallback (eliminates render-blocking).
+- Each timed-test page has `WebApplication` + `FAQPage` + `BreadcrumbList` JSON-LD.
+- Each timed-test page cross-links to all other duration pages in article prose.
+- Footer "Practice & Test" column links to all 7 test pages.
 
-API routes:
+### Key Frontend Components
+
+- `components/typing/TypingTest.tsx` — two-line viewport, accepts `fontSize`, `durationSec`, `mode`, etc.
+- `components/typing/TypingHeader.tsx` — responsive header bar: mode pills, live mm:ss timer, restart, settings gear. Supports `lockSettings` prop (hides mode pills, duration chips, settings gear) for all timed-test landing pages.
+- `components/typing/SettingsPopover.tsx` — popover panel: theme, font size (sm/md/lg/xl), sound, strict mode, live stats toggle, word source.
+- `components/typing/ResultCard.tsx` — post-test result display with WPM percentile widget.
+- `components/WpmPercentile.tsx` — "Faster than X% of typists" widget shown after every test.
+- `components/ProfessionSpeedTable.tsx` — filterable table of 14 job roles with WPM requirements; highlights qualifying roles based on your last score.
+- `components/layout/AppShell.tsx` — wraps all pages with Header + Footer, scrolls to top on route change.
+- `components/layout/Header.tsx` — nav: Practice → `/`, Typing Test → `/typing-speed-test`, Course → `/learn-typing`, About → `/about`.
+- `components/layout/Footer.tsx` — links to all 7 test pages, first 4 lessons, About, Touch Typing Guide.
+- `components/Redirect.tsx` — SPA redirect via `useLocation().setLocation(to, { replace: true })`.
+
+### Lib Files
+
+- `lib/words.ts` — WORDS, QUOTES, CODE_SNIPPETS, PUNCTUATION_NUMBERS arrays.
+- `lib/wpm-data.ts` — WPM percentile lookup table, profession speed data, improvement timeline.
+- `lib/storage.ts` — localStorage state (settings, history, personal best).
+- `lib/lessons.ts` — LESSONS array (10 lessons with slugs, titles, drills).
+- `lib/sounds.ts` — Web Audio API sound effects (key click, error, success).
+
+### Auth Model
+
+Email + password (bcryptjs). Server issues an opaque session token stored in `localStorage`. Required for leaderboard score submission. Avatars are a shared predefined set seeded on API startup.
+
+### API Routes
+
 - `routes/auth.ts` — POST /signup, /login, /logout; GET /me; PUT /avatar
-- `routes/avatars.ts` — GET /api/avatars (predefined shared set)
-- `routes/leaderboard.ts` — POST /scores (Bearer auth); GET /api/leaderboard (top 20 English scores). Frontend always submits `language: "en"`.
+- `routes/avatars.ts` — GET /api/avatars
+- `routes/leaderboard.ts` — POST /scores (Bearer auth); GET /api/leaderboard (top 20, `language: "en"`)
 
-DB tables (`lib/db/src/schema/leaderboard.ts`): `tf_avatars`, `tf_users` (email/passwordHash/username/avatarId), `tf_sessions` (token PK), `tf_scores` (with `language` column, always "en").
+### DB Tables (`lib/db/src/schema/leaderboard.ts`)
+
+`tf_avatars`, `tf_users` (email/passwordHash/username/avatarId), `tf_sessions` (token PK), `tf_scores` (with `language` column, always "en").
+
+### SPA SEO Limitation
+
+This is a Vite SPA — Googlebot must render JavaScript to see per-page `<title>` and meta tags set by `useSEO`. The `index.html` shell contains comprehensive fallback defaults for the home page. Googlebot does render SPAs (via its Web Rendering Service), but with potential delay. For full SSR, migration to a Vite SSR or Next.js setup would be required.

@@ -237,6 +237,17 @@ export default function OneMinuteTestPage() {
           your weak keys, then return to the 1-minute test to measure improvement.
         </p>
 
+        <h2>Try Other Durations</h2>
+        <p>
+          Use the <Link href="/3-minute-typing-test">3-minute test</Link> to check your sustainable cruising
+          speed — the one that matters for daily practice. The{' '}
+          <Link href="/5-minute-typing-test">5-minute test</Link> mirrors professional employment conditions
+          used by transcription agencies and legal offices. For advanced endurance, the{' '}
+          <Link href="/10-minute-typing-test">10-minute test</Link> is the civil service and professional
+          certification standard. The <Link href="/20-minute-typing-test">20-minute test</Link> is for
+          serious typists and court reporter trainees who want to stress-test their long-session baseline.
+        </p>
+
         <h2>Frequently Asked Questions</h2>
         <dl>
           {FAQS.map(({ q, a }) => (

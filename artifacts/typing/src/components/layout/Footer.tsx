@@ -29,7 +29,10 @@ export function Footer() {
               <li><Link href="/" className="hover:text-primary transition-colors">Typing Practice</Link></li>
               <li><Link href="/typing-speed-test" className="hover:text-primary transition-colors">Typing Speed Test</Link></li>
               <li><Link href="/1-minute-typing-test" className="hover:text-primary transition-colors">1 Minute Typing Test</Link></li>
+              <li><Link href="/3-minute-typing-test" className="hover:text-primary transition-colors">3 Minute Typing Test</Link></li>
               <li><Link href="/5-minute-typing-test" className="hover:text-primary transition-colors">5 Minute Typing Test</Link></li>
+              <li><Link href="/10-minute-typing-test" className="hover:text-primary transition-colors">10 Minute Typing Test</Link></li>
+              <li><Link href="/20-minute-typing-test" className="hover:text-primary transition-colors">20 Minute Typing Test</Link></li>
             </ul>
           </div>
 
@@ -50,10 +53,8 @@ export function Footer() {
           <div>
             <h3 className="font-semibold text-foreground mb-4">Resources</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Contact</a></li>
+              <li><Link href="/about" className="hover:text-primary transition-colors">About TypeFlow</Link></li>
+              <li><Link href="/learn-typing" className="hover:text-primary transition-colors">Touch Typing Guide</Link></li>
             </ul>
           </div>
 

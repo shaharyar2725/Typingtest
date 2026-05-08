@@ -251,6 +251,17 @@ export default function FiveMinuteTestPage() {
           key combinations that slow you down.
         </p>
 
+        <h2>Try Other Durations</h2>
+        <p>
+          Build up to 5 minutes progressively: start with the{' '}
+          <Link href="/1-minute-typing-test">1-minute test</Link> to find your speed ceiling, then use the{' '}
+          <Link href="/3-minute-typing-test">3-minute test</Link> as your daily practice benchmark. For
+          serious professional certification, try the{' '}
+          <Link href="/10-minute-typing-test">10-minute test</Link> — the standard used by civil service
+          boards and transcription agencies. Elite typists and court reporter trainees use the{' '}
+          <Link href="/20-minute-typing-test">20-minute test</Link> to verify maximum long-session endurance.
+        </p>
+
         <h2>Frequently Asked Questions</h2>
         <dl>
           {FAQS.map(({ q, a }) => (
