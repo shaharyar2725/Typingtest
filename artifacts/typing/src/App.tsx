@@ -7,7 +7,10 @@ import { AppShell } from "@/components/layout/AppShell";
 import Home from "@/pages/Home";
 import TypingSpeedTestPage from "@/pages/TypingSpeedTestPage";
 import OneMinuteTestPage from "@/pages/OneMinuteTestPage";
+import ThreeMinuteTestPage from "@/pages/ThreeMinuteTestPage";
 import FiveMinuteTestPage from "@/pages/FiveMinuteTestPage";
+import TenMinuteTestPage from "@/pages/TenMinuteTestPage";
+import TwentyMinuteTestPage from "@/pages/TwentyMinuteTestPage";
 import LearnTypingPage from "@/pages/LearnTypingPage";
 import LessonPage from "@/pages/LessonPage";
 import ResultsPage from "@/pages/ResultsPage";
@@ -22,7 +25,10 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/typing-speed-test" component={TypingSpeedTestPage} />
         <Route path="/1-minute-typing-test" component={OneMinuteTestPage} />
+        <Route path="/3-minute-typing-test" component={ThreeMinuteTestPage} />
         <Route path="/5-minute-typing-test" component={FiveMinuteTestPage} />
+        <Route path="/10-minute-typing-test" component={TenMinuteTestPage} />
+        <Route path="/20-minute-typing-test" component={TwentyMinuteTestPage} />
         {/* Legacy URLs → canonical test page */}
         <Route path="/competition">{() => <Redirect to="/typing-speed-test" />}</Route>
         <Route path="/typing-test">{() => <Redirect to="/typing-speed-test" />}</Route>

@@ -3,39 +3,52 @@
   <!-- Primary keyword: typing practice -->
   <url>
     <loc>https://typeflow.app/</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  <!-- Primary keyword: typing test -->
-  <url>
-    <loc>https://typeflow.app/competition</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <!-- Long-tail SEO landing pages -->
+  <!-- Primary keyword: typing speed test -->
   <url>
     <loc>https://typeflow.app/typing-speed-test</loc>
-    <lastmod>2026-05-01</lastmod>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- Timed test landing pages — each targets a distinct keyword cluster -->
+  <url>
+    <loc>https://typeflow.app/1-minute-typing-test</loc>
+    <lastmod>2026-05-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://typeflow.app/1-minute-typing-test</loc>
-    <lastmod>2026-05-01</lastmod>
+    <loc>https://typeflow.app/3-minute-typing-test</loc>
+    <lastmod>2026-05-07</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://typeflow.app/5-minute-typing-test</loc>
-    <lastmod>2026-05-01</lastmod>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://typeflow.app/10-minute-typing-test</loc>
+    <lastmod>2026-05-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://typeflow.app/20-minute-typing-test</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Course and lessons -->
+  <url>
     <loc>https://typeflow.app/learn-typing</loc>
-    <lastmod>2026-05-01</lastmod>
+    <lastmod>2026-05-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
