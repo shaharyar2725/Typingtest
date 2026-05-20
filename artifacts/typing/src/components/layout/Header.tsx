@@ -1,13 +1,39 @@
 import { Link, useLocation } from "wouter";
 import { Sun, Moon, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "@/components/ThemeProvider";
+import { loadState, updateSettings } from "@/lib/storage";
 import { useEffect, useState } from "react";
+
+function TBoltIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      {/* Crossbar — horizontal bar at top like a T */}
+      <rect x="2" y="2" width="20" height="4.5" rx="2.2" fill="currentColor" />
+      {/* Lightning bolt — energy stroke below, replacing the T stem */}
+      <path
+        d="M 13.5,6.5 L 7.5,14.5 L 12.5,14.5 L 9,22.5 L 17.5,13 L 12.5,13 Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
 
 export function Header() {
   const [location] = useLocation();
-  const { theme, toggleTheme } = useTheme();
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>(() => {
+    if (typeof window === 'undefined') return 'system';
+    return loadState().settings.theme;
+  });
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setTheme(loadState().settings.theme);
+  }, []);
 
   useEffect(() => {
     setOpen(false);
@@ -18,25 +44,37 @@ export function Header() {
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
+  const toggleTheme = () => {
+    const root = window.document.documentElement;
+    const isDark = root.classList.contains('dark');
+    const newTheme = isDark ? 'light' : 'dark';
+    setTheme(newTheme);
+    updateSettings({ theme: newTheme });
+    root.classList.remove('light', 'dark');
+    root.classList.add(newTheme);
+  };
+
   const navItems = [
-    { href: "/", label: "Practice" },
-    { href: "/typing-speed-test", label: "Typing Test" },
+    { href: "/typing-test", label: "Test" },
+    { href: "/typing-practice", label: "Practice" },
     { href: "/learn-typing", label: "Course" },
     { href: "/about", label: "About" },
   ];
 
-  const isDark = theme === 'dark' || (
-    theme === 'system' &&
-    typeof window !== 'undefined' &&
-    window.matchMedia?.('(prefers-color-scheme: dark)').matches
-  );
+  const isDark = theme === 'dark' || (theme === 'system' && typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches);
 
   return (
     <header className="w-full border-b border-border/60 bg-background relative z-50">
       <div className="container flex h-16 max-w-screen-xl items-center px-5 md:px-8 mx-auto">
-        <Link href="/" className="flex items-center gap-1.5 font-extrabold text-xl tracking-tight hover:opacity-70 transition-opacity">
-          <span className="text-foreground">type</span>
-          <span className="text-primary">flow</span>
+
+        {/* Logo mark */}
+        <Link href="/" className="flex items-center gap-2.5 hover:opacity-75 transition-opacity group">
+          <TBoltIcon className="w-6 h-6 text-primary shrink-0" />
+          <span className="font-extrabold text-lg tracking-tight leading-none">
+            <span className="text-foreground">take</span>
+            <span className="text-primary">typing</span>
+            <span className="text-foreground">test</span>
+          </span>
         </Link>
 
         {/* Desktop nav */}
@@ -45,33 +83,19 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className={`text-sm font-semibold px-3 py-2 rounded-lg transition-colors hover:text-foreground ${
-                location === item.href ? 'text-foreground' : 'text-muted-foreground'
-              }`}
+              className={`text-sm font-semibold px-3 py-2 rounded-lg transition-colors hover:text-foreground ${location === item.href ? 'text-foreground' : 'text-muted-foreground'}`}
             >
               {item.label}
             </Link>
           ))}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleTheme}
-            className="h-9 w-9 ml-1 rounded-lg"
-            aria-label="Toggle theme"
-          >
+          <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-9 w-9 ml-1 rounded-lg" aria-label="Toggle theme">
             {isDark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
           </Button>
         </nav>
 
         {/* Mobile actions */}
         <div className="ml-auto flex md:hidden items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleTheme}
-            className="h-9 w-9 rounded-lg"
-            aria-label="Toggle theme"
-          >
+          <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-9 w-9 rounded-lg" aria-label="Toggle theme">
             {isDark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
           </Button>
           <Button
@@ -99,11 +123,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-base font-semibold px-4 py-3 rounded-xl transition-colors ${
-                  location === item.href
-                    ? 'bg-muted text-foreground'
-                    : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
-                }`}
+                className={`text-base font-semibold px-4 py-3 rounded-xl transition-colors ${location === item.href ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'}`}
               >
                 {item.label}
               </Link>

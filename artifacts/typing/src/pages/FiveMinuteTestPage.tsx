@@ -6,7 +6,7 @@ import { ResultCard } from '@/components/typing/ResultCard';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
 
-const SITE_ORIGIN = 'https://typeflow.app';
+const SITE_ORIGIN = 'https://taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/5-minute-typing-test`;
 
 const FAQS = [
@@ -28,17 +28,17 @@ const FAQS = [
   },
   {
     q: 'How can I improve my 5-minute typing speed?',
-    a: 'Practice at the pace you want to sustain, not at your sprint pace. If you want to sustain 70 WPM, regularly practice at 65–70 WPM rather than always pushing maximum speed. Also build accuracy: errors over five minutes accumulate quickly and tank your net WPM. Use TypeFlow\'s 5-minute test daily and track your average WPM over the full test.',
+    a: 'Practice at the pace you want to sustain, not at your sprint pace. If you want to sustain 70 WPM, regularly practice at 65–70 WPM rather than always pushing maximum speed. Also build accuracy: errors over five minutes accumulate quickly and tank your net WPM. Use TakeTypingTest\'s 5-minute test daily and track your average WPM over the full test.',
   },
   {
     q: 'Can I use this 5-minute test for job applications?',
-    a: 'TypeFlow\'s 5-minute test uses the standard net WPM formula (correct characters ÷ 5 ÷ minutes) that most employers mean when they ask for your typing speed. It\'s a reliable gauge, but always confirm whether a specific employer uses gross or net WPM and what their exact accuracy requirements are.',
+    a: 'TakeTypingTest\'s 5-minute test uses the standard net WPM formula (correct characters ÷ 5 ÷ minutes) that most employers mean when they ask for your typing speed. It\'s a reliable gauge, but always confirm whether a specific employer uses gross or net WPM and what their exact accuracy requirements are.',
   },
 ];
 
 export default function FiveMinuteTestPage() {
   useSEO({
-    title: '5 Minute Typing Test — Sustained WPM & Accuracy | TypeFlow',
+    title: '5 Minute Typing Test — Sustained WPM & Accuracy | TakeTypingTest',
     description:
       'Free 5-minute typing test — measure your sustained WPM and accuracy under endurance conditions. The benchmark used by employers and transcription agencies. No signup, instant results.',
     keywords:
@@ -48,7 +48,7 @@ export default function FiveMinuteTestPage() {
       {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        name: 'TypeFlow 5 Minute Typing Test',
+        name: 'TakeTypingTest 5 Minute Typing Test',
         url: PAGE_URL,
         applicationCategory: 'EducationalApplication',
         operatingSystem: 'Any (web browser)',
@@ -197,7 +197,7 @@ export default function FiveMinuteTestPage() {
         </div>
         <p className="text-xs text-muted-foreground mt-3">
           To find your ratio: divide your 5-minute WPM by your 1-minute WPM and multiply by 100.
-          Take both tests on TypeFlow for a fair comparison using the same word source.
+          Take both tests on TakeTypingTest for a fair comparison using the same word source.
         </p>
       </section>
 
@@ -231,7 +231,7 @@ export default function FiveMinuteTestPage() {
         <h3>Train at your target pace, not your sprint pace</h3>
         <p>
           If you want to sustain 70 WPM over five minutes, practice regularly at 65–70 WPM. Practicing above
-          your endurance pace builds short-burst speed but not stamina. Use TypeFlow's live WPM counter to
+          your endurance pace builds short-burst speed but not stamina. Use TakeTypingTest's live WPM counter to
           keep your pace in range — if minute one puts you over target, ease back intentionally.
         </p>
 
@@ -245,7 +245,7 @@ export default function FiveMinuteTestPage() {
 
         <h3>Build endurance with structured lessons</h3>
         <p>
-          Use TypeFlow's <Link href="/learn-typing">touch-typing course</Link> to drill weak keys and
+          Use TakeTypingTest's <Link href="/learn-typing">touch-typing course</Link> to drill weak keys and
           patterns. Once you've covered the full keyboard, come back to the 5-minute test and track your
           improvement. Lesson-based drilling is much more efficient than random practice for fixing specific
           key combinations that slow you down.

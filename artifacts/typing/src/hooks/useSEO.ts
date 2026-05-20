@@ -61,7 +61,7 @@ export function useSEO({
     setMeta('meta[property="og:type"]', { property: 'og:type' }, ogType);
     setMeta('meta[property="og:image"]', { property: 'og:image' }, absoluteOgImage);
     setMeta('meta[property="og:url"]', { property: 'og:url' }, canonicalUrl);
-    setMeta('meta[property="og:site_name"]', { property: 'og:site_name' }, 'TypeFlow');
+    setMeta('meta[property="og:site_name"]', { property: 'og:site_name' }, 'TakeTypingTest');
     setMeta('meta[property="og:locale"]', { property: 'og:locale' }, 'en_US');
 
     setMeta('meta[name="twitter:card"]', { name: 'twitter:card' }, 'summary_large_image');

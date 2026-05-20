@@ -7,7 +7,7 @@ import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage
 import { useSEO } from '@/hooks/useSEO';
 import { Flame, Brain, BarChart2 } from 'lucide-react';
 
-const SITE_ORIGIN = 'https://typeflow.app';
+const SITE_ORIGIN = 'https://taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/20-minute-typing-test`;
 
 const FAQS = [
@@ -39,7 +39,7 @@ const FAQS = [
 
 export default function TwentyMinuteTestPage() {
   useSEO({
-    title: '20 Minute Typing Test — Elite Endurance WPM | TypeFlow',
+    title: '20 Minute Typing Test — Elite Endurance WPM | TakeTypingTest',
     description:
       'Free 20-minute typing test — the ultimate endurance challenge for serious typists, court reporter trainees, and professional transcriptionists. Measure your sustained WPM and accuracy. No signup.',
     keywords:
@@ -49,7 +49,7 @@ export default function TwentyMinuteTestPage() {
       {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        name: 'TypeFlow 20 Minute Typing Test',
+        name: 'TakeTypingTest 20 Minute Typing Test',
         url: PAGE_URL,
         applicationCategory: 'EducationalApplication',
         operatingSystem: 'Any (web browser)',

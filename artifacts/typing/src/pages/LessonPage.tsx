@@ -17,7 +17,7 @@ export default function LessonPage() {
   const lesson = LESSONS[lessonIndex];
 
   useSEO({
-    title: lesson ? `${lesson.title} | Typing Lesson | TypeFlow` : "Lesson Not Found | TypeFlow",
+    title: lesson ? `${lesson.title} | Typing Lesson | TakeTypingTest` : "Lesson Not Found | TakeTypingTest",
     description: lesson ? lesson.description : "Interactive touch typing lesson.",
   });
 

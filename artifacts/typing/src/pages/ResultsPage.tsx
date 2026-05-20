@@ -13,8 +13,8 @@ export default function ResultsPage() {
   const [loading, setLoading] = useState(true);
 
   useSEO({
-    title: result ? `Typing Result: ${result.wpm} WPM | TypeFlow` : "Typing Result | TypeFlow",
-    description: result ? `I just typed ${result.wpm} WPM with ${result.accuracy}% accuracy on TypeFlow. Can you beat my score?` : "Check out my typing speed on TypeFlow.",
+    title: result ? `Typing Result: ${result.wpm} WPM | TakeTypingTest` : "Typing Result | TakeTypingTest",
+    description: result ? `I just typed ${result.wpm} WPM with ${result.accuracy}% accuracy on TakeTypingTest. Can you beat my score?` : "Check out my typing speed on TakeTypingTest.",
   });
 
   useEffect(() => {

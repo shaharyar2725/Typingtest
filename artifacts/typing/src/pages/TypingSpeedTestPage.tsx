@@ -7,13 +7,13 @@ import { ProfessionSpeedTable } from '@/components/ProfessionSpeedTable';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
 
-const SITE_ORIGIN = 'https://typeflow.app';
+const SITE_ORIGIN = 'https://taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/typing-speed-test`;
 
 const FAQS = [
   {
     q: 'What is a typing speed test?',
-    a: 'A typing speed test measures how many words you can type per minute (WPM) and how accurately you type them. TypeFlow calculates net WPM — total correct characters divided by 5, divided by time in minutes — which is the same formula used by professional typing benchmarks and most employer tests.',
+    a: 'A typing speed test measures how many words you can type per minute (WPM) and how accurately you type them. TakeTypingTest calculates net WPM — total correct characters divided by 5, divided by time in minutes — which is the same formula used by professional typing benchmarks and most employer tests.',
   },
   {
     q: 'What is the average typing speed for an adult?',
@@ -41,19 +41,19 @@ const FAQS = [
   },
   {
     q: 'Is this typing speed test free?',
-    a: 'Yes — TypeFlow\'s typing speed test is 100% free, runs entirely in your browser, and requires no download, account, or email.',
+    a: 'Yes — TakeTypingTest\'s typing speed test is 100% free, runs entirely in your browser, and requires no download, account, or email.',
   },
   {
     q: 'What is the best free typing website?',
-    a: 'TypeFlow offers a free typing speed test, 15-second through 5-minute time modes, quote and code modes, and a free 10-lesson touch typing course — all without signup. Other good free options include Monkeytype (minimalist), TypingClub (structured lessons for beginners), and 10FastFingers (multiplayer competition).',
+    a: 'TakeTypingTest offers a free typing speed test, 15-second through 5-minute time modes, quote and code modes, and a free 10-lesson touch typing course — all without signup. Other good free options include Monkeytype (minimalist), TypingClub (structured lessons for beginners), and 10FastFingers (multiplayer competition).',
   },
 ];
 
 export default function TypingSpeedTestPage() {
   useSEO({
-    title: 'Free Typing Speed Test — Check Your WPM Instantly | TypeFlow',
+    title: 'Free Typing Speed Test — Check Your WPM Instantly | TakeTypingTest',
     description:
-      'Take the free TypeFlow typing speed test and instantly see your WPM, accuracy, and global percentile. Adjustable from 15 seconds to 5 minutes. No signup needed.',
+      'Take the free TakeTypingTest typing speed test and instantly see your WPM, accuracy, and global percentile. Adjustable from 15 seconds to 5 minutes. No signup needed.',
     keywords:
       'typing speed test, typing test, wpm test, words per minute test, online typing test, free typing test, check typing speed, keyboard speed test, typing test wpm, what is good typing speed',
     canonical: PAGE_URL,
@@ -61,7 +61,7 @@ export default function TypingSpeedTestPage() {
       {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        name: 'TypeFlow Typing Speed Test',
+        name: 'TakeTypingTest Typing Speed Test',
         url: PAGE_URL,
         applicationCategory: 'EducationalApplication',
         operatingSystem: 'Any (web browser)',
@@ -235,12 +235,12 @@ export default function TypingSpeedTestPage() {
           Home row position (ASDF for left hand, JKL; for right hand) is the foundation of touch typing.
           Each finger has an assigned zone — index fingers cover the inner columns, pinkies cover the outer
           edges. Straying from this means every new key is a conscious decision rather than a reflex. Use
-          TypeFlow's <Link href="/learn-typing">touch-typing course</Link> to build each zone systematically.
+          TakeTypingTest's <Link href="/learn-typing">touch-typing course</Link> to build each zone systematically.
         </p>
 
         <h3>4. Practice deliberately, not just more</h3>
         <p>
-          15–20 minutes of focused typing practice beats a two-hour casual session. Use TypeFlow's typing
+          15–20 minutes of focused typing practice beats a two-hour casual session. Use TakeTypingTest's typing
           test to track your baseline, then practice in short, focused blocks. Identify your weak spots —
           errors tend to cluster around the same key combinations — and drill those specifically in the
           lesson course.
@@ -254,9 +254,9 @@ export default function TypingSpeedTestPage() {
           inconsistency, which directly kills speed and accuracy in the second half of longer tests.
         </p>
 
-        <h2>How TypeFlow Calculates WPM</h2>
+        <h2>How TakeTypingTest Calculates WPM</h2>
         <p>
-          TypeFlow uses <strong>net WPM</strong>: total correct characters typed, divided by 5 (the standard
+          TakeTypingTest uses <strong>net WPM</strong>: total correct characters typed, divided by 5 (the standard
           "word" length), divided by test duration in minutes. Uncorrected errors are penalized. This is the
           same formula used by professional typing benchmarks, certification tests, and most employer-administered assessments.
         </p>

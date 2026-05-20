@@ -7,7 +7,7 @@ import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage
 import { useSEO } from '@/hooks/useSEO';
 import { Shield, Activity, Award } from 'lucide-react';
 
-const SITE_ORIGIN = 'https://typeflow.app';
+const SITE_ORIGIN = 'https://taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/10-minute-typing-test`;
 
 const FAQS = [
@@ -43,7 +43,7 @@ const FAQS = [
 
 export default function TenMinuteTestPage() {
   useSEO({
-    title: '10 Minute Typing Test — Professional Endurance WPM | TypeFlow',
+    title: '10 Minute Typing Test — Professional Endurance WPM | TakeTypingTest',
     description:
       'Free 10-minute typing test — the professional endurance standard used by transcription agencies and civil service boards. Measure your sustained WPM, accuracy, and global percentile. No signup.',
     keywords:
@@ -53,7 +53,7 @@ export default function TenMinuteTestPage() {
       {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        name: 'TypeFlow 10 Minute Typing Test',
+        name: 'TakeTypingTest 10 Minute Typing Test',
         url: PAGE_URL,
         applicationCategory: 'EducationalApplication',
         operatingSystem: 'Any (web browser)',
@@ -228,7 +228,7 @@ export default function TenMinuteTestPage() {
                 },
                 {
                   phase: 'Fatigue onset', minutes: '6–8 min', what: 'Mental fatigue and finger tiredness begin. Accuracy errors increase, often clustering around the same weak keys.',
-                  fix: 'Drill your error-heavy key combinations in TypeFlow\'s lesson course to make them automatic before fatigue hits.',
+                  fix: 'Drill your error-heavy key combinations in TakeTypingTest\'s lesson course to make them automatic before fatigue hits.',
                 },
                 {
                   phase: 'Endurance test', minutes: '8–10 min', what: 'Only deeply-ingrained muscle memory holds up. Typists with shallow skill show significant WPM drop here.',
@@ -293,7 +293,7 @@ export default function TenMinuteTestPage() {
         <p>
           Over 10 minutes, a 96% accuracy rate generates roughly 3× the number of errors of a 1-minute test
           at the same rate — and uncorrected errors are penalized against your net WPM. Use strict mode in
-          TypeFlow to force error correction, and drill your weak keys in the{' '}
+          TakeTypingTest to force error correction, and drill your weak keys in the{' '}
           <Link href="/learn-typing">touch-typing course</Link> before adding duration.
         </p>
 

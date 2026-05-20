@@ -14,10 +14,10 @@ interface ResultCardProps {
 
 export function ResultCard({ result, onRestart, showPercentile = true }: ResultCardProps) {
   const handleShare = async () => {
-    const text = `I typed at ${result.wpm} WPM with ${result.accuracy}% accuracy on TypeFlow!`;
+    const text = `I typed at ${result.wpm} WPM with ${result.accuracy}% accuracy on TakeTypingTest!`;
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'TypeFlow result', text });
+        await navigator.share({ title: 'TakeTypingTest result', text });
       } else {
         await navigator.clipboard.writeText(text);
         toast.success('Result copied to clipboard');

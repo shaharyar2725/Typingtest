@@ -10,13 +10,13 @@ import { Play, CheckCircle2, ArrowRight, Zap, TrendingUp, Clock, Target } from '
 import { Button } from '@/components/ui/button';
 import { LESSONS } from '@/lib/lessons';
 
-const SITE_ORIGIN = 'https://typeflow.app';
+const SITE_ORIGIN = 'https://taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/`;
 
 const FAQS = [
   {
     q: 'What is typing practice?',
-    a: 'Typing practice is the deliberate exercise of typing on a keyboard to improve speed (words per minute) and accuracy. TypeFlow gives you free, customizable typing practice in time, words and quote modes — pick a duration, start typing, and get instant WPM and accuracy feedback.',
+    a: 'Typing practice is the deliberate exercise of typing on a keyboard to improve speed (words per minute) and accuracy. TakeTypingTest gives you free, customizable typing practice in time, words and quote modes — pick a duration, start typing, and get instant WPM and accuracy feedback.',
   },
   {
     q: 'How long should I practice typing each day?',
@@ -31,16 +31,16 @@ const FAQS = [
     a: 'The global average is 41.6 WPM across 10.4 million measured tests. Typing at 60 WPM puts you above average; 70–80 WPM meets most professional job requirements; 100+ WPM is elite. For context, the average professional typist hits 65–75 WPM.',
   },
   {
-    q: 'Is TypeFlow typing practice free?',
+    q: 'Is TakeTypingTest typing practice free?',
     a: 'Yes — every typing practice mode, the full 10-lesson course, and your personal best stats are 100% free with no signup required. Everything runs in your browser.',
   },
   {
     q: 'How is WPM calculated?',
-    a: 'TypeFlow uses net WPM: total correctly typed characters divided by 5 (the standard "word" length), divided by the test duration in minutes. Uncorrected errors are penalized. This is the same formula used by most professional typing benchmarks and employer tests.',
+    a: 'TakeTypingTest uses net WPM: total correctly typed characters divided by 5 (the standard "word" length), divided by the test duration in minutes. Uncorrected errors are penalized. This is the same formula used by most professional typing benchmarks and employer tests.',
   },
   {
     q: 'How can I improve my typing accuracy?',
-    a: 'Slow down until you can type without errors, then gradually increase pace. Use strict mode in TypeFlow settings to force correction of every error. Drilling your personal weak keys in the lesson course also directly raises accuracy on common letter combinations.',
+    a: 'Slow down until you can type without errors, then gradually increase pace. Use strict mode in TakeTypingTest settings to force correction of every error. Drilling your personal weak keys in the lesson course also directly raises accuracy on common letter combinations.',
   },
   {
     q: 'What are the benefits of touch typing?',
@@ -50,7 +50,7 @@ const FAQS = [
 
 export default function Home() {
   useSEO({
-    title: 'Free Typing Practice — Improve Your WPM & Accuracy | TypeFlow',
+    title: 'Free Typing Practice — Improve Your WPM & Accuracy | TakeTypingTest',
     description:
       'Free online typing practice with live WPM, accuracy and error tracking. Pick time, words or quote mode. No signup — practice as much as you want and track your personal best.',
     keywords:
@@ -60,7 +60,7 @@ export default function Home() {
       {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        name: 'TypeFlow Typing Practice',
+        name: 'TakeTypingTest Typing Practice',
         url: PAGE_URL,
         applicationCategory: 'EducationalApplication',
         operatingSystem: 'Any (web browser)',
@@ -317,12 +317,12 @@ export default function Home() {
           improves. Research shows a single error costs approximately 2.5 seconds of cognitive reset —
           meaning typing at 90% accuracy can reduce your effective output by nearly 30% compared to 99%
           accuracy at the same WPM. Aim for 97%+ accuracy first, then push the duration or word count.
-          TypeFlow's strict mode forces error correction, which accelerates this process.
+          TakeTypingTest's strict mode forces error correction, which accelerates this process.
         </p>
 
         <h3>Mix the practice modes</h3>
         <p>
-          TypeFlow gives you four word sources — common English words, classic quotes, code snippets, and
+          TakeTypingTest gives you four word sources — common English words, classic quotes, code snippets, and
           punctuation/numbers. Rotate between them so you don't over-train on one type of text. Programmers
           especially benefit from regular code-snippet practice because of all the symbols, brackets, and
           case changes. Quotes force you to keep pace with punctuation rhythm.

@@ -1,3 +1,6 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="180" height="180" rx="36" fill="#FF3C00"/>
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Crossbar — top horizontal bar like a T -->
+  <rect x="2" y="2" width="20" height="4.5" rx="2.2" fill="#09C4D9"/>
+  <!-- Lightning bolt — energy stroke below, replacing the T stem -->
+  <path d="M 13.5,6.5 L 7.5,14.5 L 12.5,14.5 L 9,22.5 L 17.5,13 L 12.5,13 Z" fill="#09C4D9"/>
 </svg>

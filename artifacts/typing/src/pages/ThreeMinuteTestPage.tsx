@@ -7,7 +7,7 @@ import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage
 import { useSEO } from '@/hooks/useSEO';
 import { Clock, RefreshCw, TrendingUp } from 'lucide-react';
 
-const SITE_ORIGIN = 'https://typeflow.app';
+const SITE_ORIGIN = 'https://taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/3-minute-typing-test`;
 
 const FAQS = [
@@ -29,7 +29,7 @@ const FAQS = [
   },
   {
     q: 'How can I improve my 3-minute typing score?',
-    a: 'Build a strong accuracy foundation using TypeFlow\'s touch-typing lessons, then move into timed practice at your target pace. 3-minute daily practice sessions — where you focus on maintaining pace rather than sprinting — are the most efficient way to raise your sustained WPM. Track your average across five runs rather than your single best score.',
+    a: 'Build a strong accuracy foundation using TakeTypingTest\'s touch-typing lessons, then move into timed practice at your target pace. 3-minute daily practice sessions — where you focus on maintaining pace rather than sprinting — are the most efficient way to raise your sustained WPM. Track your average across five runs rather than your single best score.',
   },
   {
     q: 'Is this 3-minute typing test free?',
@@ -39,7 +39,7 @@ const FAQS = [
 
 export default function ThreeMinuteTestPage() {
   useSEO({
-    title: '3 Minute Typing Test — Free WPM & Accuracy Check | TypeFlow',
+    title: '3 Minute Typing Test — Free WPM & Accuracy Check | TakeTypingTest',
     description:
       'Free 3-minute typing test — the daily practice standard used by office and government employers. Measure your sustainable WPM and accuracy with instant results and global percentile ranking.',
     keywords:
@@ -49,7 +49,7 @@ export default function ThreeMinuteTestPage() {
       {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        name: 'TypeFlow 3 Minute Typing Test',
+        name: 'TakeTypingTest 3 Minute Typing Test',
         url: PAGE_URL,
         applicationCategory: 'EducationalApplication',
         operatingSystem: 'Any (web browser)',
@@ -237,7 +237,7 @@ export default function ThreeMinuteTestPage() {
         <p>
           If you want a 65 WPM 3-minute score, train at 60–65 WPM rather than always trying to hit 75.
           Practicing above your endurance speed builds burst speed, not sustained performance. Use
-          TypeFlow's live WPM counter to keep yourself in the target range throughout the full 3 minutes.
+          TakeTypingTest's live WPM counter to keep yourself in the target range throughout the full 3 minutes.
         </p>
 
         <h3>Track your average, not your best</h3>
@@ -250,7 +250,7 @@ export default function ThreeMinuteTestPage() {
         <h3>Use structured lessons for weak spots</h3>
         <p>
           If your accuracy dips below 96% during a 3-minute run, you have specific key combinations that
-          aren't yet automatic. TypeFlow's <Link href="/learn-typing">touch-typing course</Link> isolates
+          aren't yet automatic. TakeTypingTest's <Link href="/learn-typing">touch-typing course</Link> isolates
           those combinations in dedicated drills so you can fix them faster than through random practice alone.
         </p>
 

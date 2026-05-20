@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Trophy, Target, Play, CheckCircle2, Clock, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
-const SITE_ORIGIN = 'https://typeflow.app';
+const SITE_ORIGIN = 'https://taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/learn-typing`;
 
 const FAQS = [
@@ -25,7 +25,7 @@ const FAQS = [
   },
   {
     q: 'Can I teach myself touch typing?',
-    a: 'Yes — touch typing is entirely self-teachable with structured practice. TypeFlow\'s free course takes you from home-row basics through numbers, punctuation, and speed drills in 10 lessons. The key is consistency: 15 minutes per day, every day, with no peeking at the keyboard.',
+    a: 'Yes — touch typing is entirely self-teachable with structured practice. TakeTypingTest\'s free course takes you from home-row basics through numbers, punctuation, and speed drills in 10 lessons. The key is consistency: 15 minutes per day, every day, with no peeking at the keyboard.',
   },
   {
     q: 'Is touch typing faster than hunt and peck?',
@@ -37,15 +37,15 @@ const FAQS = [
   },
   {
     q: 'Is this typing course free?',
-    a: 'Yes — all 10 TypeFlow lessons, your progress tracking, and your WPM history are completely free with no account required. Everything runs in your browser.',
+    a: 'Yes — all 10 TakeTypingTest lessons, your progress tracking, and your WPM history are completely free with no account required. Everything runs in your browser.',
   },
 ];
 
 export default function LearnTypingPage() {
   useSEO({
-    title: 'Learn Touch Typing Free — 10-Lesson Interactive Course | TypeFlow',
+    title: 'Learn Touch Typing Free — 10-Lesson Interactive Course | TakeTypingTest',
     description:
-      'Learn touch typing with TypeFlow\'s free 10-lesson course. Start at home row, build muscle memory through every key, number, and symbol. Track your WPM progress. No signup.',
+      'Learn touch typing with TakeTypingTest\'s free 10-lesson course. Start at home row, build muscle memory through every key, number, and symbol. Track your WPM progress. No signup.',
     keywords:
       'learn touch typing, typing lessons, learn to type, touch typing course, free typing lessons, typing for beginners, home row typing, improve typing, touch typing tutorial, keyboarding',
     canonical: PAGE_URL,
@@ -53,12 +53,12 @@ export default function LearnTypingPage() {
       {
         '@context': 'https://schema.org',
         '@type': 'Course',
-        name: 'TypeFlow Touch Typing Course',
+        name: 'TakeTypingTest Touch Typing Course',
         description:
           'A free 10-lesson touch-typing course that builds muscle memory from the home row through numbers, punctuation, symbols, and speed drills. No signup required.',
         provider: {
           '@type': 'Organization',
-          name: 'TypeFlow',
+          name: 'TakeTypingTest',
           sameAs: SITE_ORIGIN,
         },
         url: PAGE_URL,

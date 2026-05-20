@@ -6,7 +6,7 @@ import { ResultCard } from '@/components/typing/ResultCard';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
 
-const SITE_ORIGIN = 'https://typeflow.app';
+const SITE_ORIGIN = 'https://taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/1-minute-typing-test`;
 
 const FAQS = [
@@ -24,11 +24,11 @@ const FAQS = [
   },
   {
     q: 'How is WPM calculated on the 1-minute test?',
-    a: 'TypeFlow uses net WPM: total correct characters divided by 5 (the standard "word" length), divided by 1 (for 1 minute). Uncorrected errors are penalized. Accuracy is the percentage of keystrokes that were correct over the full test. This is the same formula used by professional benchmarks and employer tests.',
+    a: 'TakeTypingTest uses net WPM: total correct characters divided by 5 (the standard "word" length), divided by 1 (for 1 minute). Uncorrected errors are penalized. Accuracy is the percentage of keystrokes that were correct over the full test. This is the same formula used by professional benchmarks and employer tests.',
   },
   {
     q: 'How many words is a 1-minute typing test?',
-    a: 'It depends on your speed, but a test completed at 40 WPM covers 40 "words" (where a word = 5 characters). At 60 WPM, you type 60 words worth of characters in 60 seconds. TypeFlow generates enough text to fill any speed — the test never runs out of words.',
+    a: 'It depends on your speed, but a test completed at 40 WPM covers 40 "words" (where a word = 5 characters). At 60 WPM, you type 60 words worth of characters in 60 seconds. TakeTypingTest generates enough text to fill any speed — the test never runs out of words.',
   },
   {
     q: 'Is the 1-minute typing test free?',
@@ -36,13 +36,13 @@ const FAQS = [
   },
   {
     q: 'How often should I take a 1-minute typing test?',
-    a: 'Once or twice a day as a quick benchmark works well. The real improvement comes from deliberate practice sessions in between tests — use TypeFlow\'s typing practice page or structured lessons to build speed and accuracy, then test yourself to track progress. Daily testing without practice won\'t improve your WPM.',
+    a: 'Once or twice a day as a quick benchmark works well. The real improvement comes from deliberate practice sessions in between tests — use TakeTypingTest\'s typing practice page or structured lessons to build speed and accuracy, then test yourself to track progress. Daily testing without practice won\'t improve your WPM.',
   },
 ];
 
 export default function OneMinuteTestPage() {
   useSEO({
-    title: '1 Minute Typing Test — Free WPM Speed Check | TypeFlow',
+    title: '1 Minute Typing Test — Free WPM Speed Check | TakeTypingTest',
     description:
       'Take the free 1-minute typing test and get your WPM, accuracy, and global percentile instantly. The fastest way to measure your typing speed — no signup, no download.',
     keywords:
@@ -52,7 +52,7 @@ export default function OneMinuteTestPage() {
       {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        name: 'TypeFlow 1 Minute Typing Test',
+        name: 'TakeTypingTest 1 Minute Typing Test',
         url: PAGE_URL,
         applicationCategory: 'EducationalApplication',
         operatingSystem: 'Any (web browser)',
@@ -195,7 +195,7 @@ export default function OneMinuteTestPage() {
 
         <h2>How WPM Is Calculated on This Test</h2>
         <p>
-          TypeFlow uses <strong>net WPM</strong>: the total number of correctly typed characters divided by 5
+          TakeTypingTest uses <strong>net WPM</strong>: the total number of correctly typed characters divided by 5
           (the standard "word" length), divided by 1 (for 1 minute), minus a penalty for uncorrected errors.
           Accuracy is the percentage of all keystrokes that were correct.
         </p>
@@ -233,7 +233,7 @@ export default function OneMinuteTestPage() {
         <h3>Practice daily in short sessions</h3>
         <p>
           15–20 minutes per day beats hour-long weekly sessions because muscle memory consolidates during
-          rest. Use TypeFlow's <Link href="/learn-typing">touch-typing course</Link> between tests to target
+          rest. Use TakeTypingTest's <Link href="/learn-typing">touch-typing course</Link> between tests to target
           your weak keys, then return to the 1-minute test to measure improvement.
         </p>
 
