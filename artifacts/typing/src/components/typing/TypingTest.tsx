@@ -75,14 +75,26 @@ export function TypingTest({
     const elapsed = Math.max(0.001, (nowMs - startedAt) / 1000);
     const minutes = elapsed / 60;
     const typed = inputValueRef.current;
+    const target = textRef.current;
+
+    // Count correct characters at each position
     let correctChars = 0;
     for (let i = 0; i < typed.length; i++) {
-      if (typed[i] === textRef.current[i]) correctChars++;
+      if (typed[i] === target[i]) correctChars++;
     }
-    const grossWpm = (correctChars / 5) / minutes;
-    const netWpm = Math.max(0, Math.round(grossWpm - errorsRef.current / minutes));
-    const accuracy = typed.length === 0 ? 100 : Math.round((correctChars / typed.length) * 100);
-    return { wpm: netWpm || 0, accuracy: accuracy || 0, errors: errorsRef.current, elapsed };
+
+    // Standard formula:
+    // Gross WPM = all characters typed (right or wrong) / 5 / minutes
+    // Uncorrected errors = wrong chars still present in the typed text (NOT cumulative keystroke errors)
+    // Net WPM = Gross WPM - (uncorrected errors / minutes)
+    // Accuracy = correct chars / total chars typed
+    const totalTyped = typed.length;
+    const uncorrectedErrors = totalTyped - correctChars;
+    const grossWpm = (totalTyped / 5) / minutes;
+    const netWpm = Math.max(0, Math.round(grossWpm - uncorrectedErrors / minutes));
+    const accuracy = totalTyped === 0 ? 100 : Math.round((correctChars / totalTyped) * 100);
+
+    return { wpm: netWpm, accuracy, errors: uncorrectedErrors, elapsed };
   }, []);
 
   const finish = useCallback(() => {
