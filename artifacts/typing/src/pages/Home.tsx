@@ -144,7 +144,7 @@ export default function Home() {
       {/* Typing practice tool */}
       <section aria-label="Typing practice" className="mb-16">
         {!result ? (
-          <div>
+          <div className="sticky top-16 z-30 bg-background -mx-5 px-5 md:-mx-8 md:px-8 lg:mx-0 lg:px-0 pb-4 md:pb-0 md:static md:top-auto md:z-auto border-b border-border/30 md:border-transparent">
             <TypingHeader
               settings={settings}
               onSettingsChange={handleSettingsChange}
