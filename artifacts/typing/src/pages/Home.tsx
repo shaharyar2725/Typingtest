@@ -177,21 +177,21 @@ export default function Home() {
       </section>
 
       {/* Unique: Global Typing Speed Stats */}
-      <section className="mb-16">
+      <section className="mb-4">
         <SectionHeader>Global typing speed statistics</SectionHeader>
-        <p className="text-sm text-muted-foreground max-w-2xl mb-6">
+        <p className="text-sm text-muted-foreground max-w-2xl mb-8">
           Based on 10.4 million typing tests measured worldwide — here's where real typists actually stand.
         </p>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-8">
           {[
             { stat: '41.6 WPM', label: 'Global average', sub: 'across all adults', icon: TrendingUp, color: 'text-primary' },
             { stat: '65–75 WPM', label: 'Professional', sub: 'most office roles', icon: Target, color: 'text-emerald-500' },
             { stat: '15 min/day', label: 'To improve', sub: 'focused practice beats marathon sessions', icon: Clock, color: 'text-cyan-500' },
             { stat: '2–4 weeks', label: 'To see gains', sub: 'with daily deliberate practice', icon: Zap, color: 'text-amber-500' },
           ].map(({ stat, label, sub, icon: Icon, color }) => (
-            <div key={label} className="bg-card border border-border rounded-2xl p-4 sm:p-5">
-              <Icon className={`w-5 h-5 mb-3 ${color}`} />
-              <div className={`text-2xl sm:text-3xl font-extrabold leading-none mb-1 ${color}`}>{stat}</div>
+            <div key={label}>
+              <Icon className={`w-4 h-4 mb-2.5 ${color}`} />
+              <div className={`text-2xl sm:text-3xl font-extrabold leading-none mb-1.5 ${color}`}>{stat}</div>
               <div className="font-semibold text-sm text-foreground mb-0.5">{label}</div>
               <div className="text-xs text-muted-foreground">{sub}</div>
             </div>
@@ -199,16 +199,16 @@ export default function Home() {
         </div>
 
         {/* Speed tier table */}
-        <div className="mt-6 overflow-x-auto rounded-2xl border border-border">
-          <table className="w-full text-sm">
+        <div className="mt-10 overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-muted/60 border-b border-border">
-                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Speed tier</th>
-                <th className="text-center px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">WPM range</th>
-                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">What it means</th>
+              <tr className="border-b border-border">
+                <th className="text-left pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Speed tier</th>
+                <th className="text-center pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">WPM range</th>
+                <th className="text-left pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider hidden sm:table-cell">What it means</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border/70">
               {[
                 { tier: 'Beginner', range: '< 30 WPM', desc: 'Still looking at keys. Home-row practice will unlock the biggest gains.' },
                 { tier: 'Average', range: '30–50 WPM', desc: 'Global average (~41.6 WPM). Enough for everyday tasks with room to double your speed.' },
@@ -217,10 +217,10 @@ export default function Home() {
                 { tier: 'Fast', range: '80–100 WPM', desc: 'Deep muscle memory. Used by journalists, legal assistants, and experienced typists.' },
                 { tier: 'Elite', range: '100+ WPM', desc: 'Top 2% globally. Where competitive typists operate. Accuracy is what separates them.' },
               ].map(({ tier, range, desc }) => (
-                <tr key={tier} className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3 font-bold">{tier}</td>
-                  <td className="px-4 py-3 text-center font-mono font-semibold text-muted-foreground whitespace-nowrap">{range}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{desc}</td>
+                <tr key={tier}>
+                  <td className="py-3 font-bold">{tier}</td>
+                  <td className="py-3 text-center font-mono font-semibold text-muted-foreground whitespace-nowrap">{range}</td>
+                  <td className="py-3 text-muted-foreground hidden sm:table-cell">{desc}</td>
                 </tr>
               ))}
             </tbody>
@@ -229,41 +229,39 @@ export default function Home() {
       </section>
 
       {/* CTA — typing test */}
-      <section className="mb-16">
-        <div className="relative overflow-hidden bg-gradient-to-br from-primary/15 via-card to-card border border-border rounded-3xl p-6 sm:p-8">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div className="flex-1">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/15 text-primary text-xs font-bold mb-3">
-                <Zap className="w-3.5 h-3.5" />
-                Speed Test
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">Ready to test your speed?</h2>
-              <p className="text-muted-foreground max-w-lg">
-                Try the free <Link href="/typing-speed-test" className="text-primary font-semibold underline-offset-4 hover:underline">typing speed test</Link> and
-                see your official WPM score with a global percentile ranking. No account needed — just start typing.
-              </p>
+      <section className="mb-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-6 py-10 border-y border-border">
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-1.5 text-primary text-xs font-bold uppercase tracking-wider mb-3">
+              <Zap className="w-3.5 h-3.5" />
+              Speed Test
             </div>
-            <Link href="/typing-speed-test">
-              <Button size="lg" className="font-semibold rounded-xl shrink-0">
-                Start typing test
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">Ready to test your speed?</h2>
+            <p className="text-muted-foreground max-w-lg">
+              Try the free <Link href="/typing-speed-test" className="text-primary font-semibold underline-offset-4 hover:underline">typing speed test</Link> and
+              see your official WPM score with a global percentile ranking. No account needed — just start typing.
+            </p>
           </div>
+          <Link href="/typing-speed-test">
+            <Button size="lg" className="font-semibold rounded-xl shrink-0">
+              Start typing test
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+          </Link>
         </div>
       </section>
 
       {/* Course preview */}
       <SectionHeader>Touch typing course</SectionHeader>
 
-      <div className="space-y-3 mb-8">
+      <div className="divide-y divide-border mb-8">
         {LESSONS.slice(0, 5).map((lesson, i) => {
           const lp = (progress as any)[lesson.slug];
           const done = lp?.completed;
           return (
             <Link key={lesson.slug} href={`/lessons/${lesson.slug}`}>
-              <div className="group flex items-center gap-4 px-5 py-4 bg-card border border-border rounded-2xl hover:border-foreground/30 hover:shadow-sm transition-all cursor-pointer">
-                <div className={`flex items-center justify-center w-10 h-10 rounded-full shrink-0 transition-colors ${done ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' : 'bg-muted text-muted-foreground group-hover:bg-foreground group-hover:text-background'}`}>
+              <div className="group flex items-center gap-4 py-4 hover:bg-muted/40 -mx-3 px-3 rounded-xl transition-smooth cursor-pointer">
+                <div className={`flex items-center justify-center w-9 h-9 rounded-full shrink-0 transition-colors ${done ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' : 'bg-muted text-muted-foreground group-hover:bg-foreground group-hover:text-background'}`}>
                   {done ? <CheckCircle2 className="w-5 h-5" /> : <Play className="w-4 h-4 ml-0.5" fill="currentColor" />}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -342,12 +340,12 @@ export default function Home() {
       {/* FAQ */}
       <SectionHeader>Typing practice FAQ</SectionHeader>
 
-      <div className="max-w-3xl mx-auto space-y-3 mb-8">
+      <div className="max-w-3xl mx-auto divide-y divide-border mb-8">
         {FAQS.map((f) => (
-          <details key={f.q} className="group bg-card border border-border rounded-2xl px-5 py-4 hover:border-foreground/30 transition-colors">
-            <summary className="flex items-center justify-between cursor-pointer list-none font-semibold text-base">
+          <details key={f.q} className="group py-4">
+            <summary className="flex items-center justify-between gap-4 cursor-pointer list-none font-semibold text-base [&::-webkit-details-marker]:hidden">
               <span>{f.q}</span>
-              <span className="text-muted-foreground group-open:rotate-45 transition-transform text-xl leading-none ml-4 shrink-0">+</span>
+              <span className="text-muted-foreground group-open:rotate-45 transition-transform text-xl leading-none shrink-0">+</span>
             </summary>
             <div className="mt-3 text-sm text-muted-foreground leading-relaxed">{f.a}</div>
           </details>

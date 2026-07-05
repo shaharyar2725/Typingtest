@@ -33,28 +33,28 @@ export function ProfessionSpeedTable({ userWpm }: ProfessionSpeedTableProps) {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-2xl border border-border">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm border-collapse">
           <thead>
-            <tr className="bg-muted/60 border-b border-border">
-              <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Role</th>
-              <th className="text-center px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider whitespace-nowrap">Min WPM</th>
-              <th className="text-center px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider whitespace-nowrap">Typical WPM</th>
-              <th className="text-center px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider whitespace-nowrap">Accuracy</th>
+            <tr className="border-b border-border">
+              <th className="text-left pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Role</th>
+              <th className="text-center pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider whitespace-nowrap">Min WPM</th>
+              <th className="text-center pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider whitespace-nowrap">Typical WPM</th>
+              <th className="text-center pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider whitespace-nowrap">Accuracy</th>
               {userWpm !== undefined && (
-                <th className="text-center px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider whitespace-nowrap">Your score</th>
+                <th className="text-center pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider whitespace-nowrap">Your score</th>
               )}
-              <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider hidden lg:table-cell">Note</th>
+              <th className="text-left pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider hidden lg:table-cell">Note</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-border">
+          <tbody className="divide-y divide-border/70">
             {filtered.map((prof) => {
               const qualifies = userWpm !== undefined && userWpm >= prof.minWpm;
               const almostQualifies = userWpm !== undefined && userWpm >= prof.minWpm - 10 && userWpm < prof.minWpm;
               return (
                 <tr
                   key={prof.role}
-                  className={`transition-colors hover:bg-muted/40 ${
+                  className={`transition-smooth hover:bg-muted/40 ${
                     userWpm !== undefined
                       ? qualifies
                         ? 'bg-emerald-500/5'
@@ -64,21 +64,21 @@ export function ProfessionSpeedTable({ userWpm }: ProfessionSpeedTableProps) {
                       : ''
                   }`}
                 >
-                  <td className="px-4 py-3 font-medium">
+                  <td className="py-3 font-medium">
                     <div>{prof.role}</div>
                     <div className="text-xs text-muted-foreground mt-0.5">{prof.category}</div>
                   </td>
-                  <td className="px-4 py-3 text-center font-bold tabular-nums">
+                  <td className="py-3 text-center font-bold tabular-nums">
                     {prof.minWpm > 0 ? `${prof.minWpm}+` : '—'}
                   </td>
-                  <td className="px-4 py-3 text-center font-semibold tabular-nums text-muted-foreground">
+                  <td className="py-3 text-center font-semibold tabular-nums text-muted-foreground">
                     {prof.typicalWpm}
                   </td>
-                  <td className="px-4 py-3 text-center tabular-nums text-muted-foreground">
+                  <td className="py-3 text-center tabular-nums text-muted-foreground">
                     {prof.accuracy}%
                   </td>
                   {userWpm !== undefined && (
-                    <td className="px-4 py-3 text-center">
+                    <td className="py-3 text-center">
                       {qualifies ? (
                         <span className="inline-flex items-center gap-1 text-emerald-600 font-semibold text-xs">
                           <CheckCircle2 className="w-4 h-4" /> Qualifies
@@ -94,7 +94,7 @@ export function ProfessionSpeedTable({ userWpm }: ProfessionSpeedTableProps) {
                       )}
                     </td>
                   )}
-                  <td className="px-4 py-3 text-xs text-muted-foreground hidden lg:table-cell max-w-[220px]">
+                  <td className="py-3 text-xs text-muted-foreground hidden lg:table-cell max-w-[220px]">
                     {prof.note}
                   </td>
                 </tr>

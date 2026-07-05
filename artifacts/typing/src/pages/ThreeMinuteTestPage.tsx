@@ -162,7 +162,7 @@ export default function ThreeMinuteTestPage() {
       </section>
 
       {/* Unique angle: 3-min as the daily benchmark sweet spot */}
-      <section className="mb-16 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <section className="mb-16 grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-6 py-8 border-y border-border">
         {[
           {
             icon: Clock,
@@ -186,7 +186,7 @@ export default function ThreeMinuteTestPage() {
             desc: 'Civil service agencies, insurance companies, and general admin roles often use a 3-minute typing test. Qualifying at 60+ WPM here opens the door to most entry-level office positions.',
           },
         ].map(({ icon: Icon, color, title, sub, desc }) => (
-          <div key={title} className="bg-card border border-border rounded-2xl p-5">
+          <div key={title}>
             <Icon className={`w-5 h-5 mb-3 ${color}`} />
             <div className={`text-xl font-extrabold mb-0.5 ${color}`}>{title}</div>
             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">{sub}</div>

@@ -112,11 +112,11 @@ export default function LearnTypingPage() {
       </header>
 
       {/* Stat cards row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-        <div className="bg-card border border-border rounded-2xl p-5 flex flex-col gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 py-8 mb-4 border-y border-border">
+        <div className="flex flex-col gap-3">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-300">
-              <CheckCircle2 className="w-7 h-7" strokeWidth={2.5} />
+            <div className="w-11 h-11 rounded-full flex items-center justify-center bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-300">
+              <CheckCircle2 className="w-6 h-6" strokeWidth={2.5} />
             </div>
             <div>
               <div className="text-3xl font-extrabold leading-none">{Math.round(overallProgress)}%</div>
@@ -127,32 +127,32 @@ export default function LearnTypingPage() {
           <div className="text-xs text-muted-foreground">{completedCount} of {LESSONS.length} lessons</div>
         </div>
 
-        <div className="bg-card border border-border rounded-2xl p-5 flex flex-col gap-3">
+        <div className="flex flex-col gap-3 sm:pl-8 sm:border-l sm:border-border">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center bg-cyan-50 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-300">
-              <Trophy className="w-7 h-7" strokeWidth={2.5} />
+            <div className="w-11 h-11 rounded-full flex items-center justify-center bg-cyan-50 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-300">
+              <Trophy className="w-6 h-6" strokeWidth={2.5} />
             </div>
             <div>
               <div className="text-3xl font-extrabold leading-none">{bestWpm}</div>
               <div className="text-sm font-semibold text-muted-foreground mt-1">speed (WPM)</div>
             </div>
           </div>
-          <div className="text-xs text-muted-foreground border-t border-border pt-3">
+          <div className="text-xs text-muted-foreground">
             {bestWpm === 0 ? 'no runs yet' : 'best across lessons'}
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-2xl p-5 flex flex-col gap-3">
+        <div className="flex flex-col gap-3 sm:pl-8 sm:border-l sm:border-border">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-300">
-              <Target className="w-7 h-7" strokeWidth={2.5} />
+            <div className="w-11 h-11 rounded-full flex items-center justify-center bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-300">
+              <Target className="w-6 h-6" strokeWidth={2.5} />
             </div>
             <div>
               <div className="text-3xl font-extrabold leading-none">{bestAcc}%</div>
               <div className="text-sm font-semibold text-muted-foreground mt-1">accuracy</div>
             </div>
           </div>
-          <div className="text-xs text-muted-foreground border-t border-border pt-3">
+          <div className="text-xs text-muted-foreground">
             {bestAcc === 0 ? 'no runs yet' : 'highest run accuracy'}
           </div>
         </div>
@@ -161,14 +161,14 @@ export default function LearnTypingPage() {
       {groups.map((group) => (
         <div key={group.title}>
           <SectionHeader>{group.title}</SectionHeader>
-          <div className="space-y-3">
+          <div className="divide-y divide-border">
             {group.lessons.map((lesson) => {
               const lp = progress[lesson.slug];
               const done = lp?.completed;
               const idx = LESSONS.indexOf(lesson) + 1;
               return (
                 <Link key={lesson.slug} href={`/lessons/${lesson.slug}`}>
-                  <div className="group flex items-center gap-4 px-5 py-4 bg-card border border-border rounded-2xl hover:border-foreground/30 hover:shadow-sm transition-all cursor-pointer">
+                  <div className="group flex items-center gap-4 py-4 -mx-3 px-3 rounded-xl hover:bg-muted/40 transition-smooth cursor-pointer">
                     <div className={`flex items-center justify-center w-10 h-10 rounded-full shrink-0 transition-colors ${done ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' : 'bg-muted text-muted-foreground group-hover:bg-foreground group-hover:text-background'}`}>
                       {done ? <CheckCircle2 className="w-5 h-5" /> : <Play className="w-4 h-4 ml-0.5" fill="currentColor" />}
                     </div>
@@ -198,16 +198,16 @@ export default function LearnTypingPage() {
           The choice of typing method has a measurable impact on speed, accuracy, and daily productivity. Here's what the data shows.
         </p>
 
-        <div className="overflow-x-auto rounded-2xl border border-border mb-6">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto mb-8">
+          <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-muted/60 border-b border-border">
-                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Metric</th>
-                <th className="text-center px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Hunt & Peck</th>
-                <th className="text-center px-4 py-3 font-semibold text-primary text-xs uppercase tracking-wider">Touch Typing</th>
+              <tr className="border-b border-border">
+                <th className="text-left pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Metric</th>
+                <th className="text-center pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Hunt & Peck</th>
+                <th className="text-center pb-3 font-semibold text-primary text-xs uppercase tracking-wider">Touch Typing</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border/70">
               {[
                 { metric: 'Average WPM', huntPeck: '27–37 WPM', touchTyping: '50–80 WPM' },
                 { metric: 'Error rate', huntPeck: 'Higher (visual distraction)', touchTyping: 'Lower (tactile feedback)' },
@@ -217,10 +217,10 @@ export default function LearnTypingPage() {
                 { metric: 'Hours to learn', huntPeck: 'Innate (most people self-taught)', touchTyping: '20–40 hrs of practice' },
                 { metric: 'Productivity (8 hr day)', huntPeck: 'Baseline', touchTyping: 'Up to 2 hrs/day extra output' },
               ].map(({ metric, huntPeck, touchTyping }) => (
-                <tr key={metric} className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3 font-medium">{metric}</td>
-                  <td className="px-4 py-3 text-center text-muted-foreground">{huntPeck}</td>
-                  <td className="px-4 py-3 text-center font-semibold text-primary">{touchTyping}</td>
+                <tr key={metric}>
+                  <td className="py-3 font-medium">{metric}</td>
+                  <td className="py-3 text-center text-muted-foreground">{huntPeck}</td>
+                  <td className="py-3 text-center font-semibold text-primary">{touchTyping}</td>
                 </tr>
               ))}
             </tbody>
@@ -228,13 +228,13 @@ export default function LearnTypingPage() {
         </div>
 
         {/* Learning timeline */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-6">
           {[
             { icon: Clock, color: 'text-primary', title: '2–4 weeks', sub: 'to functional touch typing', desc: '30–40 WPM with all ten fingers. This is your first major milestone — it feels uncomfortable, then suddenly clicks.' },
             { icon: TrendingUp, color: 'text-emerald-500', title: '4–8 weeks', sub: 'to above average', desc: 'Past 50 WPM. You\'re faster than most adults. Your fingers are finding keys without looking — the habit is set.' },
             { icon: Trophy, color: 'text-cyan-500', title: '2–4 months', sub: 'to professional speed', desc: '65–80 WPM. Deep muscle memory across the full keyboard. This is the speed range most professional roles require.' },
           ].map(({ icon: Icon, color, title, sub, desc }) => (
-            <div key={title} className="bg-card border border-border rounded-2xl p-5">
+            <div key={title}>
               <Icon className={`w-5 h-5 mb-3 ${color}`} />
               <div className={`text-xl font-extrabold mb-0.5 ${color}`}>{title}</div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">{sub}</div>

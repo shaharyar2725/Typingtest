@@ -186,7 +186,7 @@ export default function TwentyMinuteTestPage() {
             desc: 'Court reporter training programs use extended duration tests — often 20–30 minutes — because live proceedings run continuously. If you\'re training for court reporting, 20-minute practice tests are a core part of the curriculum.',
           },
         ].map(({ icon: Icon, color, title, sub, desc }) => (
-          <div key={title} className="bg-card border border-border rounded-2xl p-5">
+          <div key={title}>
             <Icon className={`w-5 h-5 mb-3 ${color}`} />
             <div className={`text-xl font-extrabold mb-0.5 ${color}`}>{title}</div>
             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">{sub}</div>
@@ -196,7 +196,7 @@ export default function TwentyMinuteTestPage() {
       </section>
 
       {/* Ergonomics section — unique angle for 20-min page */}
-      <section className="mb-16 p-6 sm:p-8 bg-card border border-border rounded-3xl">
+      <section className="mb-16">
         <h2 className="text-xl font-extrabold tracking-tight mb-2">Ergonomics matter most at 20 minutes</h2>
         <p className="text-sm text-muted-foreground mb-6 max-w-2xl">
           Poor posture and wrist position are performance issues, not just comfort issues. Over 20 minutes,
@@ -225,7 +225,7 @@ export default function TwentyMinuteTestPage() {
               good: 'Arms-length (50–70 cm) — reduces eye fatigue, keeps reading rhythm smooth',
             },
           ].map(({ title, bad, good }) => (
-            <div key={title} className="rounded-2xl border border-border p-4">
+            <div key={title} className="py-2">
               <div className="font-bold text-sm mb-3">{title}</div>
               <div className="space-y-2">
                 <div className="flex gap-2 text-xs">

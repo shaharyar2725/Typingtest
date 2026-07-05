@@ -17,4 +17,4 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
-Sitemap: https://typeflow.app/sitemap.xml
+Sitemap: https://taketypingtest.com/sitemap.xml

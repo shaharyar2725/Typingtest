@@ -99,7 +99,7 @@ export function ResultCard({ result, onRestart, showPercentile = true }: ResultC
             </div>
           </div>
 
-          <div className="h-[220px] sm:h-[260px] w-full bg-card border border-border rounded-2xl p-3 sm:p-4">
+          <div className="h-[220px] sm:h-[260px] w-full bg-muted/30 rounded-2xl p-3 sm:p-4">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>

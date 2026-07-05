@@ -11,7 +11,7 @@ export function WpmPercentile({ wpm }: WpmPercentileProps) {
   const barWidth = Math.min(100, Math.max(2, percentile));
 
   return (
-    <div className="w-full max-w-3xl mx-auto mt-6 p-5 sm:p-6 bg-card border border-border rounded-2xl">
+    <div className="w-full max-w-3xl mx-auto mt-6 py-6 border-t border-border">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
         <div>
           <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">

@@ -166,7 +166,7 @@ export default function TenMinuteTestPage() {
       </section>
 
       {/* Unique angle: professional certification context */}
-      <section className="mb-16 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <section className="mb-16 grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-6 py-8 border-y border-border">
         {[
           {
             icon: Shield,
@@ -190,7 +190,7 @@ export default function TenMinuteTestPage() {
             desc: 'Professional transcription agencies typically require 65–80 WPM over 10 minutes with 97%+ accuracy. Consistent performance here signals readiness for high-volume production work.',
           },
         ].map(({ icon: Icon, color, title, sub, desc }) => (
-          <div key={title} className="bg-card border border-border rounded-2xl p-5">
+          <div key={title}>
             <Icon className={`w-5 h-5 mb-3 ${color}`} />
             <div className={`text-xl font-extrabold mb-0.5 ${color}`}>{title}</div>
             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">{sub}</div>
@@ -200,23 +200,23 @@ export default function TenMinuteTestPage() {
       </section>
 
       {/* Accuracy degradation chart — data section */}
-      <section className="mb-16 p-6 sm:p-8 bg-card border border-border rounded-3xl">
+      <section className="mb-16">
         <h2 className="text-xl font-extrabold tracking-tight mb-2">How WPM and accuracy degrade over 10 minutes</h2>
         <p className="text-sm text-muted-foreground mb-6 max-w-2xl">
           Most typists don't experience a linear decline. Instead, performance falls in two distinct phases.
           Understanding this pattern helps you train more effectively.
         </p>
-        <div className="overflow-x-auto rounded-2xl border border-border">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-muted/60 border-b border-border">
-                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Phase</th>
-                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Minutes</th>
-                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">What happens</th>
-                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Training fix</th>
+              <tr className="border-b border-border">
+                <th className="text-left pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Phase</th>
+                <th className="text-left pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Minutes</th>
+                <th className="text-left pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">What happens</th>
+                <th className="text-left pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Training fix</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border/70">
               {[
                 {
                   phase: 'Warmup', minutes: '0–2 min', what: 'Speed ramps up as fingers settle into rhythm. Accuracy is highest here — focus is sharp.',

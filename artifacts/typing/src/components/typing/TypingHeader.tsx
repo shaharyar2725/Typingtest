@@ -63,7 +63,7 @@ export function TypingHeader({
   return (
     <div className="w-full max-w-3xl mx-auto">
       {/* Top bar: mode pills (left) + actions (right). Stacks on mobile. */}
-      <div className="relative bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
+      <div className="relative bg-card rounded-2xl shadow-[var(--shadow-sm)] overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
           {/* Locked label only — mode pills removed per design */}
           <div className="flex items-center justify-center sm:justify-start gap-1 flex-1 min-w-0 order-2 sm:order-1">

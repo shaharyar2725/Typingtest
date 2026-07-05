@@ -161,22 +161,22 @@ export default function FiveMinuteTestPage() {
       </section>
 
       {/* Unique: WPM Endurance Ratio — concept no competitor covers */}
-      <section className="mb-16 p-6 sm:p-8 bg-card border border-border rounded-3xl">
+      <section className="mb-16">
         <h2 className="text-xl font-extrabold tracking-tight mb-2">Your WPM endurance ratio</h2>
         <p className="text-sm text-muted-foreground mb-6 max-w-2xl">
           Most typists think only about their peak WPM. But the gap between your 1-minute score and your
           5-minute score reveals just as much. We call this the <strong>WPM endurance ratio</strong>.
         </p>
-        <div className="overflow-x-auto rounded-2xl border border-border">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-muted/60 border-b border-border">
-                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Endurance ratio</th>
-                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">5-min vs 1-min WPM</th>
-                <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">What it means</th>
+              <tr className="border-b border-border">
+                <th className="text-left pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Endurance ratio</th>
+                <th className="text-left pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">5-min vs 1-min WPM</th>
+                <th className="text-left pb-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">What it means</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border/70">
               {[
                 { ratio: '95%+', range: '57+ WPM on 5-min if 60 on 1-min', label: 'Elite endurance', desc: 'Muscle memory is so deep that fatigue barely registers. Competitive typists and seasoned professionals.' },
                 { ratio: '88–94%', range: '53–56 WPM on 5-min if 60 on 1-min', label: 'Solid endurance', desc: 'Normal for experienced touch typists. Speed holds up throughout the full test.' },
