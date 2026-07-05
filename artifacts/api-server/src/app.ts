@@ -30,14 +30,6 @@ const generalLimiter = rateLimit({
   message: { error: "Too many requests — please try again later." },
 });
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 20,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: "Too many authentication attempts — please try again later." },
-});
-
 const app: Express = express();
 
 app.set("trust proxy", 1);
@@ -81,8 +73,6 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(generalLimiter);
-app.use("/api/auth/login", authLimiter);
-app.use("/api/auth/signup", authLimiter);
 app.use("/api", router);
 
 export default app;
