@@ -50,12 +50,11 @@ export function Header() {
       <div className="container flex h-16 max-w-screen-xl items-center px-5 md:px-8 mx-auto">
 
         {/* Logo mark */}
-        <Link href="/" className="flex items-center gap-2.5 hover:opacity-75 transition-opacity group">
-          <img src={logo} alt="TakeTypingTest logo" className="w-6 h-6 shrink-0" />
+        <Link href="/" className="flex items-center hover:opacity-75 transition-opacity group">
+          <img src={logo} alt="" aria-hidden="true" className="h-6 w-6 -mr-0.5 shrink-0 translate-y-[1px] object-contain" />
           <span className="font-extrabold text-lg tracking-tight leading-none">
-            <span className="text-foreground">take</span>
-            <span className="text-primary">typing</span>
-            <span className="text-foreground">test</span>
+            <span className="text-foreground">aketyping</span>
+            <span className="text-primary">test</span>
           </span>
         </Link>
 

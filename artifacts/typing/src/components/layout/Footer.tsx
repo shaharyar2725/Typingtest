@@ -9,12 +9,11 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 lg:gap-16">
 
           <div className="col-span-1">
-            <Link href="/" className="flex items-center gap-2.5 mb-4 w-fit hover:opacity-75 transition-opacity">
-              <img src={logo} alt="TakeTypingTest logo" className="w-5 h-5 shrink-0" />
+            <Link href="/" className="flex items-center mb-4 w-fit hover:opacity-75 transition-opacity">
+              <img src={logo} alt="" aria-hidden="true" className="h-5 w-5 -mr-0.5 shrink-0 translate-y-[1px] object-contain" />
               <span className="font-extrabold text-base tracking-tight leading-none">
-                <span className="text-foreground">take</span>
-                <span className="text-primary">typing</span>
-                <span className="text-foreground">test</span>
+                <span className="text-foreground">aketyping</span>
+                <span className="text-primary">test</span>
               </span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">
