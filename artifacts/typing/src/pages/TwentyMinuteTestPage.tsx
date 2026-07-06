@@ -5,7 +5,6 @@ import { TypingHeader } from '@/components/typing/TypingHeader';
 import { ResultCard } from '@/components/typing/ResultCard';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
-import { Flame, Brain, BarChart2 } from 'lucide-react';
 
 const SITE_ORIGIN = 'https://taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/20-minute-typing-test`;
@@ -162,34 +161,23 @@ export default function TwentyMinuteTestPage() {
       </section>
 
       {/* Unique angle: marathon stress-test framing */}
-      <section className="mb-16 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <section className="mb-16 grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-6 py-8 border-y border-border">
         {[
           {
-            icon: Flame,
-            color: 'text-orange-500',
             title: 'The marathon test',
-            sub: 'For serious typists only',
             desc: 'At 20 minutes, every weakness in your typing becomes measurable. Shallow muscle memory, poor posture, weak key combinations: all of it surfaces. This is the stress-test that reveals your real structural skill level.',
           },
           {
-            icon: Brain,
-            color: 'text-primary',
             title: 'Mental endurance',
-            sub: 'Concentration under load',
             desc: 'By minute 12–15, mental fatigue compounds on physical fatigue. The typists who score well at 20 minutes have trained concentration as deliberately as they\'ve trained speed. Both matter equally here.',
           },
           {
-            icon: BarChart2,
-            color: 'text-emerald-500',
             title: 'Court reporter standard',
-            sub: 'Training benchmark format',
             desc: 'Court reporter training programs use extended duration tests, often 20–30 minutes, because live proceedings run continuously. If you\'re training for court reporting, 20-minute practice tests are a core part of the curriculum.',
           },
-        ].map(({ icon: Icon, color, title, sub, desc }) => (
+        ].map(({ title, desc }) => (
           <div key={title}>
-            <Icon className={`w-5 h-5 mb-3 ${color}`} />
-            <div className={`text-xl font-extrabold mb-0.5 ${color}`}>{title}</div>
-            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">{sub}</div>
+            <h3 className="text-base font-bold mb-1.5">{title}</h3>
             <p className="text-sm text-muted-foreground">{desc}</p>
           </div>
         ))}

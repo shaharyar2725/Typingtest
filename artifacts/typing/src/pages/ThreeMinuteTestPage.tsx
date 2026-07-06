@@ -5,7 +5,6 @@ import { TypingHeader } from '@/components/typing/TypingHeader';
 import { ResultCard } from '@/components/typing/ResultCard';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
-import { Clock, RefreshCw, TrendingUp } from 'lucide-react';
 
 const SITE_ORIGIN = 'https://taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/3-minute-typing-test`;
@@ -165,31 +164,20 @@ export default function ThreeMinuteTestPage() {
       <section className="mb-16 grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-6 py-8 border-y border-border">
         {[
           {
-            icon: Clock,
-            color: 'text-primary',
-            title: '3 minutes',
-            sub: 'The daily check-in',
+            title: '3 minutes, the daily check-in',
             desc: 'Long enough to smooth out lucky streaks and bad starts. Short enough to do twice before breakfast. The most efficient daily benchmark format.',
           },
           {
-            icon: TrendingUp,
-            color: 'text-emerald-500',
-            title: 'Cruising speed',
-            sub: 'Not your sprint peak',
+            title: 'Cruising speed, not your sprint peak',
             desc: '3 minutes separates your true sustainable WPM from your 60-second burst. The gap between the two tells you exactly how much endurance work you need.',
           },
           {
-            icon: RefreshCw,
-            color: 'text-cyan-500',
-            title: 'Employer standard',
-            sub: 'Government & office roles',
+            title: 'Employer standard for office roles',
             desc: 'Civil service agencies, insurance companies, and general admin roles often use a 3-minute typing test. Qualifying at 60+ WPM here opens the door to most entry-level office positions.',
           },
-        ].map(({ icon: Icon, color, title, sub, desc }) => (
+        ].map(({ title, desc }) => (
           <div key={title}>
-            <Icon className={`w-5 h-5 mb-3 ${color}`} />
-            <div className={`text-xl font-extrabold mb-0.5 ${color}`}>{title}</div>
-            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">{sub}</div>
+            <h3 className="text-base font-bold mb-1.5">{title}</h3>
             <p className="text-sm text-muted-foreground">{desc}</p>
           </div>
         ))}

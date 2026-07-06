@@ -6,7 +6,7 @@ import { ResultCard } from '@/components/typing/ResultCard';
 import { SectionHeader } from '@/components/SectionHeader';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
-import { Play, CheckCircle2, ArrowRight, Zap, TrendingUp, Clock, Target } from 'lucide-react';
+import { Play, CheckCircle2, ArrowRight, TrendingUp, Clock, Target, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LESSONS } from '@/lib/lessons';
 
@@ -232,10 +232,6 @@ export default function Home() {
       <section className="mb-4">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-6 py-10 border-y border-border">
           <div className="flex-1">
-            <div className="inline-flex items-center gap-1.5 text-primary text-xs font-bold uppercase tracking-wider mb-3">
-              <Zap className="w-3.5 h-3.5" />
-              Speed Test
-            </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">Ready to test your speed?</h2>
             <p className="text-muted-foreground max-w-lg">
               Try the free <Link href="/typing-speed-test" className="text-primary font-semibold underline-offset-4 hover:underline">typing speed test</Link> and

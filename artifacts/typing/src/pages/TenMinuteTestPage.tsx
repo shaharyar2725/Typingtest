@@ -5,7 +5,6 @@ import { TypingHeader } from '@/components/typing/TypingHeader';
 import { ResultCard } from '@/components/typing/ResultCard';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
-import { Shield, Activity, Award } from 'lucide-react';
 
 const SITE_ORIGIN = 'https://taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/10-minute-typing-test`;
@@ -169,31 +168,20 @@ export default function TenMinuteTestPage() {
       <section className="mb-16 grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-6 py-8 border-y border-border">
         {[
           {
-            icon: Shield,
-            color: 'text-primary',
             title: 'Civil service standard',
-            sub: 'Government & federal roles',
             desc: 'Many government typing certification boards use 10-minute tests as the definitive format. It\'s long enough to rule out lucky sessions and short bursts masquerading as sustained ability.',
           },
           {
-            icon: Activity,
-            color: 'text-emerald-500',
             title: 'Endurance revealed',
-            sub: 'Where fatigue becomes measurable',
             desc: 'In minute 7–10, concentration lapses and finger fatigue compound in ways that 5-minute tests don\'t capture. Your score here is your true professional baseline.',
           },
           {
-            icon: Award,
-            color: 'text-amber-500',
             title: 'Transcription benchmark',
-            sub: '65–80 WPM sustained',
             desc: 'Professional transcription agencies typically require 65–80 WPM over 10 minutes with 97%+ accuracy. Consistent performance here signals readiness for high-volume production work.',
           },
-        ].map(({ icon: Icon, color, title, sub, desc }) => (
+        ].map(({ title, desc }) => (
           <div key={title}>
-            <Icon className={`w-5 h-5 mb-3 ${color}`} />
-            <div className={`text-xl font-extrabold mb-0.5 ${color}`}>{title}</div>
-            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">{sub}</div>
+            <h3 className="text-base font-bold mb-1.5">{title}</h3>
             <p className="text-sm text-muted-foreground">{desc}</p>
           </div>
         ))}

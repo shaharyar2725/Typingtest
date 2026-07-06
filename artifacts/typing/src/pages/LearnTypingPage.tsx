@@ -4,7 +4,7 @@ import { LESSONS } from '@/lib/lessons';
 import { loadState } from '@/lib/storage';
 import { SectionHeader } from '@/components/SectionHeader';
 import { Progress } from '@/components/ui/progress';
-import { Trophy, Target, Play, CheckCircle2, Clock, TrendingUp } from 'lucide-react';
+import { Trophy, Target, Play, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 
 const SITE_ORIGIN = 'https://taketypingtest.com';
@@ -228,16 +228,14 @@ export default function LearnTypingPage() {
         </div>
 
         {/* Learning timeline */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-6 py-8 border-y border-border">
           {[
-            { icon: Clock, color: 'text-primary', title: '2–4 weeks', sub: 'to functional touch typing', desc: '30–40 WPM with all ten fingers. This is your first major milestone. It feels uncomfortable, then suddenly clicks.' },
-            { icon: TrendingUp, color: 'text-emerald-500', title: '4–8 weeks', sub: 'to above average', desc: 'Past 50 WPM. You\'re faster than most adults, and your fingers are finding keys without looking. The habit is set.' },
-            { icon: Trophy, color: 'text-cyan-500', title: '2–4 months', sub: 'to professional speed', desc: '65–80 WPM. Deep muscle memory across the full keyboard. This is the speed range most professional roles require.' },
-          ].map(({ icon: Icon, color, title, sub, desc }) => (
+            { title: '2–4 weeks to functional touch typing', desc: '30–40 WPM with all ten fingers. This is your first major milestone. It feels uncomfortable, then suddenly clicks.' },
+            { title: '4–8 weeks to above average', desc: 'Past 50 WPM. You\'re faster than most adults, and your fingers are finding keys without looking. The habit is set.' },
+            { title: '2–4 months to professional speed', desc: '65–80 WPM. Deep muscle memory across the full keyboard. This is the speed range most professional roles require.' },
+          ].map(({ title, desc }) => (
             <div key={title}>
-              <Icon className={`w-5 h-5 mb-3 ${color}`} />
-              <div className={`text-xl font-extrabold mb-0.5 ${color}`}>{title}</div>
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">{sub}</div>
+              <h3 className="text-base font-bold mb-1.5">{title}</h3>
               <p className="text-sm text-muted-foreground">{desc}</p>
             </div>
           ))}
