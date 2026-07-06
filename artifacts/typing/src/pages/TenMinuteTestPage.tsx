@@ -13,15 +13,15 @@ const PAGE_URL = `${SITE_ORIGIN}/10-minute-typing-test`;
 const FAQS = [
   {
     q: 'What is a 10-minute typing test?',
-    a: 'A 10-minute typing test measures your sustained typing speed and accuracy over a full 10 minutes. It\'s used by professional transcription agencies, legal and medical offices, and government bodies that need to verify a typist can maintain reliable performance across an extended session — not just a quick sprint. It\'s one of the most demanding standard typing test formats.',
+    a: 'A 10-minute typing test measures your sustained typing speed and accuracy over a full 10 minutes. It\'s used by professional transcription agencies, legal and medical offices, and government bodies that need to verify a typist can maintain reliable performance across an extended session, not just a quick sprint. It\'s one of the most demanding standard typing test formats.',
   },
   {
     q: 'Who uses 10-minute typing tests?',
-    a: 'Professional transcription agencies, federal and state government civil service boards, some legal certification programs, and advanced data-entry employers use 10-minute tests. Any role that involves sustained high-volume typing — where performance over hours, not minutes, matters — benefits from a 10-minute assessment.',
+    a: 'Professional transcription agencies, federal and state government civil service boards, some legal certification programs, and advanced data-entry employers use 10-minute tests. Any role that involves sustained high-volume typing, where performance over hours, not minutes, matters, benefits from a 10-minute assessment.',
   },
   {
     q: 'What WPM is considered good on a 10-minute test?',
-    a: 'Maintaining 55+ WPM over 10 minutes is solid for most professional roles. 65–70 WPM sustained is excellent and qualifies for virtually all data-entry, transcription, and legal support positions. 80+ WPM over 10 minutes is elite — roughly the top 5% of typists. Note that most people score 10–20% lower on a 10-minute test than on their 1-minute peak.',
+    a: 'Maintaining 55+ WPM over 10 minutes is solid for most professional roles. 65–70 WPM sustained is excellent and qualifies for virtually all data-entry, transcription, and legal support positions. 80+ WPM over 10 minutes is elite, roughly the top 5% of typists. Note that most people score 10–20% lower on a 10-minute test than on their 1-minute peak.',
   },
   {
     q: 'What is a good accuracy for a 10-minute typing test?',
@@ -29,15 +29,15 @@ const FAQS = [
   },
   {
     q: 'How much slower is a 10-minute test than a 1-minute test?',
-    a: 'Most typists score 10–20% lower on a 10-minute test compared to their 1-minute peak. An endurance drop of less than 10% indicates strong muscle memory. A drop of 20%+ suggests that sustained practice at moderate pace — not sprint practice — is the most effective training approach.',
+    a: 'Most typists score 10–20% lower on a 10-minute test compared to their 1-minute peak. An endurance drop of less than 10% indicates strong muscle memory. A drop of 20%+ suggests that sustained practice at moderate pace, not sprint practice, is the most effective training approach.',
   },
   {
     q: 'How should I train for a 10-minute typing test?',
-    a: 'Start with daily 5-minute tests until you can sustain your target WPM consistently. Then extend to 10-minute sessions at 85–90% of your 1-minute peak speed. Accuracy is especially critical over 10 minutes — every error clusters at different points in the session, so monitor where your accuracy starts dropping and build drills targeting those patterns.',
+    a: 'Start with daily 5-minute tests until you can sustain your target WPM consistently. Then extend to 10-minute sessions at 85–90% of your 1-minute peak speed. Accuracy is especially critical over 10 minutes. Every error clusters at different points in the session, so monitor where your accuracy starts dropping and build drills targeting those patterns.',
   },
   {
     q: 'Is this 10-minute typing test free?',
-    a: 'Yes — completely free, no account required, and results are instant. Retake as many times as you need.',
+    a: 'Yes. It\'s completely free, no account required, and results are instant. Retake as many times as you need.',
   },
 ];
 
@@ -45,7 +45,7 @@ export default function TenMinuteTestPage() {
   useSEO({
     title: '10 Minute Typing Test — Professional Endurance WPM | TakeTypingTest',
     description:
-      'Free 10-minute typing test — the professional endurance standard used by transcription agencies and civil service boards. Measure your sustained WPM, accuracy, and global percentile. No signup.',
+      'Free 10-minute typing test, the professional endurance standard used by transcription agencies and civil service boards. Measure your sustained WPM, accuracy, and global percentile. No signup.',
     keywords:
       '10 minute typing test, ten minute typing test, 10 min typing test, professional typing test, transcription typing test, civil service typing test, endurance typing test 10 minutes, wpm test 10 minutes',
     canonical: PAGE_URL,
@@ -173,7 +173,7 @@ export default function TenMinuteTestPage() {
             color: 'text-primary',
             title: 'Civil service standard',
             sub: 'Government & federal roles',
-            desc: 'Many government typing certification boards use 10-minute tests as the definitive format — it\'s long enough to rule out lucky sessions and short bursts masquerading as sustained ability.',
+            desc: 'Many government typing certification boards use 10-minute tests as the definitive format. It\'s long enough to rule out lucky sessions and short bursts masquerading as sustained ability.',
           },
           {
             icon: Activity,
@@ -199,7 +199,7 @@ export default function TenMinuteTestPage() {
         ))}
       </section>
 
-      {/* Accuracy degradation chart — data section */}
+      {/* Accuracy degradation chart: data section */}
       <section className="mb-16">
         <h2 className="text-xl font-extrabold tracking-tight mb-2">How WPM and accuracy degrade over 10 minutes</h2>
         <p className="text-sm text-muted-foreground mb-6 max-w-2xl">
@@ -219,7 +219,7 @@ export default function TenMinuteTestPage() {
             <tbody className="divide-y divide-border/70">
               {[
                 {
-                  phase: 'Warmup', minutes: '0–2 min', what: 'Speed ramps up as fingers settle into rhythm. Accuracy is highest here — focus is sharp.',
+                  phase: 'Warmup', minutes: '0–2 min', what: 'Speed ramps up as fingers settle into rhythm. Accuracy is highest here, and focus is sharp.',
                   fix: 'Don\'t sprint. Start 5–10 WPM below your target and let pace build naturally.',
                 },
                 {
@@ -251,12 +251,12 @@ export default function TenMinuteTestPage() {
         <h2>Why the 10-Minute Format Separates Skill from Luck</h2>
         <p>
           Any typist can have a great 60-second run. Fatigue, concentration lapses, and accuracy drift
-          don't become measurable until at least 5 minutes — and they become fully revealing at 10. A
+          don't become measurable until at least 5 minutes, and they become fully revealing at 10. A
           10-minute typing test is where genuine professional skill separates itself from learned test-taking
           tricks, burst speed, and lucky runs.
         </p>
         <p>
-          Civil service typing certification boards — from local government agencies to federal departments —
+          Civil service typing certification boards, from local government agencies to federal departments,
           have adopted the 10-minute format specifically because it matches the reality of office work.
           Processing documents, entering data, and transcribing meetings all require sustained performance
           over extended periods, not peak performance in controlled 60-second windows.
@@ -270,29 +270,29 @@ export default function TenMinuteTestPage() {
           <li><strong>General transcription:</strong> 65–75 WPM with 97%+ accuracy</li>
           <li><strong>Medical transcription:</strong> 65–80 WPM with 98–99% accuracy</li>
           <li><strong>Legal support / paralegal:</strong> 70–80 WPM with 98%+ accuracy</li>
-          <li><strong>Advanced data entry:</strong> 70–80 WPM with 98% accuracy — production-rate roles</li>
+          <li><strong>Advanced data entry:</strong> 70–80 WPM with 98% accuracy, production-rate roles</li>
         </ul>
 
         <h2>Building Toward 10-Minute Endurance</h2>
 
-        <h3>Step 1 — Master 3 minutes first</h3>
+        <h3>Step 1: Master 3 minutes first</h3>
         <p>
           If you can't sustain your target WPM for 3 minutes with 97%+ accuracy, the jump to 10 minutes
           will be punishing. Use the <Link href="/3-minute-typing-test">3-minute test</Link> daily until you
           can hit your target WPM consistently across 5 runs. Only then extend to 5 and then 10 minutes.
         </p>
 
-        <h3>Step 2 — Practice at 85% of your peak, not at 100%</h3>
+        <h3>Step 2: Practice at 85% of your peak, not at 100%</h3>
         <p>
           The biggest mistake advanced typists make is always practicing at their sprint pace. To build
           10-minute endurance, practice regularly at 85–90% of your 1-minute peak WPM. This trains the
           specific muscle-memory patterns that hold up when fatigue sets in at the 7–8 minute mark.
         </p>
 
-        <h3>Step 3 — Fix accuracy before extending duration</h3>
+        <h3>Step 3: Fix accuracy before extending duration</h3>
         <p>
           Over 10 minutes, a 96% accuracy rate generates roughly 3× the number of errors of a 1-minute test
-          at the same rate — and uncorrected errors are penalized against your net WPM. Use strict mode in
+          at the same rate, and uncorrected errors are penalized against your net WPM. Use strict mode in
           TakeTypingTest to force error correction, and drill your weak keys in the{' '}
           <Link href="/learn-typing">touch-typing course</Link> before adding duration.
         </p>

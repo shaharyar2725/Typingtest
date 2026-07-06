@@ -16,7 +16,7 @@ const PAGE_URL = `${SITE_ORIGIN}/`;
 const FAQS = [
   {
     q: 'What is typing practice?',
-    a: 'Typing practice is the deliberate exercise of typing on a keyboard to improve speed (words per minute) and accuracy. TakeTypingTest gives you free, customizable typing practice in time, words and quote modes — pick a duration, start typing, and get instant WPM and accuracy feedback.',
+    a: 'Typing practice is the deliberate exercise of typing on a keyboard to improve speed (words per minute) and accuracy. TakeTypingTest gives you free, customizable typing practice in time, words and quote modes. Pick a duration, start typing, and get instant WPM and accuracy feedback.',
   },
   {
     q: 'How long should I practice typing each day?',
@@ -32,7 +32,7 @@ const FAQS = [
   },
   {
     q: 'Is TakeTypingTest typing practice free?',
-    a: 'Yes — every typing practice mode, the full 10-lesson course, and your personal best stats are 100% free with no signup required. Everything runs in your browser.',
+    a: 'Yes. Every typing practice mode, the full 10-lesson course, and your personal best stats are 100% free with no signup required. Everything runs in your browser.',
   },
   {
     q: 'How is WPM calculated?',
@@ -44,7 +44,7 @@ const FAQS = [
   },
   {
     q: 'What are the benefits of touch typing?',
-    a: 'Touch typists type 30–40% faster on average and make fewer errors than hunt-and-peck typists. The productivity difference compounds over time — research suggests knowledge workers can save up to 2 hours per day by moving from 40 to 60 WPM. Touch typing also reduces fatigue because your hands stay in a neutral position.',
+    a: 'Touch typists type 30–40% faster on average and make fewer errors than hunt-and-peck typists. The productivity difference compounds over time: research suggests knowledge workers can save up to 2 hours per day by moving from 40 to 60 WPM. Touch typing also reduces fatigue because your hands stay in a neutral position.',
   },
 ];
 
@@ -52,7 +52,7 @@ export default function Home() {
   useSEO({
     title: 'Free Typing Practice — Improve Your WPM & Accuracy | TakeTypingTest',
     description:
-      'Free online typing practice with live WPM, accuracy and error tracking. Pick time, words or quote mode. No signup — practice as much as you want and track your personal best.',
+      'Free online typing practice with live WPM, accuracy and error tracking. Pick time, words or quote mode. No signup needed, so practice as much as you want and track your personal best.',
     keywords:
       'typing practice, online typing practice, free typing practice, typing exercises, improve typing speed, wpm practice, daily typing drills, keyboarding practice',
     canonical: PAGE_URL,
@@ -137,7 +137,7 @@ export default function Home() {
         <p className="text-muted-foreground text-xs sm:text-sm leading-snug">
           Sharpen your typing speed and accuracy with free online typing practice.
           Pick a time, word count or quote, then watch your live WPM as you type.
-          Your personal best is saved in your browser — no signup needed.
+          Your personal best is saved in your browser, no signup needed.
         </p>
       </header>
 
@@ -180,7 +180,7 @@ export default function Home() {
       <section className="mb-4">
         <SectionHeader>Global typing speed statistics</SectionHeader>
         <p className="text-sm text-muted-foreground max-w-2xl mb-8">
-          Based on 10.4 million typing tests measured worldwide — here's where real typists actually stand.
+          Based on 10.4 million typing tests measured worldwide, here's where real typists actually stand.
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-8">
           {[
@@ -228,7 +228,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA — typing test */}
+      {/* CTA: typing test */}
       <section className="mb-4">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-6 py-10 border-y border-border">
           <div className="flex-1">
@@ -239,7 +239,7 @@ export default function Home() {
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">Ready to test your speed?</h2>
             <p className="text-muted-foreground max-w-lg">
               Try the free <Link href="/typing-speed-test" className="text-primary font-semibold underline-offset-4 hover:underline">typing speed test</Link> and
-              see your official WPM score with a global percentile ranking. No account needed — just start typing.
+              see your official WPM score with a global percentile ranking. No account needed, just start typing.
             </p>
           </div>
           <Link href="/typing-speed-test">
@@ -294,34 +294,34 @@ export default function Home() {
       <article className="max-w-3xl mx-auto prose dark:prose-invert prose-headings:font-bold prose-h3:text-xl prose-h3:mt-8">
         <p>
           Consistent typing practice is the single fastest way to raise your words-per-minute (WPM) and cut
-          down on errors. A few focused minutes per day will outperform a marathon weekly session every time —
-          typing speed is built on muscle memory, and muscle memory rewards repetition over duration. The
-          global average sits at 41.6 WPM; with 15 minutes of daily deliberate practice, most people can
-          reach 60 WPM within 4–8 weeks.
+          down on errors. A few focused minutes per day will outperform a marathon weekly session every time,
+          because typing speed is built on muscle memory, and muscle memory rewards repetition over duration.
+          The global average sits at 41.6 WPM. With 15 minutes of daily deliberate practice, most people can
+          reach 60 WPM within 4 to 8 weeks.
         </p>
 
         <h3>Practice with the right finger position</h3>
         <p>
           Keep your fingers resting on the home row (ASDF for the left hand, JKL; for the right hand) and
           let each finger reach for the keys it owns. The small raised bumps on F and J let you find your
-          position without looking. Resist the urge to glance at the keyboard — looking down is the habit
-          that caps most people's typing speed. It forces a mental context switch that breaks your rhythm
-          every single time.
+          position without looking. Resist the urge to glance at the keyboard, since looking down is the
+          habit that caps most people's typing speed. It forces a mental context switch that breaks your
+          rhythm every single time.
         </p>
 
         <h3>Accuracy first, speed second</h3>
         <p>
           Slow, accurate typing builds the correct neural pathways. Speed comes naturally as accuracy
-          improves. Research shows a single error costs approximately 2.5 seconds of cognitive reset —
-          meaning typing at 90% accuracy can reduce your effective output by nearly 30% compared to 99%
+          improves. Research shows a single error costs approximately 2.5 seconds of cognitive reset, which
+          means typing at 90% accuracy can reduce your effective output by nearly 30% compared to 99%
           accuracy at the same WPM. Aim for 97%+ accuracy first, then push the duration or word count.
           TakeTypingTest's strict mode forces error correction, which accelerates this process.
         </p>
 
         <h3>Mix the practice modes</h3>
         <p>
-          TakeTypingTest gives you four word sources — common English words, classic quotes, code snippets, and
-          punctuation/numbers. Rotate between them so you don't over-train on one type of text. Programmers
+          TakeTypingTest gives you four word sources: common English words, classic quotes, code snippets, and
+          punctuation and numbers. Rotate between them so you don't over-train on one type of text. Programmers
           especially benefit from regular code-snippet practice because of all the symbols, brackets, and
           case changes. Quotes force you to keep pace with punctuation rhythm.
         </p>
@@ -330,7 +330,7 @@ export default function Home() {
         <p>
           Every run is saved locally in your browser, so you always know your best WPM and best accuracy.
           Rather than chasing your personal best every session, track your <em>average</em> WPM across
-          multiple runs — consistency is what separates a genuine 60 WPM typist from someone who hit 60 once.
+          multiple runs. Consistency is what separates a genuine 60 WPM typist from someone who hit 60 once.
           Once you're consistently beating your average, head to the{' '}
           <Link href="/typing-speed-test" className="text-primary font-semibold">typing speed test</Link>{' '}
           for your official benchmark score with a global percentile ranking.

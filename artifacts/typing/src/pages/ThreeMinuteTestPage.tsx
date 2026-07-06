@@ -13,7 +13,7 @@ const PAGE_URL = `${SITE_ORIGIN}/3-minute-typing-test`;
 const FAQS = [
   {
     q: 'What is a 3-minute typing test?',
-    a: 'A 3-minute typing test measures your typing speed (WPM) and accuracy over 180 seconds. It sits between the quick snapshot of a 1-minute test and the full endurance challenge of a 5-minute test — long enough to smooth out flukes and short bursts, but efficient enough to use as a daily check-in. Many typing certification programs use 3-minute tests as their standard format.',
+    a: 'A 3-minute typing test measures your typing speed (WPM) and accuracy over 180 seconds. It sits between the quick snapshot of a 1-minute test and the full endurance challenge of a 5-minute test, long enough to smooth out flukes and short bursts, but efficient enough to use as a daily check-in. Many typing certification programs use 3-minute tests as their standard format.',
   },
   {
     q: 'Is a 3-minute typing test used by employers?',
@@ -29,11 +29,11 @@ const FAQS = [
   },
   {
     q: 'How can I improve my 3-minute typing score?',
-    a: 'Build a strong accuracy foundation using TakeTypingTest\'s touch-typing lessons, then move into timed practice at your target pace. 3-minute daily practice sessions — where you focus on maintaining pace rather than sprinting — are the most efficient way to raise your sustained WPM. Track your average across five runs rather than your single best score.',
+    a: 'Build a strong accuracy foundation using TakeTypingTest\'s touch-typing lessons, then move into timed practice at your target pace. 3-minute daily practice sessions, where you focus on maintaining pace rather than sprinting, are the most efficient way to raise your sustained WPM. Track your average across five runs rather than your single best score.',
   },
   {
     q: 'Is this 3-minute typing test free?',
-    a: 'Yes — 100% free, no signup, no download required. Take as many tests as you need.',
+    a: 'Yes. It\'s 100% free, no signup, no download required. Take as many tests as you need.',
   },
 ];
 
@@ -41,7 +41,7 @@ export default function ThreeMinuteTestPage() {
   useSEO({
     title: '3 Minute Typing Test — Free WPM & Accuracy Check | TakeTypingTest',
     description:
-      'Free 3-minute typing test — the daily practice standard used by office and government employers. Measure your sustainable WPM and accuracy with instant results and global percentile ranking.',
+      'Free 3-minute typing test, the daily practice standard used by office and government employers. Measure your sustainable WPM and accuracy with instant results and global percentile ranking.',
     keywords:
       '3 minute typing test, three minute typing test, 3 min typing test, typing test 3 minutes, office typing test, government typing test, civil service typing test, wpm test 3 minutes',
     canonical: PAGE_URL,
@@ -121,7 +121,7 @@ export default function ThreeMinuteTestPage() {
           3 Minute Typing Test
         </h1>
         <p className="text-muted-foreground text-xs sm:text-sm leading-snug">
-          The daily practice standard. Three minutes reveals your real cruising speed —
+          The daily practice standard. Three minutes reveals your real cruising speed,
           not your sprint peak. Free, no signup, instant results with global percentile ranking.
         </p>
       </header>
@@ -201,18 +201,18 @@ export default function ThreeMinuteTestPage() {
           The 1-minute typing test is great for a quick peak-speed check, but it's too short to reveal
           your real work rate. A 3-minute test is the minimum duration where concentration, finger
           endurance, and accuracy consistency all come into play. It's also short enough to fit into any
-          practice routine — making it the ideal daily benchmark format for typists at every level.
+          practice routine, making it the ideal daily benchmark format for typists at every level.
         </p>
         <p>
           For anyone preparing for an office job or civil service position, the 3-minute format is
-          particularly important. Many government typing certifications — from administrative assistants to
-          postal clerks to DMV staff — use a 3-minute standard specifically because it's long enough to
+          particularly important. Many government typing certifications, from administrative assistants to
+          postal clerks to DMV staff, use a 3-minute standard specifically because it's long enough to
           weed out lucky short-burst scores while remaining practical for a screening context.
         </p>
 
         <h2>The 3-Minute Consistency Metric</h2>
         <p>
-          The most useful number from a 3-minute test isn't your WPM — it's the ratio of your 3-minute
+          The most useful number from a 3-minute test isn't your WPM. It's the ratio of your 3-minute
           WPM to your 1-minute WPM. Here's what that gap tells you:
         </p>
         <ul>
@@ -226,9 +226,9 @@ export default function ThreeMinuteTestPage() {
         <ul>
           <li><strong>General office / admin:</strong> 50–60 WPM minimum, 65+ preferred</li>
           <li><strong>Civil service (government):</strong> Often 40–50 WPM with 95%+ accuracy required for entry-level</li>
-          <li><strong>Customer support (live chat):</strong> 55–65 WPM — response speed directly affects resolution rates</li>
+          <li><strong>Customer support (live chat):</strong> 55–65 WPM. Response speed directly affects resolution rates.</li>
           <li><strong>Data entry:</strong> 60–70 WPM with 98%+ accuracy on a 3-minute test</li>
-          <li><strong>Insurance / claims processing:</strong> 50–60 WPM sustained — 3-minute tests are standard pre-hire screening</li>
+          <li><strong>Insurance / claims processing:</strong> 50–60 WPM sustained. 3-minute tests are standard pre-hire screening.</li>
         </ul>
 
         <h2>How to Build Your 3-Minute Score</h2>
@@ -243,7 +243,7 @@ export default function ThreeMinuteTestPage() {
         <h3>Track your average, not your best</h3>
         <p>
           A single 70 WPM test doesn't make you a 70 WPM typist. Take 5 runs and record your average.
-          That average — not the peak — is your real score. Employers who use typing tests are measuring
+          That average, not the peak, is your real score. Employers who use typing tests are measuring
           your reliable rate, not your lucky day.
         </p>
 

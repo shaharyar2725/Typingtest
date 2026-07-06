@@ -12,7 +12,7 @@ const PAGE_URL = `${SITE_ORIGIN}/5-minute-typing-test`;
 const FAQS = [
   {
     q: 'What is a 5-minute typing test?',
-    a: 'A 5-minute typing test measures your sustained typing speed — words per minute (WPM) and accuracy — over a full five minutes. It\'s the standard duration used by many employers, transcription agencies, and legal offices to verify that a typist can maintain speed under realistic working conditions, not just in a 60-second sprint.',
+    a: 'A 5-minute typing test measures your sustained typing speed, words per minute (WPM) and accuracy, over a full five minutes. It\'s the standard duration used by many employers, transcription agencies, and legal offices to verify that a typist can maintain speed under realistic working conditions, not just in a 60-second sprint.',
   },
   {
     q: 'Is a 5-minute typing test harder than a 1-minute test?',
@@ -24,7 +24,7 @@ const FAQS = [
   },
   {
     q: 'What is my WPM endurance ratio?',
-    a: 'Your WPM endurance ratio is your 5-minute WPM divided by your 1-minute WPM, expressed as a percentage. A ratio above 90% means excellent endurance — your speed holds up under sustained effort. Below 80% means significant fatigue degradation and signals that building stamina through longer practice sessions would help.',
+    a: 'Your WPM endurance ratio is your 5-minute WPM divided by your 1-minute WPM, expressed as a percentage. A ratio above 90% means excellent endurance, and your speed holds up under sustained effort. Below 80% means significant fatigue degradation and signals that building stamina through longer practice sessions would help.',
   },
   {
     q: 'How can I improve my 5-minute typing speed?',
@@ -40,7 +40,7 @@ export default function FiveMinuteTestPage() {
   useSEO({
     title: '5 Minute Typing Test — Sustained WPM & Accuracy | TakeTypingTest',
     description:
-      'Free 5-minute typing test — measure your sustained WPM and accuracy under endurance conditions. The benchmark used by employers and transcription agencies. No signup, instant results.',
+      'Free 5-minute typing test to measure your sustained WPM and accuracy under endurance conditions. The benchmark used by employers and transcription agencies. No signup, instant results.',
     keywords:
       '5 minute typing test, five minute typing test, 5 min typing test, endurance typing test, sustained wpm, typing speed test 5 minutes, typing test for employment, transcription typing test',
     canonical: PAGE_URL,
@@ -160,7 +160,7 @@ export default function FiveMinuteTestPage() {
         )}
       </section>
 
-      {/* Unique: WPM Endurance Ratio — concept no competitor covers */}
+      {/* Unique: WPM Endurance Ratio, a concept no competitor covers */}
       <section className="mb-16">
         <h2 className="text-xl font-extrabold tracking-tight mb-2">Your WPM endurance ratio</h2>
         <p className="text-sm text-muted-foreground mb-6 max-w-2xl">
@@ -204,8 +204,8 @@ export default function FiveMinuteTestPage() {
       <article className="max-w-3xl mx-auto prose dark:prose-invert mt-4">
         <h2>Why the 5-Minute Test Is the Employer Standard</h2>
         <p>
-          A 1-minute typing test is a sprint; a 5-minute test is a marathon. Many professional environments
-          — transcription agencies, law firms, government offices, and data-entry departments — specifically
+          A 1-minute typing test is a sprint; a 5-minute test is a marathon. Many professional environments,
+          including transcription agencies, law firms, government offices, and data-entry departments, specifically
           require a 5-minute typing test because it reveals something a 60-second sprint cannot: whether your
           speed holds up under real working conditions.
         </p>
@@ -219,11 +219,11 @@ export default function FiveMinuteTestPage() {
         <h2>Who Needs a 5-Minute Typing Test?</h2>
         <ul>
           <li><strong>Transcriptionists:</strong> Converting audio to text requires consistent, sustained typing speed. Most agencies require 65–80 WPM on a 5-minute test with 97%+ accuracy.</li>
-          <li><strong>Legal secretaries and paralegals:</strong> Dictation and brief transcription demand both speed and accuracy over long sessions — the 5-minute format mirrors real working conditions directly.</li>
-          <li><strong>Data-entry clerks:</strong> High-volume data entry requires reliable, repeatable speed — not just peak performance. Most roles require 60–70 WPM sustained with 98% accuracy.</li>
+          <li><strong>Legal secretaries and paralegals:</strong> Dictation and brief transcription demand both speed and accuracy over long sessions. The 5-minute format mirrors real working conditions directly.</li>
+          <li><strong>Data-entry clerks:</strong> High-volume data entry requires reliable, repeatable speed, not just peak performance. Most roles require 60–70 WPM sustained with 98% accuracy.</li>
           <li><strong>Court reporters (digital):</strong> Real-time transcription under pressure. 5-minute tests are a standard part of certification for digital court reporters.</li>
           <li><strong>Executive assistants:</strong> Correspondence, meeting notes, and document preparation require sustained typing throughout the entire workday.</li>
-          <li><strong>Medical transcriptionists:</strong> Medical terminology and zero error tolerance mean sustained speed and rock-solid accuracy are both required — 65–80 WPM on a 5-minute test.</li>
+          <li><strong>Medical transcriptionists:</strong> Medical terminology and zero error tolerance mean sustained speed and rock-solid accuracy are both required, at 65–80 WPM on a 5-minute test.</li>
         </ul>
 
         <h2>How to Improve Your 5-Minute Typing Speed</h2>
@@ -232,14 +232,14 @@ export default function FiveMinuteTestPage() {
         <p>
           If you want to sustain 70 WPM over five minutes, practice regularly at 65–70 WPM. Practicing above
           your endurance pace builds short-burst speed but not stamina. Use TakeTypingTest's live WPM counter to
-          keep your pace in range — if minute one puts you over target, ease back intentionally.
+          keep your pace in range. If minute one puts you over target, ease back intentionally.
         </p>
 
         <h3>Watch your accuracy throughout, not just at the end</h3>
         <p>
           Errors over five minutes accumulate fast. A 95% accuracy rate over five minutes is significantly
           harder to maintain than over one minute. Build the habit of slowing down when you start making
-          mistakes rather than pushing through errors — a corrected mistake costs less than an uncorrected one
+          mistakes rather than pushing through errors. A corrected mistake costs less than an uncorrected one
           in your net WPM score.
         </p>
 
@@ -257,7 +257,7 @@ export default function FiveMinuteTestPage() {
           <Link href="/1-minute-typing-test">1-minute test</Link> to find your speed ceiling, then use the{' '}
           <Link href="/3-minute-typing-test">3-minute test</Link> as your daily practice benchmark. For
           serious professional certification, try the{' '}
-          <Link href="/10-minute-typing-test">10-minute test</Link> — the standard used by civil service
+          <Link href="/10-minute-typing-test">10-minute test</Link>, the standard used by civil service
           boards and transcription agencies. Elite typists and court reporter trainees use the{' '}
           <Link href="/20-minute-typing-test">20-minute test</Link> to verify maximum long-session endurance.
         </p>

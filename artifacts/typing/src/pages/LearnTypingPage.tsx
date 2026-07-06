@@ -17,7 +17,7 @@ const FAQS = [
   },
   {
     q: 'How long does it take to learn touch typing?',
-    a: 'Most people reach a functional touch-typing speed (30–40 WPM) within 2–4 weeks of 15-minute daily practice sessions. Reaching a professional speed of 60–80 WPM typically takes 2–4 months. The key is daily, deliberate practice — even 15 minutes a day compounds quickly into lasting muscle memory.',
+    a: 'Most people reach a functional touch-typing speed (30–40 WPM) within 2–4 weeks of 15-minute daily practice sessions. Reaching a professional speed of 60–80 WPM typically takes 2–4 months. The key is daily, deliberate practice: even 15 minutes a day compounds quickly into lasting muscle memory.',
   },
   {
     q: 'What is the home row and why does it matter?',
@@ -25,7 +25,7 @@ const FAQS = [
   },
   {
     q: 'Can I teach myself touch typing?',
-    a: 'Yes — touch typing is entirely self-teachable with structured practice. TakeTypingTest\'s free course takes you from home-row basics through numbers, punctuation, and speed drills in 10 lessons. The key is consistency: 15 minutes per day, every day, with no peeking at the keyboard.',
+    a: 'Yes. Touch typing is entirely self-teachable with structured practice. TakeTypingTest\'s free course takes you from home-row basics through numbers, punctuation, and speed drills in 10 lessons. The key is consistency: 15 minutes per day, every day, with no peeking at the keyboard.',
   },
   {
     q: 'Is touch typing faster than hunt and peck?',
@@ -37,7 +37,7 @@ const FAQS = [
   },
   {
     q: 'Is this typing course free?',
-    a: 'Yes — all 10 TakeTypingTest lessons, your progress tracking, and your WPM history are completely free with no account required. Everything runs in your browser.',
+    a: 'Yes. All 10 TakeTypingTest lessons, your progress tracking, and your WPM history are completely free with no account required. Everything runs in your browser.',
   },
 ];
 
@@ -63,7 +63,7 @@ export default function LearnTypingPage() {
         },
         url: PAGE_URL,
         educationalLevel: 'Beginner',
-        teaches: 'Touch typing — home row, all keyboard rows, numbers, punctuation, symbols, speed drills',
+        teaches: 'Touch typing: home row, all keyboard rows, numbers, punctuation, symbols, speed drills',
         courseMode: 'online',
         isAccessibleForFree: true,
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
@@ -191,7 +191,7 @@ export default function LearnTypingPage() {
         </div>
       ))}
 
-      {/* Unique: Touch Typing vs Hunt & Peck — data-driven comparison */}
+      {/* Unique: Touch Typing vs Hunt & Peck, data-driven comparison */}
       <section className="mt-16 mb-4">
         <h2 className="text-2xl font-extrabold tracking-tight mb-2">Touch typing vs hunt & peck: the real difference</h2>
         <p className="text-muted-foreground text-sm mb-6 max-w-2xl">
@@ -213,7 +213,7 @@ export default function LearnTypingPage() {
                 { metric: 'Error rate', huntPeck: 'Higher (visual distraction)', touchTyping: 'Lower (tactile feedback)' },
                 { metric: 'Cognitive load', huntPeck: 'High (find key + type)', touchTyping: 'Low (automatic)' },
                 { metric: 'Wrist position', huntPeck: 'Variable, often strained', touchTyping: 'Neutral, consistent' },
-                { metric: 'Mental fatigue', huntPeck: 'Higher over long sessions', touchTyping: 'Lower — fingers work, brain thinks' },
+                { metric: 'Mental fatigue', huntPeck: 'Higher over long sessions', touchTyping: 'Lower, fingers work while the brain thinks' },
                 { metric: 'Hours to learn', huntPeck: 'Innate (most people self-taught)', touchTyping: '20–40 hrs of practice' },
                 { metric: 'Productivity (8 hr day)', huntPeck: 'Baseline', touchTyping: 'Up to 2 hrs/day extra output' },
               ].map(({ metric, huntPeck, touchTyping }) => (
@@ -230,8 +230,8 @@ export default function LearnTypingPage() {
         {/* Learning timeline */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-6">
           {[
-            { icon: Clock, color: 'text-primary', title: '2–4 weeks', sub: 'to functional touch typing', desc: '30–40 WPM with all ten fingers. This is your first major milestone — it feels uncomfortable, then suddenly clicks.' },
-            { icon: TrendingUp, color: 'text-emerald-500', title: '4–8 weeks', sub: 'to above average', desc: 'Past 50 WPM. You\'re faster than most adults. Your fingers are finding keys without looking — the habit is set.' },
+            { icon: Clock, color: 'text-primary', title: '2–4 weeks', sub: 'to functional touch typing', desc: '30–40 WPM with all ten fingers. This is your first major milestone. It feels uncomfortable, then suddenly clicks.' },
+            { icon: TrendingUp, color: 'text-emerald-500', title: '4–8 weeks', sub: 'to above average', desc: 'Past 50 WPM. You\'re faster than most adults, and your fingers are finding keys without looking. The habit is set.' },
             { icon: Trophy, color: 'text-cyan-500', title: '2–4 months', sub: 'to professional speed', desc: '65–80 WPM. Deep muscle memory across the full keyboard. This is the speed range most professional roles require.' },
           ].map(({ icon: Icon, color, title, sub, desc }) => (
             <div key={title}>
@@ -248,7 +248,7 @@ export default function LearnTypingPage() {
         <h2>How to Learn Touch Typing</h2>
         <p>
           Touch typing is the skill of typing without looking at the keyboard, using all ten fingers from
-          fixed home-row positions. Once you've built it, it becomes invisible — your fingers find the keys
+          fixed home-row positions. Once you've built it, it becomes invisible: your fingers find the keys
           while your eyes stay on the screen and your brain focuses on what you're writing, not on how to
           type it.
         </p>
@@ -256,8 +256,8 @@ export default function LearnTypingPage() {
         <h3>Start with the home row</h3>
         <p>
           The home row (ASDF for the left hand, JKL; for the right) is the anchor for every other key on
-          the keyboard. Feel the bumps on F and J — those are your tactile guides. Every lesson in this
-          course starts here and expands outward one row at a time. Don't rush past the home row — it's
+          the keyboard. Feel the bumps on F and J: those are your tactile guides. Every lesson in this
+          course starts here and expands outward one row at a time. Don't rush past the home row. It's
           not just your starting point, it's your orientation system for every other key.
         </p>
 
@@ -273,16 +273,16 @@ export default function LearnTypingPage() {
         <p>
           This is the hardest discipline in touch-typing and the most important. Cover your hands with a
           cloth or use a blank keyboard if the temptation is too strong. Looking down breaks the cycle of
-          muscle memory. Stick with it through the discomfort of the first week — most people break through
-          into a new rhythm by day 7–10, and at that point, looking down actually feels unnatural.
+          muscle memory. Stick with it through the discomfort of the first week. Most people break through
+          into a new rhythm by day 7 to 10, and at that point, looking down actually feels unnatural.
         </p>
 
         <h3>Practice every day, not for long</h3>
         <p>
           15–20 minutes of daily, focused practice beats one long weekly session because muscle memory
           consolidates during sleep. Work through the lessons in order, and when you pass the WPM target for
-          one lesson, move on — don't over-drill what you already know. Apply each new key set to free typing
-          on the <Link href="/">practice page</Link> between lessons to reinforce it.
+          one lesson, move on instead of over-drilling what you already know. Apply each new key set to free
+          typing on the <Link href="/">practice page</Link> between lessons to reinforce it.
         </p>
 
         <h2>Frequently Asked Questions</h2>

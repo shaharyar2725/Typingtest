@@ -13,7 +13,7 @@ const PAGE_URL = `${SITE_ORIGIN}/typing-speed-test`;
 const FAQS = [
   {
     q: 'What is a typing speed test?',
-    a: 'A typing speed test measures how many words you can type per minute (WPM) and how accurately you type them. TakeTypingTest calculates net WPM — total correct characters divided by 5, divided by time in minutes — which is the same formula used by professional typing benchmarks and most employer tests.',
+    a: 'A typing speed test measures how many words you can type per minute (WPM) and how accurately you type them. TakeTypingTest calculates net WPM, which is total correct characters divided by 5, divided by time in minutes. It is the same formula used by professional typing benchmarks and most employer tests.',
   },
   {
     q: 'What is the average typing speed for an adult?',
@@ -21,11 +21,11 @@ const FAQS = [
   },
   {
     q: 'Is 40 WPM a good typing speed?',
-    a: 'Yes — 40 WPM is exactly at the global average. It\'s sufficient for everyday tasks like email and documents. However, most professional roles (data entry, admin, legal) require 60–80 WPM. If your goal is employment, 60 WPM is the practical target for most office positions.',
+    a: 'Yes, 40 WPM is exactly at the global average. It\'s sufficient for everyday tasks like email and documents. However, most professional roles (data entry, admin, legal) require 60–80 WPM. If your goal is employment, 60 WPM is the practical target for most office positions.',
   },
   {
     q: 'Is 60 WPM a good typing speed?',
-    a: '60 WPM is above average and qualifies you for most office, admin, and customer support roles. It puts you roughly in the 79th percentile globally — faster than about 4 out of every 5 typists. With deliberate daily practice, most people can reach 60 WPM within 4–8 weeks.',
+    a: '60 WPM is above average and qualifies you for most office, admin, and customer support roles. It puts you roughly in the 79th percentile globally, faster than about 4 out of every 5 typists. With deliberate daily practice, most people can reach 60 WPM within 4–8 weeks.',
   },
   {
     q: 'How can I type 100 WPM?',
@@ -33,7 +33,7 @@ const FAQS = [
   },
   {
     q: 'How long should I practice to improve my typing speed?',
-    a: '15–20 minutes of focused daily practice is more effective than hour-long sessions. Muscle memory consolidates during rest, not during typing. Most people see measurable gains — 10–20 WPM — within 4–6 weeks of daily deliberate practice.',
+    a: '15–20 minutes of focused daily practice is more effective than hour-long sessions. Muscle memory consolidates during rest, not during typing. Most people see measurable gains, typically 10–20 WPM, within 4–6 weeks of daily deliberate practice.',
   },
   {
     q: 'Does typing speed matter for programmers?',
@@ -41,11 +41,11 @@ const FAQS = [
   },
   {
     q: 'Is this typing speed test free?',
-    a: 'Yes — TakeTypingTest\'s typing speed test is 100% free, runs entirely in your browser, and requires no download, account, or email.',
+    a: 'Yes. TakeTypingTest\'s typing speed test is 100% free, runs entirely in your browser, and requires no download, account, or email.',
   },
   {
     q: 'What is the best free typing website?',
-    a: 'TakeTypingTest offers a free typing speed test, 15-second through 5-minute time modes, quote and code modes, and a free 10-lesson touch typing course — all without signup. Other good free options include Monkeytype (minimalist), TypingClub (structured lessons for beginners), and 10FastFingers (multiplayer competition).',
+    a: 'TakeTypingTest offers a free typing speed test, 15-second through 5-minute time modes, quote and code modes, and a free 10-lesson touch typing course, all without signup. Other good free options include Monkeytype (minimalist), TypingClub (structured lessons for beginners), and 10FastFingers (multiplayer competition).',
   },
 ];
 
@@ -121,7 +121,7 @@ export default function TypingSpeedTestPage() {
         Free Typing Speed Test
       </h1>
       <p className="text-center text-muted-foreground mb-8">
-        Measure your WPM and accuracy — free, instant, no signup required. See your global percentile ranking after the test.
+        Measure your WPM and accuracy for free, instantly, with no signup required. See your global percentile ranking after the test.
       </p>
 
       <div className="w-full max-w-5xl mx-auto flex flex-col items-center mb-16">
@@ -173,7 +173,7 @@ export default function TypingSpeedTestPage() {
         )}
       </div>
 
-      {/* Profession Speed Table — unique, high-value section */}
+      {/* Profession Speed Table: unique, high-value section */}
       <section className="mb-16">
         <h2 className="text-2xl font-extrabold tracking-tight mb-2">
           Typing speed requirements by profession
@@ -182,7 +182,7 @@ export default function TypingSpeedTestPage() {
           Real WPM requirements from job postings and employer benchmarks. Filter by category to see if your
           score qualifies you for specific roles.
           {result && result.wpm > 0 && (
-            <span className="text-primary font-semibold"> Your last score was {result.wpm} WPM — rows are highlighted based on your result.</span>
+            <span className="text-primary font-semibold"> Your last score was {result.wpm} WPM, so rows are highlighted based on your result.</span>
           )}
         </p>
         <ProfessionSpeedTable userWpm={result?.wpm} />
@@ -192,14 +192,14 @@ export default function TypingSpeedTestPage() {
       <article className="max-w-3xl mx-auto prose dark:prose-invert mt-4">
         <h2>What Does Your Typing Speed Say About You?</h2>
         <p>
-          Your words-per-minute (WPM) score is more than a number — it's a snapshot of how efficiently you
+          Your words-per-minute (WPM) score is more than a number. It's a snapshot of how efficiently you
           communicate through a keyboard. The global average across 10.4 million measured tests is 41.6 WPM.
           That's your baseline. Here's what the full spectrum looks like.
         </p>
 
         <h3>Typing Speed Benchmarks by Skill Level</h3>
         <ul>
-          <li><strong>Beginner (under 30 WPM):</strong> Still looking at the keyboard for most keystrokes. Touch-typing basics will create the biggest gains at this stage — you can expect 7–10 WPM weekly improvement with daily practice.</li>
+          <li><strong>Beginner (under 30 WPM):</strong> Still looking at the keyboard for most keystrokes. Touch-typing basics will create the biggest gains at this stage, with 7–10 WPM weekly improvement typical with daily practice.</li>
           <li><strong>Average (30–50 WPM):</strong> Roughly where most adults land. The global average is 41.6 WPM. Enough for everyday tasks, but there's room to nearly double your speed with deliberate practice over 6–8 weeks.</li>
           <li><strong>Above average (50–70 WPM):</strong> You type without thinking about most keys. Targeted drilling on weak combinations can push you into the professional tier within a few weeks.</li>
           <li><strong>Professional (70–90 WPM):</strong> The threshold many employers cite for data entry, administrative, and legal secretary roles. Accuracy at this speed is the real differentiator.</li>
@@ -217,7 +217,7 @@ export default function TypingSpeedTestPage() {
         <p>
           This is the single biggest unlock. Every time your eyes drop to find a key, your brain interrupts
           its flow state. Cover your hands with a cloth, use a blank keyboard, or simply force yourself to
-          keep your eyes on the screen. It will feel painfully slow for a week — and then it won't. Most
+          keep your eyes on the screen. It will feel painfully slow for a week, and then it won't. Most
           people break through their old cap within 10–14 days of strict no-peeking practice.
         </p>
 
@@ -225,7 +225,7 @@ export default function TypingSpeedTestPage() {
         <p>
           Speed is a byproduct of accuracy and muscle memory, not the other way around. If you're making
           errors, you're going too fast for your current skill level. Research shows a single error costs
-          ~2.5 seconds of cognitive reset — so typing at 90% accuracy with 10% errors can be slower in
+          ~2.5 seconds of cognitive reset, so typing at 90% accuracy with 10% errors can be slower in
           practice than typing at 70 WPM with 99% accuracy. Drop to a pace where you type without mistakes,
           hold it there until it feels automatic, then gradually increase.
         </p>
@@ -233,7 +233,7 @@ export default function TypingSpeedTestPage() {
         <h3>3. Use all ten fingers from home row</h3>
         <p>
           Home row position (ASDF for left hand, JKL; for right hand) is the foundation of touch typing.
-          Each finger has an assigned zone — index fingers cover the inner columns, pinkies cover the outer
+          Each finger has an assigned zone: index fingers cover the inner columns, pinkies cover the outer
           edges. Straying from this means every new key is a conscious decision rather than a reflex. Use
           TakeTypingTest's <Link href="/learn-typing">touch-typing course</Link> to build each zone systematically.
         </p>
@@ -241,8 +241,8 @@ export default function TypingSpeedTestPage() {
         <h3>4. Practice deliberately, not just more</h3>
         <p>
           15–20 minutes of focused typing practice beats a two-hour casual session. Use TakeTypingTest's typing
-          test to track your baseline, then practice in short, focused blocks. Identify your weak spots —
-          errors tend to cluster around the same key combinations — and drill those specifically in the
+          test to track your baseline, then practice in short, focused blocks. Identify your weak spots.
+          Errors tend to cluster around the same key combinations, so drill those specifically in the
           lesson course.
         </p>
 
@@ -261,7 +261,7 @@ export default function TypingSpeedTestPage() {
           same formula used by professional typing benchmarks, certification tests, and most employer-administered assessments.
         </p>
         <p>
-          <strong>Gross WPM</strong> (used by some other tools) counts every keystroke regardless of errors —
+          <strong>Gross WPM</strong> (used by some other tools) counts every keystroke regardless of errors,
           which is why you may see higher scores on those platforms. Net WPM is the more honest number. If an
           employer asks for your WPM, they almost always mean net WPM.
         </p>
@@ -269,7 +269,7 @@ export default function TypingSpeedTestPage() {
         <h2>Choose Your Test Duration</h2>
         <p>
           Different durations test different aspects of your typing skill. The{' '}
-          <Link href="/1-minute-typing-test">1-minute test</Link> measures your peak speed — the ceiling of
+          <Link href="/1-minute-typing-test">1-minute test</Link> measures your peak speed, the ceiling of
           what's possible. The <Link href="/3-minute-typing-test">3-minute test</Link> is the daily practice
           sweet spot, used widely by government and office employers. The{' '}
           <Link href="/5-minute-typing-test">5-minute test</Link> mirrors professional employment conditions

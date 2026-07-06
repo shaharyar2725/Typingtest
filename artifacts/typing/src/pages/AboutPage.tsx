@@ -38,8 +38,8 @@ export default function AboutPage() {
         <p>
           Unlike other typing platforms cluttered with ads, unnecessary social features, and
           overly gamified mechanics, TakeTypingTest focuses purely on the typing experience. The
-          interface is designed to get out of your way so you can focus on what matters —
-          your fingers and the keyboard.
+          interface is designed to get out of your way so you can focus on what matters: your
+          fingers and the keyboard.
         </p>
 
         <h2>Why Touch Typing Matters</h2>
@@ -61,27 +61,27 @@ export default function AboutPage() {
         <h2>What TakeTypingTest Offers</h2>
         <ul>
           <li>
-            <strong>Free typing practice</strong> in time, words, and quote modes — with live
+            <strong>Free typing practice</strong> in time, words, and quote modes, with live
             WPM, accuracy, and error tracking.
           </li>
           <li>
-            <strong>Free typing speed test</strong> — measure your WPM and accuracy instantly,
+            <strong>Free typing speed test</strong>: measure your WPM and accuracy instantly,
             no account needed.
           </li>
           <li>
-            <strong>Structured 10-lesson course</strong> — a curriculum designed to build
+            <strong>Structured 10-lesson course</strong>: a curriculum designed to build
             muscle memory from the home row up through symbols and speed drills.
           </li>
           <li>
-            <strong>No signup required</strong> — your progress and personal best are saved
+            <strong>No signup required</strong>: your progress and personal best are saved
             automatically in your browser.
           </li>
           <li>
-            <strong>Multiple word sources</strong> — common words, classic quotes, code
+            <strong>Multiple word sources</strong>: common words, classic quotes, code
             snippets, and punctuation-heavy text.
           </li>
           <li>
-            <strong>No ads</strong> — ever.
+            <strong>No ads</strong>, ever.
           </li>
         </ul>
 
