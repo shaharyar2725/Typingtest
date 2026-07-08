@@ -1,4 +1,5 @@
 import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -52,6 +53,7 @@ function App() {
           <Router />
         </WouterRouter>
         <Toaster position="bottom-right" />
+        <Analytics />
       </TooltipProvider>
     </ThemeProvider>
   );
