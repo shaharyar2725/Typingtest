@@ -10,7 +10,7 @@ import { Play, CheckCircle2, ArrowRight, TrendingUp, Clock, Target, Zap } from '
 import { Button } from '@/components/ui/button';
 import { LESSONS } from '@/lib/lessons';
 
-const SITE_ORIGIN = 'https://taketypingtest.com';
+const SITE_ORIGIN = 'https://www.taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/`;
 
 const FAQS = [

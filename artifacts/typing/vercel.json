@@ -7,8 +7,8 @@
   "redirects": [
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "www.taketypingtest.com" }],
-      "destination": "https://taketypingtest.com/$1",
+      "has": [{ "type": "host", "value": "taketypingtest.com" }],
+      "destination": "https://www.taketypingtest.com/$1",
       "permanent": true
     }
   ],

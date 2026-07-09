@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Trophy, Target, Play, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 
-const SITE_ORIGIN = 'https://taketypingtest.com';
+const SITE_ORIGIN = 'https://www.taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/learn-typing`;
 
 const FAQS = [

@@ -7,7 +7,7 @@ import { ProfessionSpeedTable } from '@/components/ProfessionSpeedTable';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
 
-const SITE_ORIGIN = 'https://taketypingtest.com';
+const SITE_ORIGIN = 'https://www.taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/typing-speed-test`;
 
 const FAQS = [

@@ -17,7 +17,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.resolve(__dirname, '..', 'dist', 'public');
 const templatePath = path.join(outDir, 'index.html');
 
-const SITE_ORIGIN = 'https://taketypingtest.com';
+const SITE_ORIGIN = 'https://www.taketypingtest.com';
 const OG_IMAGE = `${SITE_ORIGIN}/og-image.png`;
 
 const LESSON_SLUGS = [

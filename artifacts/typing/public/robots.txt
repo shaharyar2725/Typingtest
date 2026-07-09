@@ -17,4 +17,4 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
-Sitemap: https://taketypingtest.com/sitemap.xml
+Sitemap: https://www.taketypingtest.com/sitemap.xml

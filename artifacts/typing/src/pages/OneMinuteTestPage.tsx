@@ -6,7 +6,7 @@ import { ResultCard } from '@/components/typing/ResultCard';
 import { loadState, updateSettings, AppState, TypingResult } from '@/lib/storage';
 import { useSEO } from '@/hooks/useSEO';
 
-const SITE_ORIGIN = 'https://taketypingtest.com';
+const SITE_ORIGIN = 'https://www.taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/1-minute-typing-test`;
 
 const FAQS = [

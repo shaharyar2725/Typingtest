@@ -1,7 +1,7 @@
 import { useSEO } from '@/hooks/useSEO';
 import { Link } from 'wouter';
 
-const SITE_ORIGIN = 'https://taketypingtest.com';
+const SITE_ORIGIN = 'https://www.taketypingtest.com';
 const PAGE_URL = `${SITE_ORIGIN}/about`;
 
 export default function AboutPage() {
