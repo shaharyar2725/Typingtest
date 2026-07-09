@@ -3,7 +3,18 @@
   "buildCommand": "cd ../.. && BASE_PATH=/ pnpm --filter @workspace/typing run build",
   "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
   "outputDirectory": "dist/public",
+  "trailingSlash": false,
   "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/typing-speed-test", "destination": "/typing-speed-test/index.html" },
+    { "source": "/1-minute-typing-test", "destination": "/1-minute-typing-test/index.html" },
+    { "source": "/3-minute-typing-test", "destination": "/3-minute-typing-test/index.html" },
+    { "source": "/5-minute-typing-test", "destination": "/5-minute-typing-test/index.html" },
+    { "source": "/10-minute-typing-test", "destination": "/10-minute-typing-test/index.html" },
+    { "source": "/20-minute-typing-test", "destination": "/20-minute-typing-test/index.html" },
+    { "source": "/learn-typing", "destination": "/learn-typing/index.html" },
+    { "source": "/about", "destination": "/about/index.html" },
+    { "source": "/lessons/:slug", "destination": "/lessons/:slug/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
