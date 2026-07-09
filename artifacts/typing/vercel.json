@@ -4,6 +4,14 @@
   "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
   "outputDirectory": "dist/public",
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.taketypingtest.com" }],
+      "destination": "https://taketypingtest.com/$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
     { "source": "/typing-speed-test", "destination": "/typing-speed-test/index.html" },
